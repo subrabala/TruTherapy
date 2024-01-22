@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/screens/auth_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,46 +24,49 @@ class HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           Container(
-            height: greenSectionHeight,
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 190, 221, 215),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
+            decoration: const BoxDecoration(color: Color(0xFFA1BEB3)),
+            child: Container(
+              height: greenSectionHeight,
+              decoration: const BoxDecoration(
+                color: Color(0xFF0F273C),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(40),
+                  bottomRight: Radius.circular(40),
+                ),
               ),
-            ),
-            child: PageView(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
-              },
-              children: [
-                // Page 1
-                Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Lottie.network(
-                    'https://lottie.host/264d05ad-e788-4b70-aa39-b2a038fd0737/PqFZaU5km3.json',
+              child: PageView(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                },
+                children: [
+                  // Page 1
+                  Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Lottie.network(
+                      'https://lottie.host/264d05ad-e788-4b70-aa39-b2a038fd0737/PqFZaU5km3.json',
+                    ),
                   ),
-                ),
-                // Page 2
-                Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Lottie.network(
-                    'https://lottie.host/13f60176-ee78-4adf-a786-21fddf19bb21/LkGoga4Eqv.json',
+                  // Page 2
+                  Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: SvgPicture.asset(
+                      'assets/man_mental.svg',
+                    ),
                   ),
-                ),
-                Lottie.network(
-                  'https://lottie.host/1e8bac7a-0070-4007-b3c7-c6163dd5b3a2/gPEg7RqHdI.json',
-                ),
-              ],
+                  Lottie.network(
+                    'https://lottie.host/1e8bac7a-0070-4007-b3c7-c6163dd5b3a2/gPEg7RqHdI.json',
+                  ),
+                ],
+              ),
             ),
           ),
           Container(
             height: textSectionHeight,
             padding: const EdgeInsets.all(40.0),
-            color: const Color.fromARGB(255, 255, 255, 255),
+            color: const Color(0xFFA1BEB3),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,

@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^6.1.0
   lottie: ^3.0.0
   google_sign_in: ^6.2.1
+  flutter_svg: ^2.0.9
 
 
 dev_dependencies:
