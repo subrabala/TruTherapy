@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fsui/screens/intro_screen.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -19,8 +20,10 @@ class _AuthScreenState extends State<AuthScreen> {
   // final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   bool _isLogin = false;
+  String? errorMsg;
 
-  InputDecoration buildInputDecoration(String labelText, IconData prefixIcon) {
+  InputDecoration buildInputDecoration(
+      String labelText, IconData prefixIcon, String? errorMsg) {
     return InputDecoration(
       hintText: labelText,
       hintStyle: const TextStyle(fontSize: 12.0, color: Colors.black),
@@ -35,6 +38,7 @@ class _AuthScreenState extends State<AuthScreen> {
           borderSide: BorderSide(color: Color.fromARGB(255, 90, 156, 130))),
       isDense: true,
       contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
+      errorText: errorMsg,
     );
   }
 
@@ -76,39 +80,41 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 if (!_isLogin)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
+                    padding: const EdgeInsets.only(bottom: 4.0),
                     child: TextFormField(
                       controller: _nameController,
-                      decoration: buildInputDecoration('Name', Icons.person),
+                      decoration:
+                          buildInputDecoration('Name', Icons.person, errorMsg),
                       style: const TextStyle(fontSize: 12),
-                      
                     ),
                   ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
+                  padding: const EdgeInsets.only(bottom: 4.0),
                   child: TextFormField(
                     controller: _emailController,
-                    decoration: buildInputDecoration('Email', Icons.mail),
+                    decoration:
+                        buildInputDecoration('Email', Icons.mail, errorMsg),
                     style: const TextStyle(fontSize: 12),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
+                  padding: const EdgeInsets.only(bottom: 4.0),
                   child: TextFormField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: buildInputDecoration('Password', Icons.lock),
+                    decoration:
+                        buildInputDecoration('Password', Icons.lock, errorMsg),
                     style: const TextStyle(fontSize: 12),
                   ),
                 ),
                 if (!_isLogin)
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
+                    padding: const EdgeInsets.only(bottom: 4.0),
                     child: TextFormField(
                       controller: _confirmPasswordController,
                       obscureText: true,
-                      decoration:
-                          buildInputDecoration('Confirm Password', Icons.lock),
+                      decoration: buildInputDecoration(
+                          'Confirm Password', Icons.lock, errorMsg),
                       style: const TextStyle(fontSize: 12),
                     ),
                   ),
@@ -134,7 +140,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16.0),
+                const SizedBox(height: 12.0),
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -229,19 +235,16 @@ class _AuthScreenState extends State<AuthScreen> {
   // }
 
   void _signup() {
-    // Validate input fields
-    if (_nameController.text.isEmpty ||
-        _emailController.text.isEmpty ||
-        _passwordController.text.isEmpty ||
-        _confirmPasswordController.text.isEmpty) {
-      // Handle validation error
-      return;
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      setState(() {
+        errorMsg = 'Please fill this field';
+      });
     }
 
-    // Check if passwords match
     if (_passwordController.text != _confirmPasswordController.text) {
-      // Handle password mismatch error
-      return;
+      setState(() {
+        errorMsg = "Passwords don't match";
+      });
     }
 
     // String apiUrl = 'https://xyz.com/signup';
@@ -251,8 +254,6 @@ class _AuthScreenState extends State<AuthScreen> {
     //   'password': _passwordController.text,
     // };
 
-    // You can use a package like http or dio to make API requests
-    // Example with http package:
     // http.post(apiUrl, body: requestBody).then((response) {
     //   // Handle response
     // }).catchError((error) {
@@ -261,11 +262,19 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _login() {
-    // Validate input fields
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      // Handle validation error
-      return;
+      setState(() {
+        errorMsg = "Please fill all fields";
+      });
     }
+    if (!_emailController.text.contains('@')) {
+      setState(() {
+        errorMsg = 'Please enter a valid email';
+      });
+    }
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const IntroScreen()));
 
     // String apiUrl = 'https://xyz.com/login';
     // Map<String, String> requestBody = {
@@ -273,8 +282,6 @@ class _AuthScreenState extends State<AuthScreen> {
     //   'password': _passwordController.text,
     // };
 
-    // You can use a package like http or dio to make API requests
-    // Example with http package:
     // http.post(apiUrl, body: requestBody).then((response) {
     //   // Handle response
     // }).catchError((error) {

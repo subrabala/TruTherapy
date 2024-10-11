@@ -78,13 +78,23 @@ class HomeScreenState extends State<HomeScreen> {
                       Text(
                         'Embrace Our Warm Welcome!',
                         style: TextStyle(
-                            fontSize: 22.0, fontWeight: FontWeight.bold),
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0F273C),
+                          decoration: TextDecoration.none,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         "It's okay to feel here. You're not alone. Let's navigate anxiety and depression together.",
-                        style: TextStyle(fontSize: 12.0, height: 1.2),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          height: 1.2,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFF0F273C),
+                          decoration: TextDecoration.none,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -96,13 +106,23 @@ class HomeScreenState extends State<HomeScreen> {
                       Text(
                         ' Begin Your Healing Journey!',
                         style: TextStyle(
-                            fontSize: 22.0, fontWeight: FontWeight.bold),
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0F273C),
+                          decoration: TextDecoration.none,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         "Engage, share, and heal. Private, one-to-one talks await at the end of each conversation.",
-                        style: TextStyle(fontSize: 12.0, height: 1.2),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          height: 1.2,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFF0F273C),
+                          decoration: TextDecoration.none,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -114,13 +134,23 @@ class HomeScreenState extends State<HomeScreen> {
                       Text(
                         'Your Privacy Matters',
                         style: TextStyle(
-                            fontSize: 22.0, fontWeight: FontWeight.bold),
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF0F273C),
+                          decoration: TextDecoration.none,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         "Share details for personalized support and guidance on your healing journey.",
-                        style: TextStyle(fontSize: 12.0, height: 1.2),
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          height: 1.2,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xFF0F273C),
+                          decoration: TextDecoration.none,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ],
