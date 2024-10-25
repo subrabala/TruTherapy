@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/screens/intro_screen.dart';
+import 'package:get/get.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -71,8 +72,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Color.fromARGB(255, 250, 221, 239),
                 ],
                 stops: [0.3, 0.9],
-                transform: GradientRotation(
-                    225 * 3.1415927 / 180), // Convert degrees to radians
+                transform: GradientRotation(225 * 3.1415927 / 180),
               ),
             ),
             child: Column(
@@ -124,7 +124,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      _isLogin ? _login() : _signup();
+                          Get.to(const IntroScreen());
+
+                      // _isLogin ? _login() : _signup();
                     },
                     style: const ButtonStyle(
                         backgroundColor:
@@ -235,6 +237,8 @@ class _AuthScreenState extends State<AuthScreen> {
   // }
 
   void _signup() {
+        Get.to(const IntroScreen());
+
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       setState(() {
         errorMsg = 'Please fill this field';
@@ -246,35 +250,20 @@ class _AuthScreenState extends State<AuthScreen> {
         errorMsg = "Passwords don't match";
       });
     }
-
-    // String apiUrl = 'https://xyz.com/signup';
-    // Map<String, String> requestBody = {
-    //   'name': _nameController.text,
-    //   'email': _emailController.text,
-    //   'password': _passwordController.text,
-    // };
-
-    // http.post(apiUrl, body: requestBody).then((response) {
-    //   // Handle response
-    // }).catchError((error) {
-    //   // Handle error
-    // });
   }
 
   void _login() {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      setState(() {
-        errorMsg = "Please fill all fields";
-      });
-    }
-    if (!_emailController.text.contains('@')) {
-      setState(() {
-        errorMsg = 'Please enter a valid email';
-      });
-    }
+    // if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    //   setState(() {
+    //     errorMsg = "Please fill all fields";
+    //   });
+    // }
+    // if (!_emailController.text.contains('@')) {
+    //   setState(() {
+    //     errorMsg = 'Please enter a valid email';
+    //   });
+    // }
 
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const IntroScreen()));
 
     // String apiUrl = 'https://xyz.com/login';
     // Map<String, String> requestBody = {
