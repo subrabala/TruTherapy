@@ -47,19 +47,19 @@ class _AuthScreenState extends State<AuthScreen> {
     return Scaffold(
       body: Column(children: [
         Expanded(
-          flex: 3,
+          flex: 7,
           child: Container(
             width: double.infinity,
             height: null,
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('assets/logo_bg.png'), fit: BoxFit.cover),
+                  image: AssetImage('assets/waves.png'), fit: BoxFit.cover),
             ),
           ),
         ),
         Expanded(
-          flex: 7,
+          flex: 3,
           child: Container(
             color: AppColors.light100,
             padding: const EdgeInsets.all(35.0),
@@ -81,10 +81,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     label: const Text(
                       'Sign in with Google',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 97, 97, 97),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600
-                      ),
+                          color: Color.fromARGB(255, 97, 97, 97),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
                     ),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -92,9 +91,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                       ),
-                     
-                      elevation:
-                          MaterialStateProperty.all<double>(0), 
+                      elevation: MaterialStateProperty.all<double>(0),
                       shadowColor: MaterialStateProperty.all<Color>(
                         const Color.fromARGB(255, 195, 140, 140),
                       ),

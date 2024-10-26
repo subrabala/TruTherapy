@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fsui/constants.dart';
 import 'package:fsui/screens/auth_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -20,7 +21,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.light100,
       body: Column(
         children: [
           Expanded(
@@ -79,6 +80,7 @@ class BuildPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
+        color: AppColors.light100,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
         child: Center(
           child: Column(
@@ -107,18 +109,14 @@ class BuildPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 40, vertical: 10),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 222, 222, 222),
-                        width: 1.0,
-                      ),
                       borderRadius: BorderRadius.circular(5.0),
+                      color: Colors.white,
                     ),
                     child: const Text(
                       'Get Started!',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        
                       ),
                     ),
                   ),
