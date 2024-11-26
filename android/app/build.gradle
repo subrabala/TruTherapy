@@ -22,6 +22,8 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+
+
 android {
     namespace "com.example.fsui"
     compileSdkVersion flutter.compileSdkVersion
@@ -52,6 +54,30 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        debug {
+            storeFile file("fsui.keystore")
+            storePassword "fsuiorg"
+            keyAlias "fsui"
+            keyPassword "fsuiorg"
+        }
+        release {
+            storeFile file("fsui.keystore")
+            storePassword "fsuiorg"
+            keyAlias "fsui"
+            keyPassword "fsuiorg"
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
@@ -67,4 +93,6 @@ flutter {
 
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
 }
+

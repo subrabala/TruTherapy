@@ -17,7 +17,14 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+      'profile',
+      'https://www.googleapis.com/auth/contacts.readonly',
+      'https://www.googleapis.com/auth/userinfo.email'
+    ],
+  );
 
   bool _isLogin = false;
 
@@ -25,7 +32,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-       color: AppColors.light100,
+        color: AppColors.light100,
         child: Column(
           children: [
             Expanded(
@@ -57,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             // Bottom section
             Expanded(
-              flex:6,
+              flex: 6,
               child: Container(
                 padding: const EdgeInsets.all(35.0),
                 decoration: const BoxDecoration(
@@ -74,9 +81,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     Text(
                       "Let's Begin",
                       style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        color: Colors.white
-                      ),
+                          fontSize: 28, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 30),
@@ -113,6 +118,40 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          _googleSignInAndSendToken();
+                        },
+                        icon: Image.asset(
+                          'assets/logo_google.png',
+                          width: 25,
+                          height: 25,
+                        ),
+                        label: const Text(
+                          'Sign in as Therapist',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 97, 97, 97),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                          elevation: MaterialStateProperty.all<double>(0),
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.symmetric(vertical: 18),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -128,37 +167,33 @@ class _AuthScreenState extends State<AuthScreen> {
       GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
-        Get.to(() => IntroScreen());
-
+        // Get.to(() => IntroScreen());
         return;
       }
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       String? idToken = googleAuth.idToken;
-      Get.to(() => IntroScreen());
 
       if (idToken != null) {
-      //   final response = await http.post(
-      //     Uri.parse('https://api.com/auth'),
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: jsonEncode({
-      //       'session': idToken,
-      //     }),
-      //   );
+        final response = await http.post(
+          Uri.parse('$backendUrl/auth/login/user'),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode({
+            'session': idToken,
+          }),
+        );
 
-      //   if (response.statusCode == 200) {
-      //     Get.to(() => IntroScreen());
-      //   } else {
-      //     print(
-      //         'Failed to send token to backend. Status code: ${response.statusCode}');
-      //   }
+        if (response.statusCode == 200) {
+          Get.to(() => IntroScreen());
+        } else {
+          print(
+              'Failed to send token to backend. Status code: ${response.statusCode}');
+        }
       } else {
         print('Failed to retrieve ID token.');
       }
     } catch (error) {
-      Get.to(() => IntroScreen());
-
       print('Error during Google sign-in: $error');
     }
   }
