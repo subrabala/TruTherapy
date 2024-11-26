@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/screens/bottom_navbar_screens/intro_screen.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,100 +17,109 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  String errText = "";
-
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   bool _isLogin = false;
-  String? errorMsg;
-
-  InputDecoration buildInputDecoration(
-      String labelText, IconData prefixIcon, String? errorMsg) {
-    return InputDecoration(
-      hintText: labelText,
-      hintStyle: const TextStyle(fontSize: 12.0, color: Colors.black),
-      prefixIcon: Icon(prefixIcon,
-          color: const Color.fromARGB(255, 90, 156, 130), size: 18.0),
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(
-            color: Color.fromARGB(255, 90, 156, 130),
-            strokeAlign: BorderSide.strokeAlignCenter),
-      ),
-      enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Color.fromARGB(255, 90, 156, 130))),
-      isDense: true,
-      contentPadding: const EdgeInsets.symmetric(vertical: 16.0),
-      errorText: errorMsg,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        Expanded(
-          flex: 7,
-          child: Container(
-            width: double.infinity,
-            height: null,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/waves.png'), fit: BoxFit.cover),
+      body: Container(
+       color: AppColors.light100,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        'assets/fsui.png',
+                        width: 100,
+                        height: 100,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    const Text(
+                      "FSUI Sea Call",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w600),
+                    )
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-        Expanded(
-          flex: 3,
-          child: Container(
-            color: AppColors.light100,
-            padding: const EdgeInsets.all(35.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Get.to(() => IntroScreen());
-                      // _googleSignInAndSendToken();
-                    },
-                    icon: Image.asset(
-                      'assets/logo_google.png',
-                      width: 25,
-                      height: 25,
-                    ),
-                    label: const Text(
-                      'Sign in with Google',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 97, 97, 97),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
-                      elevation: MaterialStateProperty.all<double>(0),
-                      shadowColor: MaterialStateProperty.all<Color>(
-                        const Color.fromARGB(255, 195, 140, 140),
-                      ),
-                      overlayColor: MaterialStateProperty.all<Color>(
-                        const Color.fromARGB(255, 255, 255, 255),
-                      ),
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                        const EdgeInsets.symmetric(vertical: 18),
-                      ),
-                    ),
+            // Bottom section
+            Expanded(
+              flex:6,
+              child: Container(
+                padding: const EdgeInsets.all(35.0),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF00334E),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
                   ),
                 ),
-              ],
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Let's Begin",
+                      style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        color: Colors.white
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          _googleSignInAndSendToken();
+                        },
+                        icon: Image.asset(
+                          'assets/logo_google.png',
+                          width: 25,
+                          height: 25,
+                        ),
+                        label: const Text(
+                          'Sign in with Google',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 97, 97, 97),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                          elevation: MaterialStateProperty.all<double>(0),
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                            const EdgeInsets.symmetric(vertical: 18),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-      ]),
+      ),
     );
   }
 
@@ -117,32 +128,37 @@ class _AuthScreenState extends State<AuthScreen> {
       GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
+        Get.to(() => IntroScreen());
+
         return;
       }
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       String? idToken = googleAuth.idToken;
+      Get.to(() => IntroScreen());
 
       if (idToken != null) {
-        final response = await http.post(
-          Uri.parse('https://api.com/auth'),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode({
-            'session': idToken,
-          }),
-        );
+      //   final response = await http.post(
+      //     Uri.parse('https://api.com/auth'),
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: jsonEncode({
+      //       'session': idToken,
+      //     }),
+      //   );
 
-        if (response.statusCode == 200) {
-          Get.to(() => IntroScreen());
-        } else {
-          print(
-              'Failed to send token to backend. Status code: ${response.statusCode}');
-        }
+      //   if (response.statusCode == 200) {
+      //     Get.to(() => IntroScreen());
+      //   } else {
+      //     print(
+      //         'Failed to send token to backend. Status code: ${response.statusCode}');
+      //   }
       } else {
         print('Failed to retrieve ID token.');
       }
     } catch (error) {
+      Get.to(() => IntroScreen());
+
       print('Error during Google sign-in: $error');
     }
   }

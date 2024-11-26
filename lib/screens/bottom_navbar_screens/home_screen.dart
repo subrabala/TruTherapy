@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:fsui/constants.dart'; 
+import 'package:fsui/constants.dart';
+import 'package:fsui/widgets/blog_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,15 +14,16 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(),
         body: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.all(20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(15)),
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.dark800,
+                      Color.fromARGB(174, 23, 167, 199).withOpacity(0.4),
                       AppColors.light100,
                     ],
                     begin: Alignment.centerRight,
@@ -26,12 +31,13 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Welcome Back!',
+                      'Welcome Back, Alice',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w600,
@@ -48,7 +54,40 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const Text(
+                "How would you describe your mood?",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 10),
+Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            // Happy box
+            _MoodBox(
+              emoji : ":)",
+              label: "Happy",
+              color: Colors.greenAccent.withOpacity(0.3), 
+            ),
+            // Sad box
+            _MoodBox(
+              emoji : ":(",
+              label: "Sad",
+              color: Colors.blueAccent.withOpacity(0.3), 
+            ),
+            // Angry box
+            _MoodBox(
+              emoji : ":/",
+              label: "Angry",
+              color: Colors.redAccent.withOpacity(0.3), 
+            ),
+          ],
+        ),
+              const SizedBox(height: 20),
+              const Text(
                 'Try these!',
+                textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w600,
@@ -62,38 +101,13 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Expanded(
                 child: ListView(
-                  children: [
-                    _buildBlogCard(
-                      imageUrl: 'https://via.placeholder.com/300x200.png?text=Blog+1',
-                      title: 'How to Stay Positive',
-                      subtitle: 'Tips and tricks for a positive mindset.',
-                    ),
-                    _buildBlogCard(
-                      imageUrl: 'https://via.placeholder.com/300x200.png?text=Blog+2',
-                      title: 'The Benefits of Meditation',
-                      subtitle: 'Why you should start meditating today.',
-                    ),
-                    _buildBlogCard(
-                      imageUrl: 'https://via.placeholder.com/300x200.png?text=Blog+3',
-                      title: 'Healthy Eating Habits',
-                      subtitle: 'Simple changes for a healthier diet.',
-                    ),
-                    _buildBlogCard(
-                      imageUrl: 'https://via.placeholder.com/300x200.png?text=Blog+4',
-                      title: 'Exercise for Mental Health',
-                      subtitle: 'How exercise can improve your mood.',
-                    ),
-                    _buildBlogCard(
-                      imageUrl: 'https://via.placeholder.com/300x200.png?text=Blog+5',
-                      title: 'Finding Your Passion',
-                      subtitle: 'Discover what makes you happy.',
-                    ),
-                    _buildBlogCard(
-                      imageUrl: 'https://via.placeholder.com/300x200.png?text=Blog+6',
-                      title: 'Connecting with Nature',
-                      subtitle: 'The importance of outdoor activities.',
-                    ),
-                  ],
+                  children: jsonData.map<Widget>((blog) {
+                    return BlogCard(
+                      imageUrl: blog['imageUrl'] ?? "",
+                      title: blog['title'] ?? "",
+                      subtitle: blog['subtitle'] ?? "",
+                    );
+                  }).toList(),
                 ),
               ),
             ],
@@ -102,64 +116,38 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildBlogCard({
-    required String imageUrl,
-    required String title,
-    required String subtitle,
-  }) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+
+class _MoodBox extends StatelessWidget {
+  final String emoji;
+  final String label;
+  final Color color;
+
+  const _MoodBox({
+    Key? key,
+    required this.emoji,
+    required this.label,
+    required this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100, 
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: color, 
+        borderRadius: BorderRadius.circular(10),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Stack(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.network(
-              imageUrl,
-              width: double.infinity,
-              height: 150,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              gradient: LinearGradient(
-                colors: [
-                  Colors.transparent,
-                  AppColors.light100.withOpacity(0.9),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 10,
-            left: 10,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
-                  ),
-                ),
-              ],
-            ),
+          Text(emoji, style: TextStyle(fontSize: 24),),
+          const SizedBox(height: 5), 
+          Text(
+            label,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
         ],
       ),

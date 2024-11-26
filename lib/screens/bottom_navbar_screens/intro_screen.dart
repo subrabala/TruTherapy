@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/screens/bottom_navbar_screens/aibot_screen.dart';
 import 'package:fsui/screens/bottom_navbar_screens/chatbot_screen.dart';
 import 'package:fsui/screens/bottom_navbar_screens/home_screen.dart';
+import 'package:fsui/screens/bottom_navbar_screens/profile_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -15,9 +17,9 @@ class _IntroScreenState extends State<IntroScreen> {
 
   final List<Widget> _screens = [
     HomeScreen(),
-    ChatBotScreen()
-    // NotificationsScreen(),
-    // ProfileScreen(),
+    // ChatBotScreen(),
+    AIBotScreen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

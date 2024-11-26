@@ -42,7 +42,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     isLastScreen: false),
                 BuildPage(
                     jsonPath:
-                        'https://lottie.host/1e8bac7a-0070-4007-b3c7-c6163dd5b3a2/gPEg7RqHdI.json',
+                        'https://lottie.host/264d05ad-e788-4b70-aa39-b2a038fd0737/PqFZaU5km3.json',
                     text:
                         'Your Privacy Matters\n\nShare details for personalized support and guidance on your healing journey.',
                     isLastScreen: true),
