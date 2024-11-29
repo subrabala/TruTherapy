@@ -24,6 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
       'https://www.googleapis.com/auth/contacts.readonly',
       'https://www.googleapis.com/auth/userinfo.email'
     ],
+    
   );
 
   bool _isLogin = false;
@@ -175,9 +176,9 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (idToken != null) {
         final response = await http.post(
-          Uri.parse('$backendUrl/auth/login/user'),
+          Uri.parse('$backendUrl/auth/app/jwt/user'),
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: jsonEncode({
             'session': idToken,

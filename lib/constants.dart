@@ -7,7 +7,7 @@ class AppColors {
   static const Color lightYellow = Color(0xFFFCEFB4); // light yellow
 }
 
-String backendUrl = 'https://backend.fsui.org/api/v1';
+String backendUrl = 'http://backend.fsui.org/api/v1';
 
 const jsonData = [
   {
