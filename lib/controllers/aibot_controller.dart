@@ -40,4 +40,28 @@ class AIBotController extends GetxController {
     final random = Random();
     return responses[random.nextInt(responses.length)];
   }
+
+  List<Map<String, dynamic>> getChatMetadata() {
+  return [
+    {
+      'id': '1',
+      'heading': 'Chat with Support Bot for salary',
+      'date': '01 Dec', // Changed date format
+      'lastMessage': 'can you help me with my salary query?'
+    },
+    {
+      'id': '2',
+      'heading': 'I\'ve been feeling low lately',
+      'date': '02 Dec', // Changed date format
+      'lastMessage': "I'm not sure what's wrong with me"
+    },
+    {
+      'id': '3',
+      'heading': 'General Inquiry about the Chatbot\'s capabilities',
+      'date': '03 Dec', // Changed date format
+      'lastMessage': 'What can you do?'
+    }
+  ];
+}
+
 }

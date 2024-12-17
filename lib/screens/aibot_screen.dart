@@ -5,8 +5,9 @@ import 'package:get/get.dart';
 class AIBotScreen extends StatelessWidget {
   final AIBotController controller = Get.put(AIBotController());
   final TextEditingController queryController = TextEditingController();
+ final String chatId;
 
-  AIBotScreen({super.key});
+  AIBotScreen({Key? key, required this.chatId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class AIBotScreen extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: "Type your message...",
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
+                        borderRadius: BorderRadius.circular(20.0),
                       
                       ),
                     ),

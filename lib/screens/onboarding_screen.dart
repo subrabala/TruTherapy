@@ -29,23 +29,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               controller: _controller,
               children: const [
                 BuildPage(
-                    jsonPath:
-                        'https://lottie.host/264d05ad-e788-4b70-aa39-b2a038fd0737/PqFZaU5km3.json',
-                    text:
-                        'Embrace Our Warm Welcome!\n\nIt\'s okay to feel here. You\'re not alone. Let\'s navigate anxiety and depression together.',
-                    isLastScreen: false),
+                  jsonPath: 'assets/onboard1.jpg',
+                  heading: 'Embrace Our Warm Welcome!',
+                  subheading: 'It\'s okay to feel here. You\'re not alone. Let\'s navigate anxiety and depression together.',
+                  isLastScreen: false,
+                ),
                 BuildPage(
-                    jsonPath:
-                        'https://lottie.host/1e8bac7a-0070-4007-b3c7-c6163dd5b3a2/gPEg7RqHdI.json',
-                    text:
-                        'Begin Your Healing Journey!\n\nEngage, share, and heal. Private, one-to-one talks await at the end of each conversation.',
-                    isLastScreen: false),
+                  jsonPath: 'assets/onboard2.png',
+                  heading: 'Begin Your Healing Journey!',
+                  subheading: 'Engage, share, and heal. Private, one-to-one talks await at the end of each conversation.',
+                  isLastScreen: false,
+                ),
                 BuildPage(
-                    jsonPath:
-                        'https://lottie.host/264d05ad-e788-4b70-aa39-b2a038fd0737/PqFZaU5km3.json',
-                    text:
-                        'Your Privacy Matters\n\nShare details for personalized support and guidance on your healing journey.',
-                    isLastScreen: true),
+                  jsonPath: 'assets/onboard3.png',
+                  heading: 'Your Privacy Matters',
+                  subheading: 'Share details for personalized support and guidance on your healing journey.',
+                  isLastScreen: true,
+                ),
               ],
             ),
           ),
@@ -66,65 +66,101 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class BuildPage extends StatelessWidget {
-  const BuildPage(
-      {super.key,
-      required this.jsonPath,
-      required this.text,
-      required this.isLastScreen});
+  const BuildPage({
+    super.key,
+    required this.jsonPath,
+    required this.heading,  // Added field for heading
+    required this.subheading,  // Added field for subheading
+    required this.isLastScreen,
+  });
 
   final String jsonPath;
-  final String text;
+  final String heading;  // Heading text
+  final String subheading;  // Subheading text
   final bool isLastScreen;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
+    return Container(
+      decoration: BoxDecoration(
         color: AppColors.light100,
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Lottie.network(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start, // Align at the top
+        children: [
+          if (jsonPath.endsWith('.json'))
+            Lottie.network(
+              jsonPath,
+              height: MediaQuery.of(context).size.height * 0.6, // Adjust the height
+              fit: BoxFit.cover,
+            )
+          else
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+              child: Image.asset(
+                height: MediaQuery.of(context).size.height * 0.6,
                 jsonPath,
-                height: 300,
+                width: double.infinity, // Make the image take all available width
+                fit: BoxFit.cover, // Ensure the image maintains its aspect ratio while covering the area
               ),
-              const SizedBox(height: 40),
-              Text(
-                text,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+            ),
+          const SizedBox(height: 40),
+          // Apply horizontal padding to all content below the image
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                Text(
+                  heading,  // Display heading text
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 20,  // Larger font for the heading
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 40),
-              if (isLastScreen)
-                GestureDetector(
-                  onTap: () {
-                    Get.to(const AuthScreen());
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: Colors.white,
-                    ),
-                    child: const Text(
-                      'Get Started!',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                const SizedBox(height: 20),
+                Text(
+                  subheading,  // Display subheading text
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,  // Slightly smaller for the subheading
+                    fontWeight: FontWeight.normal,  // Regular font weight for subheading
+                  ),
+                ),
+                const SizedBox(height: 40),
+                if (isLastScreen)
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(const AuthScreen());
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5.0),
+                        color: Colors.white,
+                      ),
+                      child: const Text(
+                        'Get Started!',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 }
+

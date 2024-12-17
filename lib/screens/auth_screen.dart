@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/screens/bottom_navbar_screens/intro_screen.dart';
+import 'package:fsui/screens/therapist_screens/intro_screen.dart';
+import 'package:fsui/screens/user_screens/intro_screen.dart' as user;
+import 'package:fsui/screens/user_screens/user_details_screen.dart';
+import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -24,7 +26,6 @@ class _AuthScreenState extends State<AuthScreen> {
       'https://www.googleapis.com/auth/contacts.readonly',
       'https://www.googleapis.com/auth/userinfo.email'
     ],
-    
   );
 
   bool _isLogin = false;
@@ -75,17 +76,22 @@ class _AuthScreenState extends State<AuthScreen> {
                     topRight: Radius.circular(30.0),
                   ),
                 ),
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                   const SizedBox(
+                      height: 60,
+                      
+                    ),
                     Text(
                       "Let's Begin",
                       style: GoogleFonts.poppins(
                           fontSize: 28, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 42),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
@@ -119,12 +125,12 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 40),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          _googleSignInAndSendToken();
+                          Get.to(IntroScreen());
                         },
                         icon: Image.asset(
                           'assets/logo_google.png',
@@ -134,16 +140,22 @@ class _AuthScreenState extends State<AuthScreen> {
                         label: const Text(
                           'Sign in as Therapist',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 97, 97, 97),
+                            color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.transparent),
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6),
+                              side: const BorderSide(
+                                color: Colors.white,
+                                width: 2,
+                              ),
                             ),
                           ),
                           elevation: MaterialStateProperty.all<double>(0),
@@ -168,12 +180,14 @@ class _AuthScreenState extends State<AuthScreen> {
       GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
-        // Get.to(() => IntroScreen());
         return;
       }
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       String? idToken = googleAuth.idToken;
 
+      Get.to(() => user.IntroScreen());
+
+      // Get.to(() => UserDetailsScreen());
       if (idToken != null) {
         final response = await http.post(
           Uri.parse('$backendUrl/auth/app/jwt/user'),
@@ -184,18 +198,25 @@ class _AuthScreenState extends State<AuthScreen> {
             'session': idToken,
           }),
         );
+        print(response.toString());
 
         if (response.statusCode == 200) {
-          Get.to(() => IntroScreen());
+          final jwt = jsonDecode(response.body)['jwt'];
+          await setJwt(jwt);
+          Get.to(()=> UserDetailsScreen());
         } else {
           print(
               'Failed to send token to backend. Status code: ${response.statusCode}');
+
         }
       } else {
         print('Failed to retrieve ID token.');
       }
     } catch (error) {
-      print('Error during Google sign-in: $error');
+      print('Error Google sign-in: $error');
     }
   }
 }
+
+
+
