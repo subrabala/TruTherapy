@@ -17,18 +17,24 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              RichText(
-                text: const TextSpan(
-                  text: 'Welcome back , ',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 1.3,
-                    color: Colors.black,
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/fsui_minimal.png',
+                    height: 30,
                   ),
-                 
-                ),
+                  SizedBox(width: 10),
+                  const Text(
+                    'Welcome back , ',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w500,
+                      height: 1.3,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               Container(

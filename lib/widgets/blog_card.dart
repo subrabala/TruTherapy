@@ -16,11 +16,11 @@ class BlogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.light100.withOpacity(0.5),
+      color: AppColors.light100.withOpacity(0.3),
       elevation: 0,
       borderOnForeground: false,
-      shadowColor: AppColors.light100,
-      surfaceTintColor: AppColors.light100,
+      shadowColor: AppColors.light100.withOpacity(0.5),
+      surfaceTintColor: AppColors.light100.withOpacity(0.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),

@@ -21,5 +21,5 @@ Future<bool> checkIfFirstRun() async {
 }
 
 bool checkIfLoggedIn() {
-  return true;
+  return false;
 }
