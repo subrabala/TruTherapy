@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/screens/auth_screen.dart';
-import 'package:fsui/screens/user_screens/user_details_screen.dart';
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -13,13 +12,13 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
                 automaticallyImplyLeading: false,
         title: const Text(
-          'Profile',
-          style: TextStyle(color: Colors.white),
+          'Your Profile',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: AppColors.dark800,
+        backgroundColor: Colors.transparent,
         actions: [
     PopupMenuButton<int>(
-      icon: const Icon(Icons.more_vert, color: Colors.white),
+      icon: const Icon(Icons.more_vert, color: Colors.black),
       onSelected: (value) {
         if (value == 1) {
           Get.to(()=>AuthScreen());

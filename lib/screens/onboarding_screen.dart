@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/screens/auth_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -69,14 +66,14 @@ class BuildPage extends StatelessWidget {
   const BuildPage({
     super.key,
     required this.jsonPath,
-    required this.heading,  // Added field for heading
-    required this.subheading,  // Added field for subheading
+    required this.heading,  
+    required this.subheading, 
     required this.isLastScreen,
   });
 
   final String jsonPath;
-  final String heading;  // Heading text
-  final String subheading;  // Subheading text
+  final String heading;  
+  final String subheading;  
   final bool isLastScreen;
 
   @override
@@ -90,12 +87,12 @@ class BuildPage extends StatelessWidget {
         ),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start, // Align at the top
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (jsonPath.endsWith('.json'))
             Lottie.network(
               jsonPath,
-              height: MediaQuery.of(context).size.height * 0.6, // Adjust the height
+              height: MediaQuery.of(context).size.height * 0.6, 
               fit: BoxFit.cover,
             )
           else
@@ -107,31 +104,30 @@ class BuildPage extends StatelessWidget {
               child: Image.asset(
                 height: MediaQuery.of(context).size.height * 0.6,
                 jsonPath,
-                width: double.infinity, // Make the image take all available width
-                fit: BoxFit.cover, // Ensure the image maintains its aspect ratio while covering the area
+                width: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
           const SizedBox(height: 40),
-          // Apply horizontal padding to all content below the image
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: [
                 Text(
-                  heading,  // Display heading text
+                  heading,  
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 20,  // Larger font for the heading
+                    fontSize: 20, 
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  subheading,  // Display subheading text
+                  subheading, 
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 16,  // Slightly smaller for the subheading
-                    fontWeight: FontWeight.normal,  // Regular font weight for subheading
+                    fontSize: 16, 
+                    fontWeight: FontWeight.normal, 
                   ),
                 ),
                 const SizedBox(height: 40),

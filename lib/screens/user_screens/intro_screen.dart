@@ -36,14 +36,14 @@ class _IntroScreenState extends State<IntroScreen> {
       child: Scaffold(
         body: _screens[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: AppColors.light100,
+          backgroundColor: const Color.fromARGB(255, 208, 238, 254),
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 height: 28,
                 'assets/icons/home.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 0 ? AppColors.dark800 : AppColors.mid,
+                  _selectedIndex == 0 ? AppColors.dark800 : PastelColors.seaBlueDark,
                   BlendMode.srcIn,
                 ),
               ),
@@ -54,7 +54,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: 26,
                 'assets/icons/chat.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 1 ? AppColors.dark800 : AppColors.mid,
+                  _selectedIndex == 1 ? AppColors.dark800 : PastelColors.seaBlueDark,
                   BlendMode.srcIn,
                 ),
               ),
@@ -65,7 +65,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: 24,
                 'assets/icons/profile.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 2 ? AppColors.dark800 : AppColors.mid,
+                  _selectedIndex == 2 ? AppColors.dark800 : PastelColors.seaBlueDark,
                   BlendMode.srcIn,
                 ),
               ),
