@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/utils.dart';
 
 class BlogCard extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String subtitle;
+  final String url;
 
   const BlogCard({
     Key? key,
     required this.imageUrl,
     required this.title,
     required this.subtitle,
+    required this.url,
   }) : super(key: key);
 
   @override
@@ -76,7 +79,7 @@ class BlogCard extends StatelessWidget {
             icon: const Icon(Icons.arrow_outward, color: AppColors.mid),
             iconSize: 20,
             onPressed: () {
-              
+            openYouTubeInPiPMode( url);
             },
           ),
         ],

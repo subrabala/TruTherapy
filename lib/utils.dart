@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<void> setJwt(String jwt) async {
   final prefs = await SharedPreferences.getInstance();
@@ -23,3 +24,12 @@ Future<bool> checkIfFirstRun() async {
 bool checkIfLoggedIn() {
   return false;
 }
+
+  Future<void> openYouTubeInPiPMode(String youtubeUrl) async {
+    final Uri url = Uri.parse(youtubeUrl);
+    if (await canLaunchUrl(url)) { 
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not open the URL.';
+    }
+  }

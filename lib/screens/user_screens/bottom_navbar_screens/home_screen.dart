@@ -38,12 +38,11 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Container(
-                decoration: BoxDecoration(
+                decoration:const BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                   gradient: LinearGradient(
                     colors: [
-                      // Color(0xFFC0FEFC).withOpacity(0.4),
-                      PastelColors.pastelPink.withOpacity(0.5),
+                      PastelColors.seaBlue,
                       AppColors.light100,
                     ],
                     begin: Alignment.centerRight,
@@ -84,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                         _MoodBox(
                           emoji: ":/",
                           label: "Angry",
-                          color: Colors.redAccent.withOpacity(0.3),
+                          color: const Color.fromARGB(255, 244, 141, 141).withOpacity(0.4),
                         ),
                       ],
                     ),
@@ -113,6 +112,7 @@ class HomeScreen extends StatelessWidget {
                       imageUrl: blog['imageUrl'] ?? "",
                       title: blog['title'] ?? "",
                       subtitle: blog['subtitle'] ?? "",
+                      url: blog['url'] ?? "",
                     );
                   }).toList(),
                 ),
@@ -141,7 +141,7 @@ class _MoodBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Get.to(() => AIBotScreen(chatId:label));
+        Get.to(() => AIBotScreen(chatId:label));
       },
       child: Container(
           width: 100,
@@ -154,19 +154,20 @@ class _MoodBox extends StatelessWidget {
             children: [
               Text(
                 emoji,
-                style: const TextStyle(fontSize: 26, color: Colors.black87),
+                style: const TextStyle(fontSize: 20, color: Colors.black54),
               ),
               const SizedBox(height: 5),
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Color.alphaBlend(
-                            color.withOpacity(0.8),
+                  fontSize: 14,
+                  color: 
+                  Color.alphaBlend(
+                            color,
                             color,
                           ).computeLuminance() >
                           0.5
-                      ? Color.fromARGB(255, 231, 215, 68).withOpacity(1)
+                      ? Color.fromARGB(255, 210, 192, 33).withOpacity(1)
                       : Color.alphaBlend(color.withOpacity(0.8), color),
                 ),
               )

@@ -31,36 +31,35 @@ const jsonData = [
     "imageUrl":
         "assets/dummy/yoga1.jpeg",
     "title": "How to Stay Positive",
-    "subtitle": "Tips and tricks for a positive mindset."
+    "subtitle": "Tips and tricks for a positive mindset.",
+    "link" : "https://www.youtube.com/watch?v=vM2dC8OCZoY"    
   },
   {
     "imageUrl":
         "assets/dummy/yoga2.jpeg",
     "title": "The Benefits of Meditation",
-    "subtitle": "Why you should start meditating today."
+    "subtitle": "Why you should start meditating today.",
+    "link" : "https://www.youtube.com/watch?v=3nwwKbM_vJc"
   },
   {
     "imageUrl":
         "assets/dummy/yoga3.jpeg",
     "title": "Healthy Eating Habits",
-    "subtitle": "Simple changes for a healthier diet."
+    "subtitle": "Simple changes for a healthier diet.",
+    "link" : "https://www.youtube.com/watch?v=3nwwKbM_vJc"
   },
   {
     "imageUrl":
         "assets/dummy/yoga4.jpeg",
     "title": "Exercise for Mental Health",
-    "subtitle": "How exercise can improve your mood."
+    "subtitle": "How exercise can improve your mood.",
+    "link" : "https://www.youtube.com/watch?v=3nwwKbM_vJc"
   },
   {
     "imageUrl":
         "assets/dummy/yoga1.jpeg",
     "title": "Finding Your Passion",
-    "subtitle": "Discover what makes you happy."
+    "subtitle": "Discover what makes you happy.",
+    "link" : "https://www.youtube.com/watch?v=3nwwKbM_vJc"
   },
-  {
-    "imageUrl":
-        "assets/dummy/yoga2.jpeg",
-    "title": "Connecting with Nature",
-    "subtitle": "The importance of outdoor activities."
-  }
 ];
