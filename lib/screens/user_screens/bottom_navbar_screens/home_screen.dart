@@ -19,26 +19,15 @@ class HomeScreen extends StatelessWidget {
             children: [
               RichText(
                 text: const TextSpan(
-                  text: 'Hello, \n',
+                  text: 'Welcome back , ',
                   style: TextStyle(
-                    fontSize: 22,
+                    fontSize: 18,
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w400,
-                    height: 1.5,
+                    height: 1.3,
                     color: Colors.black,
                   ),
-                  children: [
-                    TextSpan(
-                      text: 'Alice',
-                      style: TextStyle(
-                        fontSize: 38,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        height: 1.6,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
+                 
                 ),
               ),
               const SizedBox(height: 20),
@@ -47,7 +36,8 @@ class HomeScreen extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                   gradient: LinearGradient(
                     colors: [
-                      Color(0xFFC0FEFC).withOpacity(0.4),
+                      // Color(0xFFC0FEFC).withOpacity(0.4),
+                      PastelColors.pastelPink.withOpacity(0.5),
                       AppColors.light100,
                     ],
                     begin: Alignment.centerRight,
@@ -100,14 +90,14 @@ class HomeScreen extends StatelessWidget {
                 'Try these!',
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  fontSize: 22,
+                  fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 5),
               const Text(
                 'Yoga videos to make you smile from inside!',
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+                style: TextStyle(fontSize: 14, color: Colors.black54),
               ),
               const SizedBox(height: 20),
               Expanded(
@@ -145,7 +135,7 @@ class _MoodBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => AIBotScreen(chatId:label));
+        // Get.to(() => AIBotScreen(chatId:label));
       },
       child: Container(
           width: 100,

@@ -40,7 +40,7 @@ class BlogCard extends StatelessWidget {
                 child: Image.asset(    
                   imageUrl,            
                   fit: BoxFit.cover,
-                  height: 110, 
+                  height: 90, 
                 ),
               ),
             ),
@@ -48,16 +48,16 @@ class BlogCard extends StatelessWidget {
           Expanded(
             flex: 2, 
             child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 10),
+                padding: const EdgeInsets.only(left: 15, right: 5, top: 5, bottom: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style:  TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.dark800,
+                      color: AppColors.dark800.withOpacity(0.8),
                     ),
                   ),
                   const SizedBox(height: 5), 
