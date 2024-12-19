@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/utils.dart';
+import 'package:fsui/webview.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class BlogCard extends StatelessWidget {
   final String imageUrl;
@@ -79,7 +82,7 @@ class BlogCard extends StatelessWidget {
             icon: const Icon(Icons.arrow_outward, color: AppColors.mid),
             iconSize: 20,
             onPressed: () {
-            openYouTubeInPiPMode( url);
+              Get.to(() => WebViewPage(url: url));
             },
           ),
         ],

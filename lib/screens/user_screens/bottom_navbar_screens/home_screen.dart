@@ -112,7 +112,7 @@ class HomeScreen extends StatelessWidget {
                       imageUrl: blog['imageUrl'] ?? "",
                       title: blog['title'] ?? "",
                       subtitle: blog['subtitle'] ?? "",
-                      url: blog['url'] ?? "",
+                      url: blog['link'] ?? "",
                     );
                   }).toList(),
                 ),

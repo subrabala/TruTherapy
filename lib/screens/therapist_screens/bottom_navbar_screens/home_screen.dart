@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/video_controller.dart';
-import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/video_details_screen.dart';
+import 'package:fsui/webview.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading : false,
-        title: const Text("Manage Videos"),
+        title: const Text("Manage Blogs", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -35,19 +36,21 @@ class HomeScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final video = videoController.videos[index];
               return Card(
+                color: PastelColors.seaBlue.withOpacity(0.5),
+                elevation: 0,
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
-                  leading: Icon(Icons.video_library, color: Colors.blue.shade400),
+                  leading: Icon(Icons.play_circle_outline_outlined, color: Colors.blue.shade400),
                   title: Text(video.heading),
                   subtitle: Text(video.description),
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
+                    icon:  Icon(Icons.delete, color: Colors.red[200]),
                     onPressed: () {
                       videoController.deleteVideo(video.id);
                     },
                   ),
                   onTap: () {
-                    Get.to(() => VideoDetailScreen(video: video));
+                     Get.to(() => WebViewPage(url: "https://www.youtube.com/watch?v=vM2dC8OCZoY"));
                   },
                 ),
               );
@@ -61,19 +64,19 @@ void _showAddVideoDialog(BuildContext context) {
   final headingController = TextEditingController();
   final descriptionController = TextEditingController();
   final urlController = TextEditingController();
-  final formKey = GlobalKey<FormState>(); // For validation
+  final formKey = GlobalKey<FormState>(); 
 
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4), // Rounded corners
+          borderRadius: BorderRadius.circular(4), 
         ),
         title: const Text("Add New Video"),
         content: Container(
-          width: 450, // Custom width
-          height: 300, // Custom height
+          width: 450, 
+          height: 300,
           child: SingleChildScrollView(
             child: Form(
               key: formKey,
@@ -83,7 +86,7 @@ void _showAddVideoDialog(BuildContext context) {
                   TextFormField(
                     controller: headingController,
                     decoration: const InputDecoration(labelText: "Heading", labelStyle: TextStyle(fontSize: 12)),
-                    maxLength: 30, // Restrict input length
+                    maxLength: 30,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Heading cannot be empty";
@@ -105,8 +108,8 @@ void _showAddVideoDialog(BuildContext context) {
                     controller: urlController,
                     decoration: const InputDecoration(labelText: "Video URL or File Path", labelStyle: TextStyle(fontSize: 12)),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Video URL cannot be empty";
+                      if (value == null || value.isEmpty || !value.contains("https://")) {
+                        return "Invalid video URL";
                       }
                       return null;
                     },
@@ -125,7 +128,7 @@ void _showAddVideoDialog(BuildContext context) {
           ),
           ElevatedButton(
             onPressed: () {
-              if (formKey.currentState!.validate()) { // Check validation
+              if (formKey.currentState!.validate()) { 
                 videoController.addVideo(
                   headingController.text,
                   descriptionController.text,

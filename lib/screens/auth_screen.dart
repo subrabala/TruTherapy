@@ -214,9 +214,9 @@ class _AuthScreenState extends State<AuthScreen> {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       String? idToken = googleAuth.idToken;
 
-      Get.to(() => user.IntroScreen());
+      // Get.to(() => user.IntroScreen());
 
-      // Get.to(() => UserDetailsScreen());
+      Get.to(() => UserDetailsScreen());
       if (idToken != null) {
         final response = await http.post(
           Uri.parse('$backendUrl/auth/app/jwt/user'),

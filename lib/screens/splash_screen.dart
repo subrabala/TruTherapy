@@ -28,7 +28,7 @@ class SplashScreen extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       child: SvgPicture.asset(
-        'assets/splash.svg',
+        'assets/fsui_splash.svg',
         fit: BoxFit.fill,
       ),
     );

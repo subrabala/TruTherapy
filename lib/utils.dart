@@ -25,11 +25,23 @@ bool checkIfLoggedIn() {
   return false;
 }
 
-  Future<void> openYouTubeInPiPMode(String youtubeUrl) async {
-    final Uri url = Uri.parse(youtubeUrl);
-    if (await canLaunchUrl(url)) { 
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      throw 'Could not open the URL.';
+Future<void> openYouTubeInPiPMode(String youtubeUrl) async {
+  final Uri url = Uri.parse(youtubeUrl);
+
+  print('Opening $url in PiP mode');
+
+  if (await canLaunchUrl(url)) {
+    try {
+      await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (e) {
+      print("Error while launching URL: $e");
+      throw 'Could not open the URL: $e';
     }
+  } else {
+    print("Cannot launch the URL: $youtubeUrl");
+    throw 'Could not open the URL.';
   }
+}
