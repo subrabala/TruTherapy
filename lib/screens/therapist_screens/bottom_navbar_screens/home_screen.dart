@@ -10,6 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading : false,
         title: const Text("Manage Videos"),
         actions: [
           IconButton(
@@ -56,57 +57,90 @@ class HomeScreen extends StatelessWidget {
       }),
     );
   }
+void _showAddVideoDialog(BuildContext context) {
+  final headingController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final urlController = TextEditingController();
+  final formKey = GlobalKey<FormState>(); // For validation
 
-  void _showAddVideoDialog(BuildContext context) {
-    final headingController = TextEditingController();
-    final descriptionController = TextEditingController();
-    final urlController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Add New Video"),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: headingController,
-                  decoration: const InputDecoration(labelText: "Heading"),
-                ),
-                TextField(
-                  controller: descriptionController,
-                  decoration: const InputDecoration(labelText: "Description"),
-                ),
-                TextField(
-                  controller: urlController,
-                  decoration: const InputDecoration(labelText: "Video URL or File Path"),
-                ),
-              ],
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4), // Rounded corners
+        ),
+        title: const Text("Add New Video"),
+        content: Container(
+          width: 450, // Custom width
+          height: 300, // Custom height
+          child: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: headingController,
+                    decoration: const InputDecoration(labelText: "Heading", labelStyle: TextStyle(fontSize: 12)),
+                    maxLength: 30, // Restrict input length
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Heading cannot be empty";
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: descriptionController,
+                    decoration: const InputDecoration(labelText: "Description",labelStyle: TextStyle(fontSize: 12)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Description cannot be empty";
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: urlController,
+                    decoration: const InputDecoration(labelText: "Video URL or File Path", labelStyle: TextStyle(fontSize: 12)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Video URL cannot be empty";
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () {
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+                Get.back();
+            },
+            child:  Text("Cancel", style: TextStyle(color: Colors.red[800]),),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) { // Check validation
                 videoController.addVideo(
                   headingController.text,
                   descriptionController.text,
                   urlController.text,
                 );
-                Navigator.pop(context);
-              },
-              child: const Text("Add"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+                Get.back();
+              }
+            },
+            child: const Text("Add"),
+          ),
+        ],
+      );
+    },
+  );
+
+}
+
 }

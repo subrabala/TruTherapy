@@ -301,19 +301,6 @@ class UserDetailsScreen extends StatelessWidget {
   }
 }
 
-extension PastelColors on Colors {
-  static const Color seaBlue = Color.fromARGB(255, 178, 217, 241);
-  static const Color seaBlueDark = Color.fromARGB(255, 90, 173, 221);
-
-  static const Color pastelPink = Color(0xFFF9CCE4);
-  static const Color pastelPinkDark = Color.fromARGB(255, 214, 115, 168);
-
-  static const Color deepSeaBlue = Color(0xFFDCCCE7);
-  static const Color deepSeaBlueDark = Color.fromARGB(255, 156, 97, 195);
-
-  static const Color skyBlue = Color(0xFFBCE6FF);
-  static const Color skyBlueDark = Color.fromARGB(255, 53, 124, 164);
-}
 
 
 class UserDetails {
