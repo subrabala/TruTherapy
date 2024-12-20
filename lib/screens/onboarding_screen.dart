@@ -134,7 +134,7 @@ class BuildPage extends StatelessWidget {
                 if (isLastScreen)
                   GestureDetector(
                     onTap: () {
-                      Get.to(const AuthScreen());
+                      Get.to(AuthScreen());
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),

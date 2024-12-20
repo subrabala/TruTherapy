@@ -13,14 +13,14 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 1), () async {
       bool isFirstRun = await checkIfFirstRun();
-      bool isLoggedIn = checkIfLoggedIn();
+      bool isLoggedInStatus = await isLoggedIn();
 
       if (isFirstRun) {
         Get.to(const OnboardingScreen());
-      } else if (isLoggedIn) {
+      } else if (isLoggedInStatus) {
         Get.to(const IntroScreen());
       } else {
-        Get.to(const AuthScreen());
+        Get.to(AuthScreen());
       }
     });
 

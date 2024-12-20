@@ -1,3 +1,7 @@
+import 'package:fsui/screens/auth_screen.dart';
+import 'package:fsui/screens/onboarding_screen.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,9 +25,25 @@ Future<bool> checkIfFirstRun() async {
   return false;
 }
 
-bool checkIfLoggedIn() {
+Future<bool> isLoggedIn() async {
+  final prefs = await SharedPreferences.getInstance();
+  final jwt = prefs.getString('jwt');
+
+  if (jwt != null && jwt.isNotEmpty) {
+    return true;
+  }
   return false;
 }
+
+Future<void> logout() async {
+  final prefs = await SharedPreferences.getInstance();
+  
+  await prefs.remove('jwt');
+  await prefs.remove('isFirstRun'); 
+  Get.to(() => AuthScreen()); 
+}
+
+
 
 Future<void> openYouTubeInPiPMode(String youtubeUrl) async {
   final Uri url = Uri.parse(youtubeUrl);

@@ -1,34 +1,14 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/screens/therapist_screens/intro_screen.dart';
-import 'package:fsui/screens/user_screens/intro_screen.dart' as user;
-import 'package:fsui/screens/user_screens/user_details_screen.dart';
-import 'package:fsui/utils.dart';
+import 'package:fsui/controllers/auth_controller.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 
-class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+class AuthScreen extends StatelessWidget {
+AuthScreen({super.key});
 
-  @override
-  _AuthScreenState createState() => _AuthScreenState();
-}
-
-class _AuthScreenState extends State<AuthScreen> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[
-      'email',
-      'profile',
-      'https://www.googleapis.com/auth/contacts.readonly',
-      'https://www.googleapis.com/auth/userinfo.email'
-    ],
-  );
-
-  bool _isLogin = false;
+final controller = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         height: 18,
                       ),
                       const Text(
-                        "Anchor your thoughts...",
+                        "Anchor your mind...",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
@@ -84,7 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
               ),
-      
+
               // Bottom section
               Expanded(
                 flex: 6,
@@ -113,7 +93,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       Text(
                         "Let's Begin",
                         style: GoogleFonts.poppins(
-                            fontSize: 28, color: Colors.white, fontWeight: FontWeight.w500),
+                            fontSize: 28,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 42),
@@ -121,7 +103,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            _googleSignInAndSendToken();
+                            controller.googleSignInAndSendToken();
                           },
                           icon: Image.asset(
                             'assets/logo_google.png',
@@ -137,8 +119,8 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ),
                           style: ButtonStyle(
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),
@@ -155,7 +137,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            Get.to(IntroScreen());
+                            controller.googleSignInAndSendTokenTherapist();
                           },
                           icon: Image.asset(
                             'assets/logo_google.png',
@@ -173,8 +155,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 AppColors.dark800),
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),
@@ -186,9 +168,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         ),
                       ),
-                                            const SizedBox(height: 42),
-
-                       Text("Don't have an account? We'll create one for you!",
+                      const SizedBox(height: 42),
+                      Text("Don't have an account? We'll create one for you!",
                           style: TextStyle(
                               color: Colors.white.withOpacity(0.9),
                               fontSize: 12,
@@ -204,44 +185,5 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Future<void> _googleSignInAndSendToken() async {
-    try {
-      GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-
-      if (googleUser == null) {
-        return;
-      }
-      GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      String? idToken = googleAuth.idToken;
-
-      // Get.to(() => user.IntroScreen());
-
-      Get.to(() => UserDetailsScreen());
-      if (idToken != null) {
-        final response = await http.post(
-          Uri.parse('$backendUrl/auth/app/jwt/user'),
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: jsonEncode({
-            'session': idToken,
-          }),
-        );
-        print(response.toString());
-
-        if (response.statusCode == 200) {
-          final jwt = jsonDecode(response.body)['jwt'];
-          await setJwt(jwt);
-          Get.to(() => UserDetailsScreen());
-        } else {
-          print(
-              'Failed to send token to backend. Status code: ${response.statusCode}');
-        }
-      } else {
-        print('Failed to retrieve ID token.');
-      }
-    } catch (error) {
-      print('Error Google sign-in: $error');
-    }
-  }
+  
 }

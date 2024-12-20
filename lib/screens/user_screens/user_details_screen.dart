@@ -55,7 +55,7 @@ class UserDetailsController extends GetxController {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Lottie.asset(
-                  'assets/lottie/success.json', 
+                  'assets/animations/success.json', 
                   width: 100,
                   height: 100,
                   repeat: false,
