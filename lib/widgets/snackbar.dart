@@ -1,50 +1,30 @@
- import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-
-  void showTopSnackBar(BuildContext context, String message) {
-  final overlay = Overlay.of(context);
-  final overlayEntry = OverlayEntry(
-    builder: (context) => Positioned(
-      top: MediaQuery.of(context).padding.top + 16.0, // Adjust for status bar
-      left: 16.0,
-      right: 16.0,
-      child: Material(
-        color: Colors.transparent,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 255, 220, 218),
-            borderRadius: BorderRadius.circular(16.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 8.0,
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-          child: Row(
-            children: [
-              const Icon(Icons.warning, color: Color.fromARGB(255, 255, 101, 101)),
-              const SizedBox(width: 12.0),
-              Expanded(
-                child: Text(
-                  message,
-                  style: const TextStyle(color: Color.fromARGB(255, 255, 101, 101), fontSize: 16.0),
-                ),
-              ),
-            ],
-          ),
+class CommonSnackbar {
+  static void show({
+    required String text,
+    required String subtext,
+    required String color,
+  }) {
+    Get.snackbar(
+      text,
+      subtext,
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: color == "red"
+          ? const Color.fromARGB(255, 255, 132, 132)
+          : const Color.fromARGB(255, 117, 225, 173),
+      colorText: Colors.white,
+      borderRadius: 8.0,
+      margin: const EdgeInsets.all(8.0),
+      titleText: Text(
+        text,
+        style: const  TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.w500,
+          color: Colors.white
         ),
       ),
-    ),
-  );
-
-  overlay.insert(overlayEntry);
-
-  Future.delayed(const Duration(seconds: 3), () {
-    overlayEntry.remove();
-  });
+    );
+  }
 }

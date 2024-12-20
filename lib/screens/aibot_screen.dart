@@ -14,7 +14,17 @@ class AIBotScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text("Aqua Bot")),
+        appBar: AppBar(
+          title: const Text(
+            "Aqua Bot",
+            style: TextStyle(color: Colors.white),
+          ),
+          centerTitle: true,
+          backgroundColor: AppColors.mid,
+          iconTheme: const IconThemeData(
+            color: Colors.white,
+          ),
+        ),
         body: Column(
           children: [
             Expanded(
@@ -65,17 +75,25 @@ class AIBotScreen extends StatelessWidget {
                     child: TextField(
                       controller: queryController,
                       decoration: InputDecoration(
-                        hintText: "Type your message...",
+                        hintText: "Enter your message...",
+                        hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100.0),
-                        borderSide: const BorderSide(color: Colors.black26),
+                          borderSide:
+                              const BorderSide(color: PastelColors.skyBlueDark),
                         ),
-                        contentPadding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0), 
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.send , color: PastelColors.skyBlueDark,),
+                    icon: const Icon(
+                      Icons.send,
+                      color: PastelColors.skyBlueDark,
+                    ),
                     onPressed: () {
                       controller.handleQuery(queryController.text.trim());
                       queryController.clear();

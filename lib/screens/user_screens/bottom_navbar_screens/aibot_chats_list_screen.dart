@@ -17,7 +17,7 @@ class AIBotChatsListScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: const Text(
           'Chat History',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 18),
         ),
         backgroundColor: Colors.white,
         elevation: 0,

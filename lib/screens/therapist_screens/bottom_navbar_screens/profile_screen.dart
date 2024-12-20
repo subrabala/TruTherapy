@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
                 automaticallyImplyLeading: false,
         title: const Text(
           'Your Profile',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold,  fontSize: 18),
         ),
         backgroundColor: Colors.transparent,
         actions: [

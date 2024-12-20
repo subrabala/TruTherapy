@@ -1,84 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fsui/widgets/gender_card.dart';
+import 'package:fsui/widgets/snackbar.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/screens/user_screens/intro_screen.dart';
-class UserDetailsController extends GetxController {
-  final nameController = TextEditingController();
-  final ageController = TextEditingController();
-  final contactNumberController = TextEditingController();
-  final emergencyContactController = TextEditingController();
-  final emergencyContactNameController = TextEditingController();
-  final seaBookNumberController = TextEditingController();
-
-  final selectedGender = Rx<String?>(null);
-
-  void submitDetails() {
-    if (nameController.text.isEmpty ||
-        ageController.text.isEmpty ||
-        contactNumberController.text.isEmpty ||
-        emergencyContactController.text.isEmpty ||
-        seaBookNumberController.text.isEmpty ||
-        selectedGender.value == null) {
-      Get.snackbar(
-        "Missing Fields",
-        "Please fill all fields before submitting.",
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: const Color.fromARGB(255, 255, 217, 217),
-        colorText: const Color.fromARGB(255, 255, 116, 116),
-        borderRadius: 8.0,
-        margin: const EdgeInsets.all(8.0),
-      );
-      return;
-    }
-
-    final userDetails = UserDetails(
-      name: nameController.text,
-      age: ageController.text,
-      contactNumber: contactNumberController.text,
-      emergencyContactNumber: emergencyContactController.text,
-      seaBookNumber: seaBookNumberController.text,
-      gender: selectedGender.value,
-    );
-
-    Get.dialog(
-      Center(
-        child: Card(
-          elevation: 8,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Lottie.asset(
-                  'assets/animations/success.json', 
-                  width: 100,
-                  height: 100,
-                  repeat: false,
-                ),
-                const SizedBox(height: 16.0),
-                const Text(
-                  "Submitted Successfully!",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      barrierDismissible: false,
-    );
-
-    Future.delayed(const Duration(seconds: 2), () {
-      Get.back(); 
-      Get.offAll(() => IntroScreen()); 
-    });
-  }
-}
+import 'package:fsui/controllers/user_details_controller.dart';
 
 class UserDetailsScreen extends StatelessWidget {
   final UserDetailsController controller = Get.put(UserDetailsController());
@@ -144,29 +71,33 @@ class UserDetailsScreen extends StatelessWidget {
                       () => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          buildGenderSelectionCard(
+                          GenderCard(
                             icon: Icons.male,
                             label: "Male",
                             color: PastelColors.seaBlue,
                             darkColor: PastelColors.seaBlueDark,
-                            isSelected: controller.selectedGender.value == "Male",
-                            onTap: () => controller.selectedGender.value = "Male",
+                            isSelected:
+                                controller.selectedGender.value == "Male",
+                            onTap: () =>
+                                controller.selectedGender.value = "Male",
                           ),
-                          buildGenderSelectionCard(
+                          GenderCard(
                             icon: Icons.female,
                             label: "Female",
                             color: PastelColors.pastelPink,
                             darkColor: PastelColors.pastelPinkDark,
-                            isSelected: controller.selectedGender.value == "Female",
+                            isSelected:
+                                controller.selectedGender.value == "Female",
                             onTap: () =>
                                 controller.selectedGender.value = "Female",
                           ),
-                          buildGenderSelectionCard(
+                          GenderCard(
                             icon: Icons.transgender,
                             label: "Other",
                             color: PastelColors.deepSeaBlue,
                             darkColor: PastelColors.deepSeaBlueDark,
-                            isSelected: controller.selectedGender.value == "Other",
+                            isSelected:
+                                controller.selectedGender.value == "Other",
                             onTap: () =>
                                 controller.selectedGender.value = "Other",
                           ),
@@ -175,10 +106,10 @@ class UserDetailsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16.0),
                     buildTextFormField(
-                      isNumeric: true,
+                      isAlphaNumeric: true,
                       controller: controller.seaBookNumberController,
                       label: 'Sea Book Number',
-                      hintText: 'Ex. 1234',
+                      hintText: 'Ex. SD1343',
                       icon: Icons.book,
                       pastelColor: PastelColors.seaBlue,
                     ),
@@ -239,6 +170,7 @@ class UserDetailsScreen extends StatelessWidget {
     required String hintText,
     required IconData icon,
     required Color pastelColor,
+    bool isAlphaNumeric = false,
     bool isNumeric = false,
   }) {
     return Padding(
@@ -269,54 +201,4 @@ class UserDetailsScreen extends StatelessWidget {
       ),
     );
   }
-
-  Widget buildGenderSelectionCard({
-    required IconData icon,
-    required String label,
-    required Color darkColor,
-    required Color color,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: isSelected ? darkColor.withOpacity(0.8) : color.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Icon(icon, size: 32, color: isSelected ?  Colors.white  : darkColor),
-            const SizedBox(height: 8.0),
-            Text(
-              label,
-              style:  TextStyle(color: isSelected ?   Colors.white : darkColor, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-
-class UserDetails {
-  String? age;
-  String? gender;
-  String? seaBookNumber;
-  String? contactNumber;
-  String? emergencyContactNumber;
-  String? name;
-
-  UserDetails({
-    this.age,
-    this.gender,
-    this.seaBookNumber,
-    this.contactNumber,
-    this.emergencyContactNumber,
-    this.name,
-  });
 }

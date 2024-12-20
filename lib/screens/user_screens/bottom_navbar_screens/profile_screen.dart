@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/screens/auth_screen.dart';
 import 'package:fsui/utils.dart';
-import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -14,7 +12,7 @@ class ProfileScreen extends StatelessWidget {
                 automaticallyImplyLeading: false,
         title: const Text(
           'Your Profile',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold,  fontSize: 18),
         ),
         backgroundColor: Colors.transparent,
         actions: [
