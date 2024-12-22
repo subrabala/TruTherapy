@@ -1,17 +1,26 @@
 class UserDetails {
-  String? age;
-  String? gender;
-  String? seaBookNumber;
+
   String? contactNumber;
   String? emergencyContactNumber;
-  String? name;
+  String? emergencyContactName;
+  String? seaBookNumber;
+  String? gender;
+  String? dob;
+  String? nationality;
+  String? language;
+  String? passportNumber;
+  String? placeOfIssue;
 
   UserDetails({
-    this.age,
-    this.gender,
-    this.seaBookNumber,
     this.contactNumber,
     this.emergencyContactNumber,
-    this.name,
+    this.emergencyContactName,
+    this.seaBookNumber,
+    this.gender,
+    this.dob,
+    this.nationality,
+    this.language,
+    this.passportNumber,
+    this.placeOfIssue,
   });
 }

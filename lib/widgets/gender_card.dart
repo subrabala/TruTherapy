@@ -28,7 +28,7 @@ class GenderCard extends StatelessWidget {
           color: isSelected ? darkColor.withOpacity(0.8) : color.withOpacity(0.3),
           borderRadius: BorderRadius.circular(12),
         ),
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
             Icon(

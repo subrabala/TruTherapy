@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/controllers/auth_controller.dart';
 import 'package:fsui/screens/auth_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
@@ -11,46 +12,46 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-                automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         title: const Text(
           'Your Profile',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold,  fontSize: 18),
+          style: TextStyle(
+              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 18),
         ),
         backgroundColor: Colors.transparent,
         actions: [
-    PopupMenuButton<int>(
-      icon: const Icon(Icons.more_vert, color: Colors.black),
-      onSelected: (value) {
-        if (value == 1) {
-          logout();
-        }
-      },
-      itemBuilder: (BuildContext context) => [
-        const PopupMenuItem<int>(
-          value: 1,
-          child: Row(
-            children: [
-              Icon(Icons.logout, color: Colors.red),
-              SizedBox(width: 10),
-              Text(
-                "Log Out",
-                style: TextStyle(color: Colors.red),
+          PopupMenuButton<int>(
+            icon: const Icon(Icons.more_vert, color: Colors.black),
+            onSelected: (value) {
+              if (value == 1) {
+                Get.find<AuthController>().signOut();
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem<int>(
+                value: 1,
+                child: Row(
+                  children: [
+                    Icon(Icons.logout, color: Colors.red),
+                    SizedBox(width: 10),
+                    Text(
+                      "Log Out",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-      ],
-    ),
-  ],
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CircleAvatar(
-              radius: 80, 
-              backgroundImage: AssetImage(
-                  'assets/mental1.jpg'), 
+              radius: 80,
+              backgroundImage: AssetImage('assets/mental1.jpg'),
               backgroundColor: Colors.transparent,
             ),
             const SizedBox(height: 20),
@@ -106,9 +107,7 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.black87,
                       ),
                     ),
-
                     SizedBox(height: 20),
-
                     Text(
                       '👤     Jane Doe',
                       style: TextStyle(
@@ -116,7 +115,6 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.black87,
                       ),
                     ),
-
                     SizedBox(height: 10),
                     Text(
                       '📞     1 987 654 321',
@@ -125,13 +123,12 @@ class ProfileScreen extends StatelessWidget {
                         color: Colors.black87,
                       ),
                     ),
-                     SizedBox(height: 10),
-
+                    SizedBox(height: 10),
                     Text(
                       '📘     SB12345678',
                       style: TextStyle(
                         fontSize: 16,
-                        color:Colors.black87,
+                        color: Colors.black87,
                       ),
                     ),
                   ],

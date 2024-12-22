@@ -29,19 +29,13 @@ Future<bool> isLoggedIn() async {
   final prefs = await SharedPreferences.getInstance();
   final jwt = prefs.getString('jwt');
 
-  if (jwt != null && jwt.isNotEmpty) {
-    return true;
-  }
+  // if (jwt != null && jwt.isNotEmpty) {
+  //   return true;
+  // }
   return false;
 }
 
-Future<void> logout() async {
-  final prefs = await SharedPreferences.getInstance();
-  
-  await prefs.remove('jwt');
-  await prefs.remove('isFirstRun'); 
-  Get.to(() => AuthScreen()); 
-}
+
 
 
 

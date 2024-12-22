@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/controllers/auth_controller.dart';
 import 'package:fsui/utils.dart';
+import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -20,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
       icon: const Icon(Icons.more_vert, color: Colors.black),
       onSelected: (value) {
         if (value == 1) {
-          logout();
+          Get.find<AuthController>().signOut();
         }
       },
       itemBuilder: (BuildContext context) => [
