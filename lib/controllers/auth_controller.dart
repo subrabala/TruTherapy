@@ -49,10 +49,11 @@ class AuthController extends GetxController {
           if (jsonDecode(response.body)['access_token'] != null) {
             final jwt = jsonDecode(response.body)['access_token'];
             final scope = jsonDecode(response.body)['scopes'][0];
-            await setJwt(jwt);
             if (scope != 'newuser') {
+              await setJwt(jwt);
               Get.to(() => const user.IntroScreen());
             } else {
+              await setJwt(isTemp: true, jwt);
               Get.to(() => UserDetailsScreen());
             }
           }
@@ -61,8 +62,6 @@ class AuthController extends GetxController {
               text: 'Something went wrong',
               subtext: 'Error: ${response.statusCode}',
               color: "red");
-
-          // Get.to(() =>  UserDetailsScreen());
         }
       } else {
         print('Failed to retrieve ID token.');
@@ -75,14 +74,11 @@ class AuthController extends GetxController {
     }
   }
 
-  
-
   void signOut() async {
     await _googleSignIn.signOut();
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.remove('jwt');
-    await prefs.remove('isFirstRun');
     Get.to(() => AuthScreen());
   }
 
@@ -110,7 +106,7 @@ class AuthController extends GetxController {
           if (jsonDecode(response.body)['access_token'] != null) {
             final jwt = jsonDecode(response.body)['access_token'];
             await setJwt(jwt);
-            Get.to(() => UserDetailsScreen());
+            Get.to(() => IntroScreen());
           }
         } else {
           CommonSnackbar.show(

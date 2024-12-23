@@ -5,15 +5,25 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-Future<void> setJwt(String jwt) async {
+Future<void> setJwt(String jwt, {bool isTemp = false}) async {
   final prefs = await SharedPreferences.getInstance();
-  await prefs.setString('jwt', jwt);
+  if (isTemp) {
+    await prefs.setString('jwtTemp', jwt); 
+  } else {
+    await prefs.setString('jwt', jwt); 
+  }
 }
 
-Future<String?> getJwt() async {
+
+Future<String?> getJwt({bool isTemp = false}) async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getString('jwt');
+  if (isTemp) {
+    return prefs.getString('jwtTemp'); 
+  } else {
+    return prefs.getString('jwt');
+  }
 }
+
 
 Future<bool> checkIfFirstRun() async {
   final prefs = await SharedPreferences.getInstance();
@@ -29,13 +39,11 @@ Future<bool> isLoggedIn() async {
   final prefs = await SharedPreferences.getInstance();
   final jwt = prefs.getString('jwt');
 
-  // if (jwt != null && jwt.isNotEmpty) {
-  //   return true;
-  // }
+  if (jwt != null && jwt.isNotEmpty) {
+    return true;
+  }
   return false;
 }
-
-
 
 
 

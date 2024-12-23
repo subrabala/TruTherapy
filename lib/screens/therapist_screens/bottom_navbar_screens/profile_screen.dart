@@ -24,6 +24,7 @@ class ProfileScreen extends StatelessWidget {
             icon: const Icon(Icons.more_vert, color: Colors.black),
             onSelected: (value) {
               if (value == 1) {
+                Get.put(AuthController());
                 Get.find<AuthController>().signOut();
               }
             },

@@ -96,7 +96,7 @@ class UserDetailsController extends GetxController {
 
   void createUser(UserDetails userDetails) async {
     try {
-      final jwt = await getJwt();
+      final jwt = await getJwt(isTemp: true);
       final body = {
         "dob": userDetails.dob,
         "gender": userDetails.gender,
