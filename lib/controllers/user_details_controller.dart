@@ -20,7 +20,6 @@ class UserDetailsController extends GetxController {
   var placeOfIssue = Rx<String?>(null);
   final selectedGender = Rx<String?>(null);
   final selectedNationality = Rx<String?>(null);
-  final selectedLanguage = Rx<String?>(null);
   final selectedDob = Rx<DateTime?>(null);
 
   void submitDetails() {
@@ -32,7 +31,6 @@ class UserDetailsController extends GetxController {
       gender: selectedGender.value,
       dob: selectedDob.value?.toIso8601String(),
       nationality: selectedNationality.value,
-      language: selectedLanguage.value,
       passportNumber: passportNumberController.text,
       placeOfIssue: placeOfIssue.value,
     );
@@ -52,7 +50,7 @@ class UserDetailsController extends GetxController {
         seaBookNumber.isEmpty ||
         selectedGender.value == null ||
         selectedNationality.value == null ||
-        selectedLanguage.value == null ||
+        
         dob == null) {
       CommonSnackbar.show(
         text: "Missing Fields",
@@ -100,26 +98,23 @@ class UserDetailsController extends GetxController {
       final body = {
         "dob": userDetails.dob,
         "gender": userDetails.gender,
-        "phone_number": userDetails.contactNumber,
+        "phone_number": "+91${userDetails.contactNumber}",
         "nationality": userDetails.nationality,
-        "language": userDetails.language,
         "nok_name": userDetails.emergencyContactName,
-        "nok_phone_number": userDetails.emergencyContactNumber,
-        "nok_relationship": "string",
+        "nok_phone_number": "+91${userDetails.emergencyContactNumber}",
         "passport_number": userDetails.passportNumber,
         "passport_place_of_issue": userDetails.placeOfIssue,
-        "passport_expiry": "2024-12-22T12:59:10.769Z",
       };
 
       final response = await http.post(
         Uri.parse('$backendUrl/auth/create_user'),
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer $jwt',
         },
         body: jsonEncode(body),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final jwt = jsonDecode(response.body)['access_token'];
         await setJwt(jwt);
         Future.delayed(const Duration(seconds: 2), () {

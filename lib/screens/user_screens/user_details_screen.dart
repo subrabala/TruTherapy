@@ -159,13 +159,6 @@ class UserDetailsScreen extends StatelessWidget {
                       pastelColor: PastelColors.skyBlue,
                     ),
                     const SizedBox(height: 10.0),
-                    buildLanguagePicker(
-                      selectedLanguage: controller.selectedLanguage,
-                      label: "Language",
-                      icon: Icons.language,
-                      pastelColor: PastelColors.pastelPink,
-                    ),
-                    const SizedBox(height: 16.0),
                     buildTextFormField(
                       controller: controller.passportNumberController,
                       label: 'Passport Number',
@@ -231,62 +224,6 @@ class UserDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildLanguagePicker({
-    required Rx<String?> selectedLanguage,
-    required String label,
-    required IconData icon,
-    required Color pastelColor,
-  }) {
-    selectedLanguage.value = Languages.english.name;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 8.0),
-          Obx(
-            () => Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-              decoration: BoxDecoration(
-                color: pastelColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(12.0),
-                border: Border.all(color: pastelColor, width: 1.5),
-              ),
-              child: Row(
-                children: [
-                  Icon(icon, color: pastelColor),
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                    child: LanguagePickerDropdown(
-                      initialValue: selectedLanguage.value != null
-                          ?Languages.english
-                          : Languages.english,
-                      onValuePicked: (Language language) {
-                        selectedLanguage.value = language.name;
-                      },
-                      itemBuilder: (Language language) => Row(
-                        children: [
-                          Text(
-                            language.name,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget buildCountryPicker({
     required String label,

@@ -1,67 +1,71 @@
 import 'dart:async';
-import 'dart:math';
-
+import 'dart:convert';
+import 'package:fsui/constants.dart';
+import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class AIBotController extends GetxController {
   final List<Map<String, String>> chatHistory = <Map<String, String>>[].obs;
-  final List<String> responses = [
-    "Hello! How can I help you today?",
-    "I'm here to assist you with any queries.",
-    "That's an interesting question!",
-    "Let me think about that...",
-    "Can you elaborate on that?"
-  ];
-
+  final List<Map<String, dynamic>> chatMetadata = <Map<String, dynamic>>[];
   final RxBool isTyping = false.obs;
 
-  void handleQuery(String query) {
+  Future<void> handleQuery(String query) async {
     if (query.isEmpty) return;
 
     chatHistory.add({'user': query});
-    _simulateTyping(query);
+    isTyping.value = true;
+
+    try {
+      final jwt = await getJwt();
+      final response = await http.post(
+        Uri.parse('$backendUrl/chat/response'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${jwt}',
+        },
+        body: jsonEncode({
+          // "session_id": [null],
+          "query": query
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final String botResponse = response.body;
+
+        await _simulateTyping(botResponse);
+      } else {
+        chatHistory.add({'bot': 'Error: ${response.statusCode}'});
+      }
+    } catch (e) {
+      chatHistory.add({'bot': 'Error: Unable to connect to server'});
+    } finally {
+      isTyping.value = false;
+    }
   }
 
-  void _simulateTyping(String query) async {
-    isTyping.value = true;
-    final String response = _getRandomResponse();
-    chatHistory.add({'bot': ''}); 
-    int index = chatHistory.length - 1;
+  Future<void> _simulateTyping(String response) async {
+    final Map<String, String> botResponse = {'bot': ''};
+    chatHistory.add(botResponse);
 
     for (int i = 1; i <= response.length; i++) {
-      await Future.delayed(Duration(milliseconds: 50)); 
-      chatHistory[index] = {'bot': response.substring(0, i)};
+      await Future.delayed(Duration(milliseconds: 50));
+      botResponse['bot'] = response.substring(0, i);
+      chatHistory[chatHistory.length - 1] = botResponse;
     }
-
-    isTyping.value = false;
   }
 
-  String _getRandomResponse() {
-    final random = Random();
-    return responses[random.nextInt(responses.length)];
+  Future<void> getChatsList() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$backendUrl/chat/logs'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${getJwt()}',
+        },
+      );
+
+      if (response.statusCode == 200) {}
+    } catch (e) {}
   }
-
-  List<Map<String, dynamic>> getChatMetadata() {
-  return [
-    {
-      'id': '1',
-      'heading': 'Chat with Support Bot for salary',
-      'date': '01 Dec', // Changed date format
-      'lastMessage': 'can you help me with my salary query?'
-    },
-    {
-      'id': '2',
-      'heading': 'I\'ve been feeling low lately',
-      'date': '02 Dec', // Changed date format
-      'lastMessage': "I'm not sure what's wrong with me"
-    },
-    {
-      'id': '3',
-      'heading': 'General Inquiry about the Chatbot\'s capabilities',
-      'date': '03 Dec', // Changed date format
-      'lastMessage': 'What can you do?'
-    }
-  ];
-}
-
 }

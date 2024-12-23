@@ -9,9 +9,6 @@ class AIBotChatsListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> chatMetadata =
-    controller.getChatMetadata();
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -74,9 +71,9 @@ class AIBotChatsListScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: chatMetadata.length,
+                itemCount: controller.chatMetadata.length,
                 itemBuilder: (context, index) {
-                  final chat = chatMetadata[index];
+                  final chat = controller.chatMetadata[index];
 
                   return GestureDetector(
                     onTap: () {
