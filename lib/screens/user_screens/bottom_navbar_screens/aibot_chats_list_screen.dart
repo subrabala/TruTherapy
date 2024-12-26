@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/aibot_controller.dart';
 import 'package:fsui/screens/aibot_screen.dart';
+import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 
 class AIBotChatsListScreen extends StatelessWidget {
   final AIBotController controller = Get.put(AIBotController());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +14,8 @@ class AIBotChatsListScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: const Text(
           'Chat History',
-          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 18),
+          style: TextStyle(
+              color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 18),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -59,7 +60,6 @@ class AIBotChatsListScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Container(
-                
                 child: const Text(
                   'Recents',
                   style: TextStyle(
@@ -77,7 +77,7 @@ class AIBotChatsListScreen extends StatelessWidget {
 
                   return GestureDetector(
                     onTap: () {
-                      Get.to(() => AIBotScreen(chatId: chat['id']));
+                      Get.to(() => AIBotScreen(chatId: chat['session_id']));
                     },
                     child: Container(
                       margin: const EdgeInsets.symmetric(
@@ -91,9 +91,9 @@ class AIBotChatsListScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            chat['heading'].length > 30
-                                ? '${chat['heading'].substring(0, 30)}...'
-                                : chat['heading'],
+                            chat['query'].length > 30
+                                ? '${chat['query'].substring(0, 30)}...'
+                                : chat['query'],
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
@@ -101,25 +101,12 @@ class AIBotChatsListScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Text(
-                                chat['date'],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.blue.shade700,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                chat['lastMessage'],
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black45,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                          Text(
+                            convertToReadableDate(chat['asked_at']),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue.shade700,
+                            ),
                           ),
                         ],
                       ),

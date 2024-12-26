@@ -7,8 +7,14 @@ import 'package:http/http.dart' as http;
 
 class AIBotController extends GetxController {
   final List<Map<String, String>> chatHistory = <Map<String, String>>[].obs;
-  final List<Map<String, dynamic>> chatMetadata = <Map<String, dynamic>>[];
+  List<Map<String, dynamic>> chatMetadata = <Map<String, dynamic>>[];
   final RxBool isTyping = false.obs;
+
+  String? currentSessionId = null;
+
+  void onInit() {
+    getChatsList();
+  }
 
   Future<void> handleQuery(String query) async {
     if (query.isEmpty) return;
@@ -25,14 +31,14 @@ class AIBotController extends GetxController {
           'Authorization': 'Bearer ${jwt}',
         },
         body: jsonEncode({
-          // "session_id": [null],
-          "query": query
+          if (currentSessionId != null) 'session_id': currentSessionId,
+          'query': query,
         }),
       );
 
       if (response.statusCode == 200) {
         final String botResponse = response.body;
-
+        currentSessionId = response.headers['x-chat-session-id'];
         await _simulateTyping(botResponse);
       } else {
         chatHistory.add({'bot': 'Error: ${response.statusCode}'});
@@ -57,15 +63,39 @@ class AIBotController extends GetxController {
 
   Future<void> getChatsList() async {
     try {
+      final jwt = await getJwt();
+
       final response = await http.get(
         Uri.parse('$backendUrl/chat/logs'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${getJwt()}',
+          'Authorization': 'Bearer ${jwt}',
         },
       );
 
-      if (response.statusCode == 200) {}
+      if (response.statusCode == 200) {
+        chatMetadata =
+            List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      }
+    } catch (e) {}
+  }
+
+  Future<void> getChatsForSession(session_id) async {
+    try {
+      final jwt = await getJwt();
+
+      final response = await http.get(
+        Uri.parse('$backendUrl/chat/logs/$session_id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${jwt}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        chatMetadata =
+            List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      }
     } catch (e) {}
   }
 }

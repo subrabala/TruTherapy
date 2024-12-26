@@ -57,15 +57,6 @@ class AIBotScreen extends StatelessWidget {
                 );
               }),
             ),
-            Obx(() {
-              return controller.isTyping.value
-                  ? const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Bot is typing...",
-                          style: TextStyle(fontStyle: FontStyle.italic)),
-                    )
-                  : const SizedBox.shrink();
-            }),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15.0),

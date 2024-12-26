@@ -1,9 +1,6 @@
-import 'package:fsui/screens/auth_screen.dart';
-import 'package:fsui/screens/onboarding_screen.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 Future<void> setJwt(String jwt, {bool isTemp = false}) async {
   final prefs = await SharedPreferences.getInstance();
@@ -66,4 +63,12 @@ Future<void> openYouTubeInPiPMode(String youtubeUrl) async {
     print("Cannot launch the URL: $youtubeUrl");
     throw 'Could not open the URL.';
   }
+}
+
+String convertToReadableDate(String timestamp) {
+  DateTime dateTime = DateTime.parse(timestamp);
+  
+  String formattedDate = DateFormat('dd-MM-yyyy, hh:mm').format(dateTime);
+  
+  return formattedDate;
 }
