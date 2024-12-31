@@ -3,6 +3,12 @@ import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/aibot_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+
+import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:get/get.dart';
+
 class AIBotScreen extends StatelessWidget {
   final AIBotController controller = Get.put(AIBotController());
   final TextEditingController queryController = TextEditingController();
@@ -97,9 +103,11 @@ class AIBotScreen extends StatelessWidget {
                                   isUser ? Colors.blue[100] : Colors.green[100],
                               borderRadius: BorderRadius.circular(8.0),
                             ),
-                            child: Text(
-                              text ?? "",
-                              style: const TextStyle(fontSize: 16.0),
+                            child: MarkdownBody(
+                              data: text ?? "",
+                              styleSheet: MarkdownStyleSheet(
+                                p: const TextStyle(fontSize: 16),
+                              ),
                             ),
                           ),
                         ),
