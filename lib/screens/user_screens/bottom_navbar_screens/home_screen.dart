@@ -83,12 +83,15 @@ class HomeScreen extends StatelessWidget {
                           label: "Happy",
                           color:
                               Color.fromARGB(255, 255, 249, 197).withOpacity(1),
+                              firstQuery :"Hey! I'm feeling happy today! Can you suggest me something to do?",
                         ),
                         // Sad box
                         _MoodBox(
                           emoji: ":(",
                           label: "Sad",
                           color: Colors.blueAccent.withOpacity(0.3),
+                            firstQuery: "Hello, I'm feeling quite sad today :( What can I do to feel better?",
+
                         ),
                         // Angry box
                         _MoodBox(
@@ -96,6 +99,7 @@ class HomeScreen extends StatelessWidget {
                           label: "Angry",
                           color: const Color.fromARGB(255, 244, 141, 141)
                               .withOpacity(0.4),
+                          firstQuery: "I'm feeling very angry today!!! Can you give some tips on how to manage anger?",
                         ),
                       ],
                     ),
@@ -145,19 +149,21 @@ class _MoodBox extends StatelessWidget {
   final String emoji;
   final String label;
   final Color color;
+  final String firstQuery;
 
   const _MoodBox({
     Key? key,
     required this.emoji,
     required this.label,
     required this.color,
+    required this.firstQuery,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => AIBotScreen());
+        Get.to(() => AIBotScreen(firstQuery: firstQuery,));
       },
       child: Container(
           width: 100,

@@ -14,7 +14,9 @@ class AIBotScreen extends StatelessWidget {
   final TextEditingController queryController = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
-  AIBotScreen({Key? key}) : super(key: key);
+  final String? firstQuery;
+
+  AIBotScreen({Key? key, this.firstQuery}) : super(key: key);
 
   void scrollToBottom() {
     if (scrollController.hasClients) {
@@ -28,6 +30,11 @@ class AIBotScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (firstQuery != null && firstQuery!.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        queryController.text = firstQuery!;
+      });
+    }
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

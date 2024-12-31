@@ -51,98 +51,178 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const CircleAvatar(
-              radius: 80,
-              backgroundImage: AssetImage('assets/mental1.jpg'),
-              backgroundColor: Colors.transparent,
-            ),
-            const SizedBox(height: 20),
-
-            // Name
-            Text(
-              controller.profileDetails['name'],
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                radius: 80,
+                backgroundImage: AssetImage('assets/mental1.jpg'),
+                backgroundColor: Colors.transparent,
               ),
-            ),
-            const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
-            // Age, Gender
-            Text(
-              "${convertToReadableDate(controller.profileDetails['dob'])} , " +
-                  '${controller.profileDetails['gender']?[0].toUpperCase()}${controller.profileDetails['gender']?.substring(1) ?? ''}',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // Contact Number
-            Text(
-              'Contact: ${controller.profileDetails['phone_number']}',
-              style: const TextStyle(
-                fontSize: 16,
-                color: PastelColors.deepSeaBlueDark,
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                margin: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(85, 250, 188, 196),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Emergency Contact',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      '👤     ${controller.profileDetails['nok_name']}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '📞     ${controller.profileDetails['nok_phone_number']}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '📘     ${controller.profileDetails['passport_number']}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ],
+              // Name
+              Text(
+                controller.profileDetails['name'],
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
                 ),
               ),
-            ])
-          ],
+              const SizedBox(height: 10),
+
+              // Age, Gender
+              Text(
+                "${convertToReadableDate(controller.profileDetails['dob'])} , " +
+                    '${controller.profileDetails['gender']?[0].toUpperCase()}${controller.profileDetails['gender']?.substring(1) ?? ''}',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 30),
+
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: PastelColors.skyBlue.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Contact Number
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.phone,
+                            color: Colors.black45,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${controller.profileDetails['phone_number']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Email
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.email_outlined,
+                            color: Colors.black45,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${controller.profileDetails['email']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.credit_card,
+                            color: Colors.black45,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${controller.profileDetails['nationality']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // SEA BOOK
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.book_outlined,
+                            color: Colors.black45,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${controller.profileDetails['passport_number']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+
+              const SizedBox(height: 20),
+
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(85, 250, 188, 196),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Emergency Contact details',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        '👤   ${controller.profileDetails['nok_name']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        '📞   ${controller.profileDetails['nok_phone_number']}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ])
+            ],
+          ),
         ),
       ),
     );
