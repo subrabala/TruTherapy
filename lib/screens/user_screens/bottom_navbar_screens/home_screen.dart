@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/controllers/blogs_controller.dart';
+import 'package:fsui/controllers/user_details_controller.dart';
 import 'package:fsui/screens/aibot_screen.dart';
 import 'package:fsui/widgets/blog_card.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
+
+  final BlogsController controller = Get.isRegistered<BlogsController>()
+      ? Get.find<BlogsController>()
+      : Get.put(BlogsController());
+
 
   @override
   Widget build(BuildContext context) {
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchAllBlogs();
+    });
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -38,7 +48,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Container(
-                decoration:const BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(15)),
                   gradient: LinearGradient(
                     colors: [
@@ -63,6 +73,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    // MOOD BOX
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -83,7 +94,8 @@ class HomeScreen extends StatelessWidget {
                         _MoodBox(
                           emoji: ":/",
                           label: "Angry",
-                          color: const Color.fromARGB(255, 244, 141, 141).withOpacity(0.4),
+                          color: const Color.fromARGB(255, 244, 141, 141)
+                              .withOpacity(0.4),
                         ),
                       ],
                     ),
@@ -106,16 +118,20 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: ListView(
-                  children: jsonData.map<Widget>((blog) {
-                    return BlogCard(
-                      imageUrl: blog['imageUrl'] ?? "",
-                      title: blog['title'] ?? "",
-                      subtitle: blog['subtitle'] ?? "",
-                      url: blog['link'] ?? "",
-                    );
-                  }).toList(),
-                ),
+                child: controller.blogs.isEmpty
+                    ? const Center(
+                        child: Text('No blogs available'),
+                      )
+                    : ListView(
+                        children: controller.blogs.map<Widget>((blog) {
+                          return BlogCard(
+                            imageUrl: blog.thumbnail,
+                            title: blog.title,
+                            subtitle: blog.description,
+                            url: blog.blogId,
+                          );
+                        }).toList(),
+                      ),
               ),
             ],
           ),
@@ -141,7 +157,7 @@ class _MoodBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => AIBotScreen(chatId:label));
+        Get.to(() => AIBotScreen());
       },
       child: Container(
           width: 100,
@@ -161,8 +177,7 @@ class _MoodBox extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontSize: 14,
-                  color: 
-                  Color.alphaBlend(
+                  color: Color.alphaBlend(
                             color,
                             color,
                           ).computeLuminance() >

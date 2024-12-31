@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:fsui/constants.dart';
 import 'package:fsui/utils.dart';
+import 'package:fsui/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class AIBotController extends GetxController {
   final List<Map<String, String>> chatHistory = <Map<String, String>>[].obs;
   List<Map<String, dynamic>> chatMetadata = <Map<String, dynamic>>[];
+  RxList<Map<String, dynamic>> chatLogsForSession = <Map<String, dynamic>>[].obs;
+
   final RxBool isTyping = false.obs;
 
   String? currentSessionId = null;
@@ -93,9 +96,12 @@ class AIBotController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        chatMetadata =
+        currentSessionId = session_id;
+        chatLogsForSession.value =
             List<Map<String, dynamic>>.from(jsonDecode(response.body));
       }
-    } catch (e) {}
+    } catch (e) {
+      CommonSnackbar.show(color: "red", text: "Error while fetching data", subtext: e.toString());
+    }
   }
 }

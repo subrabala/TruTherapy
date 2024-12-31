@@ -65,10 +65,18 @@ Future<void> openYouTubeInPiPMode(String youtubeUrl) async {
   }
 }
 
-String convertToReadableDate(String timestamp) {
+String convertToReadableDateAndTime(String timestamp) {
   DateTime dateTime = DateTime.parse(timestamp);
   
   String formattedDate = DateFormat('dd-MM-yyyy, hh:mm').format(dateTime);
+  
+  return formattedDate;
+}
+
+String convertToReadableDate(String timestamp) {
+  DateTime dateTime = DateTime.parse(timestamp);
+  
+  String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
   
   return formattedDate;
 }

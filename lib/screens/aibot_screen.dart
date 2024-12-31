@@ -2,16 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/aibot_controller.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AIBotScreen extends StatelessWidget {
   final AIBotController controller = Get.put(AIBotController());
   final TextEditingController queryController = TextEditingController();
-  final String chatId;
+  final ScrollController scrollController = ScrollController();
 
-  AIBotScreen({Key? key, required this.chatId}) : super(key: key);
+  AIBotScreen({Key? key}) : super(key: key);
+
+  void scrollToBottom() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollToBottom();
+    });
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -29,29 +43,66 @@ class AIBotScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Obx(() {
+                final List<Map<String, String>> preprocessedChats = [];
+
+                for (var log in controller.chatLogsForSession) {
+                  if (log.containsKey('query') && log.containsKey('response')) {
+                    preprocessedChats.add({'user': log['query'] ?? ''});
+                    preprocessedChats.add({'bot': log['response'] ?? ''});
+                  }
+                }
+
+                final combinedChats = [
+                  ...preprocessedChats,
+                  ...controller.chatHistory
+                ];
+
+                if (combinedChats.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      "No chats available. Start a conversation!",
+                      style: TextStyle(fontSize: 16.0, color: Colors.grey),
+                    ),
+                  );
+                }
+
                 return ListView.builder(
-                  itemCount: controller.chatHistory.length,
+                  controller: scrollController,
+                  itemCount: combinedChats.length,
                   itemBuilder: (context, index) {
-                    final message = controller.chatHistory[index];
+                    final message = combinedChats[index];
                     final isUser = message.containsKey('user');
-                    return Align(
-                      alignment:
-                          isUser ? Alignment.centerRight : Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 4.0,
-                          horizontal: 8.0,
+                    final text = isUser ? message['user'] : message['bot'];
+
+                    return Column(
+                      crossAxisAlignment: isUser
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: isUser
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 4.0,
+                              horizontal: 8.0,
+                            ),
+                            padding: const EdgeInsets.all(12.0),
+                            constraints:
+                                const BoxConstraints(maxWidth: 0.8 * 1000),
+                            decoration: BoxDecoration(
+                              color:
+                                  isUser ? Colors.blue[100] : Colors.green[100],
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              text ?? "",
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                          ),
                         ),
-                        padding: const EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                          color: isUser ? Colors.blue[100] : Colors.green[100],
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Text(
-                          isUser ? message['user']! : message['bot']!,
-                          style: const TextStyle(fontSize: 16.0),
-                        ),
-                      ),
+                      ],
                     );
                   },
                 );
@@ -76,7 +127,9 @@ class AIBotScreen extends StatelessWidget {
                               const BorderSide(color: PastelColors.skyBlueDark),
                         ),
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 16.0),
+                          vertical: 8.0,
+                          horizontal: 16.0,
+                        ),
                       ),
                     ),
                   ),
@@ -86,8 +139,11 @@ class AIBotScreen extends StatelessWidget {
                       color: PastelColors.skyBlueDark,
                     ),
                     onPressed: () {
-                      controller.handleQuery(queryController.text.trim());
-                      queryController.clear();
+                      final query = queryController.text.trim();
+                      if (query.isNotEmpty) {
+                        controller.handleQuery(query);
+                        queryController.clear();
+                      }
                     },
                   ),
                 ],

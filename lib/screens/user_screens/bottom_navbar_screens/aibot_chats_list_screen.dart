@@ -7,6 +7,13 @@ import 'package:get/get.dart';
 
 class AIBotChatsListScreen extends StatelessWidget {
   final AIBotController controller = Get.put(AIBotController());
+
+  AIBotChatsListScreen({Key? key}) : super(key: key) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getChatsList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +38,9 @@ class AIBotChatsListScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               child: TextButton(
                 onPressed: () {
-                  Get.to(() => AIBotScreen(chatId: 'new'));
+                  controller.chatLogsForSession.clear();
+                  controller.chatHistory.clear();
+                  Get.to(() => AIBotScreen());
                 },
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
@@ -70,49 +79,55 @@ class AIBotChatsListScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: controller.chatMetadata.length,
-                itemBuilder: (context, index) {
-                  final chat = controller.chatMetadata[index];
-
-                  return GestureDetector(
-                    onTap: () {
-                      Get.to(() => AIBotScreen(chatId: chat['session_id']));
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 250, 228),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            chat['query'].length > 30
-                                ? '${chat['query'].substring(0, 30)}...'
-                                : chat['query'],
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            convertToReadableDate(chat['asked_at']),
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue.shade700,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+              child: RefreshIndicator(
+                onRefresh: () async{
+                  controller.getChatsList();
                 },
+                child: ListView.builder(
+                  itemCount: controller.chatMetadata.length,
+                  itemBuilder: (context, index) {
+                    final chat = controller.chatMetadata[index];
+
+                    return GestureDetector(
+                      onTap: () async {
+                        await controller.getChatsForSession(chat['session_id']);
+                        Get.to(() => AIBotScreen());
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 250, 228),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              chat['query'].length > 30
+                                  ? '${chat['query'].substring(0, 30)}...'
+                                  : chat['query'],
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              convertToReadableDateAndTime(chat['asked_at']),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ],

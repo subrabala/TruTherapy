@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/screens/aibot_screen.dart';
 import 'package:fsui/screens/user_screens/bottom_navbar_screens/aibot_chats_list_screen.dart';
-import 'package:fsui/screens/user_screens/bottom_navbar_screens/chatbot_screen.dart';
 import 'package:fsui/screens/user_screens/bottom_navbar_screens/home_screen.dart';
 import 'package:fsui/screens/user_screens/bottom_navbar_screens/profile_screen.dart';
 class IntroScreen extends StatefulWidget {

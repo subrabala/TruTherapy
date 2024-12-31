@@ -49,6 +49,7 @@ dependencies:
   country_picker: ^2.0.27
   language_picker: ^0.4.5
   intl: ^0.20.1
+  flutter_markdown: ^0.7.4+3
   # flutter_launcher_icons: ^0.14.2
 
 

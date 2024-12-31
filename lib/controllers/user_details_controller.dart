@@ -22,6 +22,14 @@ class UserDetailsController extends GetxController {
   final selectedNationality = Rx<String?>(null);
   final selectedDob = Rx<DateTime?>(null);
 
+  Map<String, dynamic > profileDetails = {};
+
+
+@override
+void onInit(){
+  super.onInit();
+  fetchProfileDetails();
+}
   void submitDetails() {
     final userDetails = UserDetails(
       contactNumber: contactNumberController.text,
@@ -50,7 +58,6 @@ class UserDetailsController extends GetxController {
         seaBookNumber.isEmpty ||
         selectedGender.value == null ||
         selectedNationality.value == null ||
-        
         dob == null) {
       CommonSnackbar.show(
         text: "Missing Fields",
@@ -161,6 +168,24 @@ class UserDetailsController extends GetxController {
       }
     } catch (error) {
       print('Error creating user: $error');
+    }
+  }
+
+  void fetchProfileDetails() async {
+    try {
+      final jwt = await getJwt();
+      final response = await http.get(
+        Uri.parse('$backendUrl/users'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwt',
+        },
+      );
+      if (response.statusCode == 200) {
+        profileDetails = jsonDecode(response.body) as Map<String, dynamic>;
+      }
+    } catch (e) {
+      // CommonSnackbar.show(text: "Error fetching user details", subtext: e.toString(), color: "red");
     }
   }
 }
