@@ -3,7 +3,6 @@ import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/aibot_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 class AIBotScreen extends StatelessWidget {
   final AIBotController controller = Get.put(AIBotController());
   final TextEditingController queryController = TextEditingController();
@@ -23,9 +22,6 @@ class AIBotScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollToBottom();
-    });
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -65,6 +61,11 @@ class AIBotScreen extends StatelessWidget {
                     ),
                   );
                 }
+
+                // Scroll after the ListView is updated
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  scrollToBottom();
+                });
 
                 return ListView.builder(
                   controller: scrollController,
