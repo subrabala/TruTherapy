@@ -9,7 +9,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:http/http.dart' as http;
 
 class BlogsController extends GetxController {
-  List<Blogs> blogs = <Blogs>[];
+  var blogs = <Blogs>[].obs;
   String resourceUrl = "";
 
   @override
@@ -18,7 +18,7 @@ class BlogsController extends GetxController {
     fetchAllBlogs();
   }
 
-  Future<void> fetchAllBlogs() async {
+Future<void> fetchAllBlogs() async {
     try {
       final jwt = await getJwt();
       final response = await http.get(
@@ -30,13 +30,16 @@ class BlogsController extends GetxController {
       if (response.statusCode == 200) {
         List<dynamic> jsonList = jsonDecode(response.body);
 
-        blogs = jsonList
+        blogs.value = jsonList
             .map((jsonItem) => Blogs.fromJson(jsonItem as Map<String, dynamic>))
-            .toList();
+            .toList(); // Update the reactive list
       }
     } catch (e) {
       CommonSnackbar.show(
-          text: "Error fetching blogs", subtext: e.toString(), color: "red");
+        text: "Error fetching blogs",
+        subtext: e.toString(),
+        color: "red",
+      );
     }
   }
 

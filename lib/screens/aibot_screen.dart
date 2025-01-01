@@ -42,13 +42,20 @@ class AIBotScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Aqua Bot",
+            "Sea Dost",
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
           backgroundColor: AppColors.mid,
           iconTheme: const IconThemeData(
             color: Colors.white,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              controller.chatHistory.clear();
+              Get.back();
+            },
           ),
         ),
         body: Column(
@@ -106,8 +113,9 @@ class AIBotScreen extends StatelessWidget {
                               horizontal: 8.0,
                             ),
                             padding: const EdgeInsets.all(12.0),
-                            constraints:
-                                const BoxConstraints(maxWidth: 0.8 * 1000),
+                          constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.8, 
+        ),
                             decoration: BoxDecoration(
                               color:
                                   isUser ? Colors.blue[100] : Colors.green[100],

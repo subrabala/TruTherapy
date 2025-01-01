@@ -13,10 +13,9 @@ class HomeScreen extends StatelessWidget {
       ? Get.find<BlogsController>()
       : Get.put(BlogsController());
 
-
   @override
   Widget build(BuildContext context) {
-     WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchAllBlogs();
     });
 
@@ -84,15 +83,16 @@ class HomeScreen extends StatelessWidget {
                           label: "Happy",
                           color:
                               Color.fromARGB(255, 255, 249, 197).withOpacity(1),
-                              firstQuery :"Hey! I'm feeling happy today! Can you suggest me something to do?",
+                          firstQuery:
+                              "Hey! I'm feeling happy today! Can you suggest me something to do?",
                         ),
                         // Sad box
                         _MoodBox(
                           emoji: ":(",
                           label: "Sad",
                           color: Colors.blueAccent.withOpacity(0.3),
-                            firstQuery: "Hello, I'm feeling quite sad today :( What can I do to feel better?",
-
+                          firstQuery:
+                              "Hello, I'm feeling quite sad today :( What can I do to feel better?",
                         ),
                         // Angry box
                         _MoodBox(
@@ -100,7 +100,8 @@ class HomeScreen extends StatelessWidget {
                           label: "Angry",
                           color: const Color.fromARGB(255, 244, 141, 141)
                               .withOpacity(0.4),
-                          firstQuery: "I'm feeling very angry today!!! Can you give some tips on how to manage anger?",
+                          firstQuery:
+                              "I'm feeling very angry today!!! Can you give some tips on how to manage anger?",
                         ),
                       ],
                     ),
@@ -123,22 +124,24 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: controller.blogs.isEmpty
-                    ? const Center(
-                        child: Text('No blogs available'),
-                      )
-                    : ListView(
-                        children: controller.blogs.map<Widget>((blog) {
-                          return BlogCard(
-                            id: blog.blogId,
-                            imageUrl: blog.thumbnail,
-                            title: blog.title,
-                            subtitle: blog.description,
-                            url: blog.title,
-                          );
-                        }).toList(),
-                      ),
-              ),
+                child: Obx(
+                  () => controller.blogs.isEmpty
+                      ? const Center(
+                          child: Text('No blogs available'),
+                        )
+                      : ListView(
+                          children: controller.blogs.map<Widget>((blog) {
+                            return BlogCard(
+                              id: blog.blogId,
+                              imageUrl: blog.thumbnail,
+                              title: blog.title,
+                              subtitle: blog.description,
+                              url: blog.title,
+                            );
+                          }).toList(),
+                        ),
+                ),
+              )
             ],
           ),
         ),
@@ -165,7 +168,9 @@ class _MoodBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => AIBotScreen(firstQuery: firstQuery,));
+        Get.to(() => AIBotScreen(
+              firstQuery: firstQuery,
+            ));
       },
       child: Container(
           width: 100,

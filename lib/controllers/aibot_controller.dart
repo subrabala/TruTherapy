@@ -105,4 +105,9 @@ class AIBotController extends GetxController {
       CommonSnackbar.show(color: "red", text: "Error while fetching data", subtext: e.toString());
     }
   }
+  @override
+  void onClose() {
+    chatHistory.clear();
+    super.onClose();
+  }
 }
