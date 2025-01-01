@@ -19,6 +19,7 @@ class HomeScreen extends StatelessWidget {
      WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.fetchAllBlogs();
     });
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -129,10 +130,11 @@ class HomeScreen extends StatelessWidget {
                     : ListView(
                         children: controller.blogs.map<Widget>((blog) {
                           return BlogCard(
+                            id: blog.blogId,
                             imageUrl: blog.thumbnail,
                             title: blog.title,
                             subtitle: blog.description,
-                            url: blog.blogId,
+                            url: blog.title,
                           );
                         }).toList(),
                       ),

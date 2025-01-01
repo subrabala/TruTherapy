@@ -58,7 +58,7 @@ class AIBotController extends GetxController {
     chatHistory.add(botResponse);
 
     for (int i = 1; i <= response.length; i++) {
-      await Future.delayed(Duration(milliseconds: 50));
+      await Future.delayed(Duration(milliseconds: 5));
       botResponse['bot'] = response.substring(0, i);
       chatHistory[chatHistory.length - 1] = botResponse;
     }
@@ -96,6 +96,7 @@ class AIBotController extends GetxController {
       );
 
       if (response.statusCode == 200) {
+        print(response.body.toString()); 
         currentSessionId = session_id;
         chatLogsForSession.value =
             List<Map<String, dynamic>>.from(jsonDecode(response.body));

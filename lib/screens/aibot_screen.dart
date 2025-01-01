@@ -4,7 +4,6 @@ import 'package:fsui/controllers/aibot_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
@@ -32,8 +31,12 @@ class AIBotScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if (firstQuery != null && firstQuery!.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.currentSessionId = null;
         queryController.text = firstQuery!;
       });
+      queryController.clear();
+
+      controller.handleQuery(firstQuery!.trim());
     }
     return SafeArea(
       child: Scaffold(

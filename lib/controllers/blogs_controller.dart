@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:fsui/constants.dart';
 import 'package:fsui/utils.dart';
+import 'package:fsui/blogs_video_player_screen.dart';
 import 'package:fsui/widgets/snackbar.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,7 +20,7 @@ class BlogsController extends GetxController {
 
   Future<void> fetchAllBlogs() async {
     try {
-      final jwt = await getJwt(isTemp: true);
+      final jwt = await getJwt();
       final response = await http.get(
         Uri.parse('$backendUrl/blogs/all'),
         headers: {
@@ -40,14 +42,19 @@ class BlogsController extends GetxController {
 
   Future<void> fetchResources(String resourceId) async {
     try {
-      final jwt = await getJwt(isTemp: true);
+      final jwt = await getJwt();
       final response = await http.get(
         Uri.parse('$backendUrl/blogs/resources/$resourceId'),
         headers: {
           'Authorization': 'Bearer $jwt',
         },
       );
-      if (response.statusCode == 200) {}
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        String resourceUrl = data["resource_url"];
+        Get.to(() => BlogsVideoPlayerScreen(videoUrl: resourceUrl));
+      }
     } catch (e) {
       CommonSnackbar.show(
           text: "Error fetching blogs", subtext: e.toString(), color: "red");
@@ -56,7 +63,7 @@ class BlogsController extends GetxController {
 }
 
 class Blogs {
-  final String blogId;
+  final int blogId;
   final String title;
   final String description;
   final String thumbnail;
@@ -70,7 +77,6 @@ class Blogs {
     required this.status,
   });
 
-  // Factory method to create a Blogs object from JSON
   factory Blogs.fromJson(Map<String, dynamic> json) {
     return Blogs(
       blogId: json['blog_id'],
@@ -81,7 +87,6 @@ class Blogs {
     );
   }
 
-  // Method to convert a Blogs object to JSON
   Map<String, dynamic> toJson() {
     return {
       'blog_id': blogId,

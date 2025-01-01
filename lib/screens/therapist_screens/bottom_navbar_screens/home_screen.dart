@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/controllers/video_controller.dart';
-import 'package:fsui/webview.dart';
+import 'package:fsui/controllers/blogs_controller.dart';
+import 'package:fsui/blogs_video_player_screen.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
-  final VideoController videoController = Get.put(VideoController());
+  final BlogsController videoController = Get.put(BlogsController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Obx(() {
-        if (videoController.videos.isEmpty) {
+        if (videoController.blogs.isEmpty) {
           return const Center(
             child: Text(
               "No videos added yet.",
@@ -32,25 +32,25 @@ class HomeScreen extends StatelessWidget {
           );
         } else {
           return ListView.builder(
-            itemCount: videoController.videos.length,
+            itemCount: videoController.blogs.length,
             itemBuilder: (context, index) {
-              final video = videoController.videos[index];
+              final video = videoController.blogs[index];
               return Card(
                 color: PastelColors.seaBlue.withOpacity(0.5),
                 elevation: 0,
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 child: ListTile(
                   leading: Icon(Icons.play_circle_outline_outlined, color: Colors.blue.shade400),
-                  title: Text(video.heading),
+                  title: Text(video.title),
                   subtitle: Text(video.description),
                   trailing: IconButton(
                     icon:  Icon(Icons.delete, color: Colors.red[200]),
                     onPressed: () {
-                      videoController.deleteVideo(video.id);
+                      // videoController.deleteVideo(video.id);
                     },
                   ),
                   onTap: () {
-                     Get.to(() => WebViewPage(url: "https://www.youtube.com/watch?v=vM2dC8OCZoY"));
+                    //  Get.to(() => WebViewPage(url: "https://www.youtube.com/watch?v=vM2dC8OCZoY"));
                   },
                 ),
               );
@@ -129,11 +129,11 @@ void _showAddVideoDialog(BuildContext context) {
           ElevatedButton(
             onPressed: () {
               if (formKey.currentState!.validate()) { 
-                videoController.addVideo(
-                  headingController.text,
-                  descriptionController.text,
-                  urlController.text,
-                );
+                // videoController.addVideo(
+                //   headingController.text,
+                //   descriptionController.text,
+                //   urlController.text,
+                // );
                 Get.back();
               }
             },
