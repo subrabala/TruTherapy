@@ -12,13 +12,15 @@ class BlogsController extends GetxController {
   var blogs = <Blogs>[].obs;
   String resourceUrl = "";
 
+  Map<String, dynamic> blogData = {};
+
   @override
   void onInit() {
     super.onInit();
     fetchAllBlogs();
   }
 
-Future<void> fetchAllBlogs() async {
+  Future<void> fetchAllBlogs() async {
     try {
       final jwt = await getJwt();
       final response = await http.get(
@@ -32,7 +34,7 @@ Future<void> fetchAllBlogs() async {
 
         blogs.value = jsonList
             .map((jsonItem) => Blogs.fromJson(jsonItem as Map<String, dynamic>))
-            .toList(); // Update the reactive list
+            .toList();
       }
     } catch (e) {
       CommonSnackbar.show(
@@ -43,20 +45,41 @@ Future<void> fetchAllBlogs() async {
     }
   }
 
-  Future<void> fetchResources(String resourceId) async {
+  // Future<void> fetchResources(String resourceId) async {
+  //   try {
+  //     final jwt = await getJwt();
+  //     final response = await http.put(Uri.parse('$backendUrl/blogs/resources'),
+  //         headers: {
+  //           'Authorization': 'Bearer $jwt',
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: jsonEncode({'s3_object': resourceId}));
+
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> data = jsonDecode(response.body);
+  //       String resourceUrl = data["resource_url"];
+  //       Get.to(() => BlogsVideoPlayerScreen(videoUrl: resourceUrl));
+  //     }
+  //   } catch (e) {
+  //     CommonSnackbar.show(
+  //         text: "Error fetching blogs", subtext: e.toString(), color: "red");
+  //   }
+  // }
+
+  Future<void> fetchBlogData(String blogId) async {
     try {
       final jwt = await getJwt();
       final response = await http.get(
-        Uri.parse('$backendUrl/blogs/resources/$resourceId'),
+        Uri.parse('$backendUrl/blogs/$blogId'),
         headers: {
           'Authorization': 'Bearer $jwt',
         },
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = jsonDecode(response.body);
-        String resourceUrl = data["resource_url"];
-        Get.to(() => BlogsVideoPlayerScreen(videoUrl: resourceUrl));
+        blogData = jsonDecode(response.body);
+        
+        Get.to(() => BlogsVideoPlayerScreen());
       }
     } catch (e) {
       CommonSnackbar.show(

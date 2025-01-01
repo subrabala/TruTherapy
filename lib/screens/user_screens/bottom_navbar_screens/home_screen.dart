@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/controllers/aibot_controller.dart';
 import 'package:fsui/controllers/blogs_controller.dart';
 import 'package:fsui/controllers/user_details_controller.dart';
 import 'package:fsui/screens/aibot_screen.dart';
@@ -168,6 +169,8 @@ class _MoodBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        Get.find<AIBotController>().currentSessionId = null;
+        Get.find<AIBotController>().chatHistory.clear();
         Get.to(() => AIBotScreen(
               firstQuery: firstQuery,
             ));

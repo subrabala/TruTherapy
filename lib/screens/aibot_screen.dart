@@ -34,9 +34,8 @@ class AIBotScreen extends StatelessWidget {
         controller.currentSessionId = null;
         queryController.text = firstQuery!;
       });
-      queryController.clear();
-
       controller.handleQuery(firstQuery!.trim());
+      queryController.text = "";
     }
     return SafeArea(
       child: Scaffold(
@@ -54,6 +53,8 @@ class AIBotScreen extends StatelessWidget {
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               controller.chatHistory.clear();
+              controller.chatLogsForSession.clear();
+              controller.currentSessionId = null;
               Get.back();
             },
           ),
@@ -113,9 +114,9 @@ class AIBotScreen extends StatelessWidget {
                               horizontal: 8.0,
                             ),
                             padding: const EdgeInsets.all(12.0),
-                          constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.8, 
-        ),
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 0.8,
+                            ),
                             decoration: BoxDecoration(
                               color:
                                   isUser ? Colors.blue[100] : Colors.green[100],

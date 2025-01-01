@@ -22,7 +22,7 @@ class UserDetailsController extends GetxController {
   final selectedNationality = Rx<String?>(null);
   final selectedDob = Rx<DateTime?>(null);
 
-  Map<String, dynamic > profileDetails = {};
+  Map<String?, dynamic > profileDetails = {};
 
 
 @override

@@ -47,14 +47,12 @@ class BlogCard extends StatelessWidget {
               child: Opacity(
                   opacity: 0.9,
                   child: Image.network(
-                    imageUrl,
+                    '$s3_cdn/$imageUrl',
                     fit: BoxFit.cover,
-                    height: 90,
                     errorBuilder: (context, error, stackTrace) {
                       return Image.asset(
                         "assets/fallback_blog.png",
                         fit: BoxFit.cover,
-                        height: 90,
                       );
                     },
                   )),
@@ -64,16 +62,16 @@ class BlogCard extends StatelessWidget {
             flex: 2,
             child: Padding(
               padding:
-                  const EdgeInsets.only(left: 15, right: 5, top: 5, bottom: 10),
+                  const EdgeInsets.only(left: 15, right: 5, top: 10, bottom: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.dark800.withOpacity(0.8),
+                      color: AppColors.dark800,
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -92,7 +90,7 @@ class BlogCard extends StatelessWidget {
             icon: const Icon(Icons.arrow_outward, color: AppColors.mid),
             iconSize: 20,
             onPressed: () {
-              Get.find<BlogsController>().fetchResources(id.toString());
+              Get.find<BlogsController>().fetchBlogData(id.toString());
             },
           ),
         ],

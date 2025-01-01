@@ -43,7 +43,6 @@ class AuthController extends GetxController {
             'platform': Platform.isIOS ? 'ios' : 'web',
           },
         );
-        print(response.toString());
 
         if (response.statusCode == 200) {
           if (jsonDecode(response.body)['access_token'] != null) {

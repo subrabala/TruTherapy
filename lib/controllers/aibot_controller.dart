@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class AIBotController extends GetxController {
   final List<Map<String, String>> chatHistory = <Map<String, String>>[].obs;
-  List<Map<String, dynamic>> chatMetadata = <Map<String, dynamic>>[];
+  RxList<Map<String, dynamic>> chatMetadata = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> chatLogsForSession = <Map<String, dynamic>>[].obs;
 
   final RxBool isTyping = false.obs;
@@ -50,6 +50,7 @@ class AIBotController extends GetxController {
       chatHistory.add({'bot': 'Error: Unable to connect to server'});
     } finally {
       isTyping.value = false;
+      
     }
   }
 
@@ -78,7 +79,7 @@ class AIBotController extends GetxController {
 
       if (response.statusCode == 200) {
         chatMetadata =
-            List<Map<String, dynamic>>.from(jsonDecode(response.body));
+            RxList<Map<String, dynamic>>.from(jsonDecode(response.body));
       }
     } catch (e) {}
   }
