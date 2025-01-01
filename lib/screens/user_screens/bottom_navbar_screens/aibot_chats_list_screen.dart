@@ -56,8 +56,8 @@ class AIBotChatsListScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.add, color: Colors.white),
-                      const SizedBox(width: 4),
-                      const Text(
+                       SizedBox(width: 4),
+                       Text(
                         "New Chat",
                         style: TextStyle(color: Colors.white),
                       ),

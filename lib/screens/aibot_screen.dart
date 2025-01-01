@@ -30,13 +30,12 @@ class AIBotScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (firstQuery != null && firstQuery!.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         controller.currentSessionId = null;
-        queryController.text = firstQuery!;
+        await controller.handleQuery(firstQuery!.trim());
       });
-      controller.handleQuery(firstQuery!.trim());
-      queryController.text = "";
     }
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
