@@ -45,27 +45,6 @@ class BlogsController extends GetxController {
     }
   }
 
-  // Future<void> fetchResources(String resourceId) async {
-  //   try {
-  //     final jwt = await getJwt();
-  //     final response = await http.put(Uri.parse('$backendUrl/blogs/resources'),
-  //         headers: {
-  //           'Authorization': 'Bearer $jwt',
-  //           'Content-Type': 'application/json',
-  //         },
-  //         body: jsonEncode({'s3_object': resourceId}));
-
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> data = jsonDecode(response.body);
-  //       String resourceUrl = data["resource_url"];
-  //       Get.to(() => BlogsVideoPlayerScreen(videoUrl: resourceUrl));
-  //     }
-  //   } catch (e) {
-  //     CommonSnackbar.show(
-  //         text: "Error fetching blogs", subtext: e.toString(), color: "red");
-  //   }
-  // }
-
   Future<void> fetchBlogData(String blogId) async {
     try {
       final jwt = await getJwt();

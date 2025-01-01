@@ -6,6 +6,8 @@ import 'package:fsui/controllers/video_player_controller.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+
+
 class BlogsVideoPlayerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
