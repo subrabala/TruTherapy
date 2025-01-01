@@ -64,27 +64,30 @@ class AIBotController extends GetxController {
       chatHistory[chatHistory.length - 1] = botResponse;
     }
   }
+Future<void> getChatsList() async {
+  try {
+    final jwt = await getJwt();
 
-  Future<void> getChatsList() async {
-    try {
-      final jwt = await getJwt();
+    final response = await http.get(
+      Uri.parse('$backendUrl/chat/logs'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $jwt',
+      },
+    );
 
-      final response = await http.get(
-        Uri.parse('$backendUrl/chat/logs'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${jwt}',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        chatMetadata =
-            RxList<Map<String, dynamic>>.from(jsonDecode(response.body));
-      }
-    } catch (e) {
-      CommonSnackbar.show(color: "red", text: "Error while fetching data", subtext: e.toString());
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List;
+      chatMetadata.assignAll(data.map((e) => e as Map<String, dynamic>).toList());
     }
+  } catch (e) {
+    CommonSnackbar.show(
+      color: "red",
+      text: "Error while fetching data",
+      subtext: e.toString(),
+    );
   }
+}
 
   Future<void> getChatsForSession(session_id) async {
     try {

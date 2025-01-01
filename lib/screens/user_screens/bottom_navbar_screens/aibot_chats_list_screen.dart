@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class AIBotChatsListScreen extends StatelessWidget {
   final AIBotController controller = Get.put(AIBotController());
 
-  AIBotChatsListScreen({Key? key}) : super(key: key) {}
+  AIBotChatsListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +76,11 @@ class AIBotChatsListScreen extends StatelessWidget {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: Container(
-                  child: const Text(
-                    'Recents',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black54,
-                    ),
+                child: const Text(
+                  'Recents',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black54,
                   ),
                 ),
               ),
@@ -91,52 +89,54 @@ class AIBotChatsListScreen extends StatelessWidget {
                   onRefresh: () async {
                     controller.getChatsList();
                   },
-                  child: ListView.builder(
-                    itemCount: controller.chatMetadata.length,
-                    itemBuilder: (context, index) {
-                      final chat = controller.chatMetadata[index];
-
-                      return GestureDetector(
-                        onTap: () async {
-                          await controller
-                              .getChatsForSession(chat['session_id']);
-                          Get.to(() => AIBotScreen());
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 255, 250, 228),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                chat['response'].length > 30
-                                    ? '${chat['response'].substring(0, 30)}...'
-                                    : chat['response'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black87,
+                  child: Obx(() {
+                    return ListView.builder(
+                      itemCount: controller.chatMetadata.length,
+                      itemBuilder: (context, index) {
+                        final chat = controller.chatMetadata[index];
+                        return GestureDetector(
+                          onTap: () async {
+                            await controller
+                                .getChatsForSession(chat['session_id']);
+                            Get.to(() => AIBotScreen());
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 255, 250, 228),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  chat['response'].length > 30
+                                      ? '${chat['response'].substring(0, 30)}...'
+                                      : chat['response'],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                convertToReadableDateAndTime(chat['asked_at']),
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.blue.shade700,
+                                const SizedBox(height: 8),
+                                Text(
+                                  convertToReadableDateAndTime(
+                                      chat['asked_at']),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blue.shade700,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        );
+                      },
+                    );
+                  }),
                 ),
               ),
             ],
