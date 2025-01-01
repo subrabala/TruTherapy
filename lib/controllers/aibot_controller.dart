@@ -9,9 +9,11 @@ import 'package:http/http.dart' as http;
 class AIBotController extends GetxController {
   final List<Map<String, String>> chatHistory = <Map<String, String>>[].obs;
   RxList<Map<String, dynamic>> chatMetadata = <Map<String, dynamic>>[].obs;
-  RxList<Map<String, dynamic>> chatLogsForSession = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> chatLogsForSession =
+      <Map<String, dynamic>>[].obs;
 
   final RxBool isTyping = false.obs;
+  final RxBool isFetching = false.obs;
 
   String? currentSessionId = null;
 
@@ -24,7 +26,6 @@ class AIBotController extends GetxController {
 
     chatHistory.add({'user': query});
     isTyping.value = true;
-
     try {
       final jwt = await getJwt();
       final response = await http.post(
@@ -47,49 +48,48 @@ class AIBotController extends GetxController {
         chatHistory.add({'bot': 'Error: ${response.statusCode}'});
       }
     } catch (e) {
-      chatHistory.add({'bot': 'Error: Unable to connect to server'});
-    } finally {
       isTyping.value = false;
-      
+      chatHistory.add({'bot': 'Error: Unable to connect to server'});
     }
   }
 
   Future<void> _simulateTyping(String response) async {
     final Map<String, String> botResponse = {'bot': ''};
     chatHistory.add(botResponse);
+    isTyping.value = false;
 
     for (int i = 1; i <= response.length; i++) {
-      await Future.delayed(Duration(milliseconds: 5));
+      await Future.delayed(Duration(milliseconds: 10));
       botResponse['bot'] = response.substring(0, i);
       chatHistory[chatHistory.length - 1] = botResponse;
     }
   }
 
-  
-Future<void> getChatsList() async {
-  try {
-    final jwt = await getJwt();
+  Future<void> getChatsList() async {
+    try {
+      final jwt = await getJwt();
 
-    final response = await http.get(
-      Uri.parse('$backendUrl/chat/logs'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $jwt',
-      },
-    );
+      final response = await http.get(
+        Uri.parse('$backendUrl/chat/logs'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwt',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as List;
-      chatMetadata.assignAll(data.map((e) => e as Map<String, dynamic>).toList());
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as List;
+        chatMetadata
+            .assignAll(data.map((e) => e as Map<String, dynamic>).toList());
+      }
+    } catch (e) {
+      CommonSnackbar.show(
+        color: "red",
+        text: "Error while fetching data",
+        subtext: e.toString(),
+      );
     }
-  } catch (e) {
-    CommonSnackbar.show(
-      color: "red",
-      text: "Error while fetching data",
-      subtext: e.toString(),
-    );
   }
-}
 
   Future<void> getChatsForSession(session_id) async {
     try {
@@ -104,15 +104,19 @@ Future<void> getChatsList() async {
       );
 
       if (response.statusCode == 200) {
-        print(response.body.toString()); 
+        print(response.body.toString());
         currentSessionId = session_id;
         chatLogsForSession.value =
             List<Map<String, dynamic>>.from(jsonDecode(response.body));
       }
     } catch (e) {
-      CommonSnackbar.show(color: "red", text: "Error while fetching data", subtext: e.toString());
+      CommonSnackbar.show(
+          color: "red",
+          text: "Error while fetching data",
+          subtext: e.toString());
     }
   }
+
   @override
   void onClose() {
     chatHistory.clear();

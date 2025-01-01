@@ -85,7 +85,6 @@ class AIBotScreen extends StatelessWidget {
                   );
                 }
 
-                // Scroll after the ListView is updated
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   scrollToBottom();
                 });
@@ -135,6 +134,24 @@ class AIBotScreen extends StatelessWidget {
                 );
               }),
             ),
+            Obx(() {
+              return controller.isTyping.value
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 8.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Bot is Typing...",
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink();
+            }),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15.0),
