@@ -41,7 +41,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: 28,
                 'assets/icons/home.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 0 ? AppColors.dark800 : PastelColors.seaBlueDark,
+                  _selectedIndex == 0 ?PastelColors.seaBlueDark :  AppColors.dark800 ,
                   BlendMode.srcIn,
                 ),
               ),
@@ -52,7 +52,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: 26,
                 'assets/icons/chat.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 1 ? AppColors.dark800 : PastelColors.seaBlueDark,
+                  _selectedIndex == 1 ?  PastelColors.seaBlueDark : AppColors.dark800 ,
                   BlendMode.srcIn,
                 ),
               ),
@@ -63,7 +63,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: 24,
                 'assets/icons/profile.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 2 ? AppColors.dark800 : PastelColors.seaBlueDark,
+                  _selectedIndex == 2 ?  PastelColors.seaBlueDark :AppColors.dark800 ,
                   BlendMode.srcIn,
                 ),
               ),

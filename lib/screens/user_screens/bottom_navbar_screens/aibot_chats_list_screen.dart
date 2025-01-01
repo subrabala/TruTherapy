@@ -45,6 +45,7 @@ class AIBotChatsListScreen extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 child: TextButton(
                   onPressed: () {
+                    controller.currentSessionId = null;
                     controller.chatLogsForSession.clear();
                     controller.chatHistory.clear();
                     Get.to(() => AIBotScreen());
@@ -56,8 +57,8 @@ class AIBotChatsListScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.add, color: Colors.white),
-                       SizedBox(width: 4),
-                       Text(
+                      SizedBox(width: 4),
+                      Text(
                         "New Chat",
                         style: TextStyle(color: Colors.white),
                       ),

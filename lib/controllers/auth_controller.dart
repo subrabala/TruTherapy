@@ -75,6 +75,7 @@ class AuthController extends GetxController {
   void signOut() async {
     await _googleSignIn.signOut();
     final prefs = await SharedPreferences.getInstance();
+    
 
     await prefs.remove('jwt');
     Get.to(() => AuthScreen());
