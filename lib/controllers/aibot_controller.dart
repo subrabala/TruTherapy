@@ -64,6 +64,8 @@ class AIBotController extends GetxController {
       chatHistory[chatHistory.length - 1] = botResponse;
     }
   }
+
+  
 Future<void> getChatsList() async {
   try {
     final jwt = await getJwt();
