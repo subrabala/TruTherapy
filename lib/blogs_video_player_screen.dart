@@ -55,7 +55,7 @@ class BlogsVideoPlayerScreen extends StatelessWidget {
                 AspectRatio(
                   aspectRatio: controller.videoController.value.isInitialized
                       ? controller.videoController.value.aspectRatio
-                      : 16 / 9, // Default aspect ratio if not initialized
+                      : 16 / 9, 
                   child: VideoPlayer(controller.videoController),
                 ),
                 const SizedBox(height: 10),
