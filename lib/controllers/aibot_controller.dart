@@ -81,7 +81,9 @@ class AIBotController extends GetxController {
         chatMetadata =
             RxList<Map<String, dynamic>>.from(jsonDecode(response.body));
       }
-    } catch (e) {}
+    } catch (e) {
+      CommonSnackbar.show(color: "red", text: "Error while fetching data", subtext: e.toString());
+    }
   }
 
   Future<void> getChatsForSession(session_id) async {

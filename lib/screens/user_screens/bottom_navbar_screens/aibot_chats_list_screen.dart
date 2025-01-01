@@ -8,17 +8,16 @@ import 'package:get/get.dart';
 class AIBotChatsListScreen extends StatelessWidget {
   final AIBotController controller = Get.put(AIBotController());
 
-  AIBotChatsListScreen({Key? key}) : super(key: key) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.getChatsList();
-    });
-  }
+  AIBotChatsListScreen({Key? key}) : super(key: key) {}
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getChatsList();
+    });
     return WillPopScope(
-       onWillPop: () async {
-        Get.delete<AIBotController>(); 
+      onWillPop: () async {
+        Get.delete<AIBotController>();
         return true;
       },
       child: Scaffold(
@@ -27,7 +26,9 @@ class AIBotChatsListScreen extends StatelessWidget {
           title: const Text(
             'Chat History',
             style: TextStyle(
-                color: Colors.black87, fontWeight: FontWeight.w600, fontSize: 18),
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontSize: 18),
           ),
           backgroundColor: Colors.white,
           elevation: 0,
@@ -40,7 +41,8 @@ class AIBotChatsListScreen extends StatelessWidget {
                   color: PastelColors.skyBlueDark,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 child: TextButton(
                   onPressed: () {
                     controller.chatLogsForSession.clear();
@@ -85,17 +87,18 @@ class AIBotChatsListScreen extends StatelessWidget {
               ),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () async{
+                  onRefresh: () async {
                     controller.getChatsList();
                   },
                   child: ListView.builder(
                     itemCount: controller.chatMetadata.length,
                     itemBuilder: (context, index) {
                       final chat = controller.chatMetadata[index];
-      
+
                       return GestureDetector(
                         onTap: () async {
-                          await controller.getChatsForSession(chat['session_id']);
+                          await controller
+                              .getChatsForSession(chat['session_id']);
                           Get.to(() => AIBotScreen());
                         },
                         child: Container(
@@ -110,9 +113,9 @@ class AIBotChatsListScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                chat['query'].length > 30
-                                    ? '${chat['query'].substring(0, 30)}...'
-                                    : chat['query'],
+                                chat['response'].length > 30
+                                    ? '${chat['response'].substring(0, 30)}...'
+                                    : chat['response'],
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,

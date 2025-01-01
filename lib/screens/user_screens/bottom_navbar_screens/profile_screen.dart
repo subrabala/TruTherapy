@@ -112,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  '${controller.profileDetails['phone_number'] ?? ""}',
+                                  '${controller.profileDetails['phone_number']?.substring(4) ?? ""}',
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.black,
@@ -217,7 +217,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              '📞   ${controller.profileDetails['nok_phone_number'] ?? ""}',
+                              '📞   ${controller.profileDetails['nok_phone_number']?.substring(4) ?? ""}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,
