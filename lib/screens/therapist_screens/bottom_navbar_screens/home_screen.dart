@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/blogs_controller.dart';
-import 'package:fsui/blogs_video_player_screen.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {

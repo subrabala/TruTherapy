@@ -99,13 +99,13 @@ class AuthController extends GetxController {
             'Cookie': 'session=$idToken',
           },
         );
-        print(response.toString());
 
         if (response.statusCode == 200) {
           if (jsonDecode(response.body)['access_token'] != null) {
             final jwt = jsonDecode(response.body)['access_token'];
-            await setJwt(jwt);
-            Get.to(() => IntroScreen());
+            await setTherapistJwt(jwt);
+
+            Get.to(() => const IntroScreen());
           }
         } else {
           CommonSnackbar.show(

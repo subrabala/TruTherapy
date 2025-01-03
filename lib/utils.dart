@@ -1,29 +1,62 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
+class SharedPrefs {
+  static final SharedPrefs _instance = SharedPrefs._internal();
+  SharedPreferences? _preferences;
+
+  SharedPrefs._internal();
+
+  factory SharedPrefs() {
+    return _instance;
+  }
+
+  Future<void> init() async {
+    _preferences = await SharedPreferences.getInstance();
+  }
+
+  SharedPreferences get prefs {
+    if (_preferences == null) {
+      throw Exception("SharedPrefs not initialized. Call init() first.");
+    }
+    return _preferences!;
+  }
+}
+
 Future<void> setJwt(String jwt, {bool isTemp = false}) async {
-  final prefs = await SharedPreferences.getInstance();
+  final prefs = SharedPrefs().prefs;
   if (isTemp) {
-    await prefs.setString('jwtTemp', jwt); 
+    await prefs.setString('jwtTemp', jwt);
   } else {
-    await prefs.setString('jwt', jwt); 
+    await prefs.setString('jwt', jwt);
+    await prefs.setString('scope', "user");
   }
 }
 
-
-Future<String?> getJwt({bool isTemp = false}) async {
-  final prefs = await SharedPreferences.getInstance();
-  if (isTemp) {
-    return prefs.getString('jwtTemp'); 
-  } else {
-    return prefs.getString('jwt');
+String? getJwt({bool isTemp = false}) {
+  final prefs = SharedPrefs().prefs;
+  final scope = getScope();
+  if (scope == 'user') {
+    return isTemp ? prefs.getString('jwtTemp') : prefs.getString('jwt');
+  } else if (scope == 'therapist') {
+    return prefs.getString('jwtTherapist');
   }
+  return null;
 }
 
+Future<void> setTherapistJwt(String jwt) async {
+  final prefs = SharedPrefs().prefs;
+  await prefs.setString('jwtTherapist', jwt);
+  await prefs.setString('scope', 'therapist');
+}
+
+String? getTherapistJwt() {
+  final prefs = SharedPrefs().prefs;
+  return prefs.getString('jwtTherapist');
+}
 
 Future<bool> checkIfFirstRun() async {
-  final prefs = await SharedPreferences.getInstance();
+  final prefs = SharedPrefs().prefs;
   bool? isFirstRun = prefs.getBool('isFirstRun');
   if (isFirstRun == null) {
     await prefs.setBool('isFirstRun', false);
@@ -32,48 +65,32 @@ Future<bool> checkIfFirstRun() async {
   return false;
 }
 
-Future<bool> isLoggedIn() async {
-  final prefs = await SharedPreferences.getInstance();
-  final jwt = prefs.getString('jwt');
-
-  if (jwt != null && jwt.isNotEmpty) {
-    return true;
-  }
-  return false;
-}
-
-
-
-Future<void> openYouTubeInPiPMode(String youtubeUrl) async {
-  final Uri url = Uri.parse(youtubeUrl);
-
-  print('Opening $url in PiP mode');
-
-  if (await canLaunchUrl(url)) {
-    try {
-      await launchUrl(
-        url,
-        mode: LaunchMode.externalApplication,
-      );
-    } catch (e) {
-      print("Error while launching URL: $e");
-      throw 'Could not open the URL: $e';
-    }
+bool isLoggedIn() {
+  final prefs = SharedPrefs().prefs;
+  if (getScope() == 'user') {
+    final jwt = prefs.getString('jwt');
+    return jwt != null && jwt.isNotEmpty;
+  } else if (getScope() == 'therapist') {
+    final jwt = prefs.getString('jwtTherapist');
+    return jwt != null && jwt.isNotEmpty;
   } else {
-    print("Cannot launch the URL: $youtubeUrl");
-    throw 'Could not open the URL.';
+    return false;
   }
 }
 
 String convertToReadableDateAndTime(String timestamp) {
-  DateTime dateTime = DateTime.parse(timestamp).add(Duration(hours: 5, minutes: 30));
-  String formattedDate = DateFormat('dd-MM-yyyy, hh:mm').format(dateTime);
-  return formattedDate;
+  DateTime dateTime =
+      DateTime.parse(timestamp).add(const Duration(hours: 5, minutes: 30));
+  return DateFormat('dd-MM-yyyy, hh:mm').format(dateTime);
 }
 
 String convertToReadableDate(String timestamp) {
-  DateTime dateTime = DateTime.parse(timestamp).add(Duration(hours: 5, minutes: 30));
-  String formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
-  return formattedDate;
+  DateTime dateTime =
+      DateTime.parse(timestamp).add(const Duration(hours: 5, minutes: 30));
+  return DateFormat('dd-MM-yyyy').format(dateTime);
 }
 
+String? getScope() {
+  final prefs = SharedPrefs().prefs;
+  return prefs.getString('scope');
+}
