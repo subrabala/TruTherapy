@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/emergency_chats.dart';
 import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/home_screen.dart';
 import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/profile_screen.dart';
 import 'package:fsui/screens/user_screens/bottom_navbar_screens/aibot_chats_list_screen.dart';
@@ -17,7 +18,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   final List<Widget> _screens = [
     HomeScreen(),
-    AIBotChatsListScreen(),
+    EmergencyChats(),
     ProfileScreen(),
   ];
 

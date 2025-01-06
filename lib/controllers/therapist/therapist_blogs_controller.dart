@@ -1,4 +1,4 @@
-import 'dart:convert';
+  import 'dart:convert';
 
 import 'package:fsui/constants.dart';
 import 'package:fsui/models.dart';
@@ -6,10 +6,9 @@ import 'package:fsui/utils.dart';
 import 'package:fsui/screens/blogs_video_player_screen.dart';
 import 'package:fsui/widgets/snackbar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:http/http.dart' as http;
 
-class BlogsController extends BaseBlogsController {
+class TherapistBlogsController extends BaseBlogsController {
   var blogs = <Blogs>[].obs;
   String resourceUrl = "";
 
@@ -18,14 +17,14 @@ class BlogsController extends BaseBlogsController {
   @override
   void onInit() {
     super.onInit();
-    fetchAllBlogs();
+    fetchBlogs();
   }
 
-  Future<void> fetchAllBlogs() async {
+  Future<void> fetchBlogs() async {
     try {
       final jwt =  getJwt();
       final response = await http.get(
-        Uri.parse('$backendUrl/blogs/all'),
+        Uri.parse('$backendUrl/therapist/blogs/all'),
         headers: {
           'Authorization': 'Bearer $jwt',
         },
@@ -50,7 +49,7 @@ class BlogsController extends BaseBlogsController {
     try {
       final jwt =  getJwt();
       final response = await http.get(
-        Uri.parse('$backendUrl/blogs/$blogId'),
+        Uri.parse('$backendUrl/therapist/blogs/$blogId'),
         headers: {
           'Authorization': 'Bearer $jwt',
         },
@@ -66,6 +65,51 @@ class BlogsController extends BaseBlogsController {
           text: "Error fetching blogs", subtext: e.toString(), color: "red");
     }
   }
+
+  Future<void> createBlog(Map<String, dynamic> data) async {
+    try {
+      final jwt =  getJwt();
+      final response = await http.get(
+        Uri.parse('$backendUrl/blogs/create'),
+        headers: {
+          'Authorization': 'Bearer $jwt',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        blogData = jsonDecode(response.body);
+        CommonSnackbar.show(
+          text: "Creating blog successfully", subtext: '', color: "green");
+      Get.back();
+      }
+    } catch (e) {
+      CommonSnackbar.show(
+          text: "Error creating blogs", subtext: e.toString(), color: "red");
+    }
+  }
+
+    Future<void> uploadBlogData(Map<String, dynamic> data) async {
+    try {
+      final jwt =  getJwt();
+      final response = await http.get(
+        Uri.parse('$backendUrl/blogs/create/${data}'),
+        headers: {
+          'Authorization': 'Bearer $jwt',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        blogData = jsonDecode(response.body);
+        CommonSnackbar.show(
+          text: "Creating blog successfully", subtext: '', color: "green");
+      Get.back();
+      }
+    } catch (e) {
+      CommonSnackbar.show(
+          text: "Error creating blogs", subtext: e.toString(), color: "red");
+    }
+  }
+
 
 }
 

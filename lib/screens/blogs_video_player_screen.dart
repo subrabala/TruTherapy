@@ -2,18 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/blogs_controller.dart';
+import 'package:fsui/controllers/therapist/therapist_blogs_controller.dart';
 import 'package:fsui/controllers/video_player_controller.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-
 class BlogsVideoPlayerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final BlogsController blogController = Get.isRegistered<BlogsController>()
-        ? Get.find<BlogsController>()
-        : Get.put(BlogsController());
+    final scope = getScope();
+    final blogController = scope == 'therapist'
+        ? (Get.isRegistered<TherapistBlogsController>()
+            ? Get.find<TherapistBlogsController>()
+            : Get.put(TherapistBlogsController()))
+        : (Get.isRegistered<BlogsController>()
+            ? Get.find<BlogsController>()
+            : Get.put(BlogsController()));
+
     final VideoController controller = Get.isRegistered<VideoController>()
         ? Get.find<VideoController>()
         : Get.put(VideoController());
@@ -55,7 +61,7 @@ class BlogsVideoPlayerScreen extends StatelessWidget {
                 AspectRatio(
                   aspectRatio: controller.videoController.value.isInitialized
                       ? controller.videoController.value.aspectRatio
-                      : 16 / 9, 
+                      : 16 / 9,
                   child: VideoPlayer(controller.videoController),
                 ),
                 const SizedBox(height: 10),
@@ -82,12 +88,11 @@ class BlogsVideoPlayerScreen extends StatelessWidget {
                       children: [
                         const Align(
                             alignment: Alignment.centerLeft,
-                            child: Text("About",
+                            child: Text("Description",
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600))),
-                                        const SizedBox(height: 10),
-
+                        const SizedBox(height: 10),
                         MarkdownBody(
                           data: blogController.blogData["content"] ??
                               "No Content",

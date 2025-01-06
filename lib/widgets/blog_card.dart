@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/blogs_controller.dart';
+import 'package:fsui/controllers/therapist/therapist_blogs_controller.dart';
 import 'package:fsui/utils.dart';
-import 'package:fsui/blogs_video_player_screen.dart';
+import 'package:fsui/screens/blogs_video_player_screen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -34,66 +35,63 @@ class BlogCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
       ),
       margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: [
-          // Left side for image
-          Expanded(
-            flex: 1,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-              ),
-              child: Opacity(
-                  opacity: 0.9,
-                  child: Image.network(
-                    '$s3_cdn/$imageUrl',
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        "assets/fallback_blog.png",
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding:
-                  const EdgeInsets.only(left: 15, right: 5, top: 10, bottom: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.dark800,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.dark800,
-                    ),
-                  ),
-                ],
+      child: GestureDetector(
+        onTap: () {
+          getScope() == 'therapist'
+              ? Get.find<TherapistBlogsController>()
+                  .fetchBlogData(id.toString())
+              : Get.find<BlogsController>().fetchBlogData(id.toString());
+        },
+        child: Row(
+          children: [
+            // Left side for image
+            Expanded(
+              flex: 1,
+              child: ClipRRect(
+                child: Opacity(
+                    opacity: 0.9,
+                    child: Image.network(
+                      '$s3_cdn/$imageUrl',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          "assets/fallback_blog.png",
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    )),
               ),
             ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.arrow_outward, color: AppColors.mid),
-            iconSize: 20,
-            onPressed: () {
-              Get.find<BlogsController>().fetchBlogData(id.toString());
-            },
-          ),
-        ],
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 15, right: 5, top: 10, bottom: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.dark800,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.dark800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
 class UserDetails {
 
   String? contactNumber;
@@ -23,4 +25,9 @@ class UserDetails {
     this.passportNumber,
     this.placeOfIssue,
   });
+}
+
+
+abstract class BaseBlogsController extends GetxController {
+  Map<String, dynamic> get blogData;
 }

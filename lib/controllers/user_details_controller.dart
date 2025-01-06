@@ -185,7 +185,7 @@ void onInit(){
         profileDetails = jsonDecode(response.body) as Map<String, dynamic>;
       }
     } catch (e) {
-      // CommonSnackbar.show(text: "Error fetching user details", subtext: e.toString(), color: "red");
+      CommonSnackbar.show(text: "Error fetching user details", subtext: e.toString(), color: "red");
     }
   }
 }
