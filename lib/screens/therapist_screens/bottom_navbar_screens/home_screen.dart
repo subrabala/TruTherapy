@@ -22,11 +22,20 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Manage Blogs",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
+          ElevatedButton.icon(
             onPressed: () {
               _showAddVideoDialog(context);
             },
+            icon: const Icon(Icons.add),
+            label: const Text("Create"),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.mid,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+            ),
           ),
         ],
       ),
@@ -52,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                         children: blogsController.blogs.map<Widget>((blog) {
                           return BlogCard(
                             id: blog.blogId,
-                            imageUrl: blog.thumbnail,
+                            imageUrl: blog.thumbnail ?? '',
                             title: blog.title,
                             subtitle: blog.description,
                             url: blog.title,

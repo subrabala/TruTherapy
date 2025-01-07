@@ -13,7 +13,7 @@ class CommonSnackbar {
       snackPosition: SnackPosition.TOP,
       backgroundColor: color == "red"
           ? const Color.fromARGB(255, 255, 132, 132)
-          : const Color.fromARGB(255, 117, 225, 173),
+          : const Color.fromARGB(255, 203, 249, 227),
       colorText: Colors.white,
       borderRadius: 8.0,
       margin: const EdgeInsets.all(8.0),

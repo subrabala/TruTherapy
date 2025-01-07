@@ -15,45 +15,23 @@ class EmergencyChatController extends GetxController {
   RxList<Map<String, dynamic>> chatLogsForSession =
       <Map<String, dynamic>>[].obs;
 
+
   @override
   void onInit() {
     super.onInit();
     fetchChats();
   }
 
-  // Future<void> fetchChats() async {
-  //   await Future.delayed(const Duration(seconds: 2));
-  //   final List<Map<String, dynamic>> fetchedChats = [
-  //     {
-  //       "name": "John Doe",
-  //       "phone": 99127890990,
-  //       "mail": "awsdfewrgt",
-  //       "asked_at": "2025-01-06T21:04:15.445Z",
-  //       "session_id": "session123",
-  //       "response": "Help is on the way!"
-  //     },
-  //     {
-  //       "name": "Jane Smith",
-  //       "phone": 9123456789,
-  //       "mail": "janesmith@example.com",
-  //       "asked_at": "2025-01-06T22:10:30.123Z",
-  //       "session_id": "session456",
-  //       "response": "Stay calm, assistance is coming."
-  //     }
-  //   ];
-  //   chatMessages.value = fetchedChats;
-  // }
-
   Future<void> fetchChats() async {
     try {
       final jwt = getJwt();
       final response = await http.get(
-        Uri.parse('$backendUrl/therapist/blogs/all'),
+        Uri.parse('$backendUrl/therapist/chat/logs'),
         headers: {
           'Authorization': 'Bearer $jwt',
         },
       );
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         List<dynamic> jsonList = jsonDecode(response.body);
         chatMessages.value = jsonList
             .map((jsonItem) => jsonItem as Map<String, dynamic>)
@@ -70,5 +48,100 @@ class EmergencyChatController extends GetxController {
     }
   }
 
-  getChatsForSession(chat) {}
+  Future<void> updateSessionStatus(String sessionId, String status) async {
+    try {
+      final jwt = getJwt();
+      final response = await http.put(
+        Uri.parse(
+            '$backendUrl/therapist/chat/logs/$sessionId/status?status=$status'),
+        headers: {
+          'Authorization': 'Bearer $jwt',
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        CommonSnackbar.show(
+          text: "Chat status updated",
+          subtext: "",
+          color: "green",
+        );
+        fetchChats();
+      } else {
+        CommonSnackbar.show(
+          text: "Error updating chat status",
+          subtext: response.body,
+          color: "red",
+        );
+      }
+    } catch (e) {
+      CommonSnackbar.show(
+        text: "Error updating chat status",
+        subtext: e.toString(),
+        color: "red",
+      );
+    }
+  }
+
+  Future<void> acceptSession(String sessionId) async {
+    try {
+      final jwt = getJwt();
+      final response = await http.put(
+        Uri.parse('$backendUrl/therapist/chat/logs/$sessionId/accept'),
+        headers: {
+          'Authorization': 'Bearer $jwt',
+        },
+      );
+      if (response.statusCode == 200) {
+        CommonSnackbar.show(
+          text: "Chat accepted",
+          subtext: "You are now assigned to this chat",
+          color: "green",
+        );
+        fetchChats();
+      } else {
+        CommonSnackbar.show(
+          text: "Error accepting chat",
+          subtext: response.body,
+          color: "red",
+        );
+      }
+    } catch (e) {
+      CommonSnackbar.show(
+        text: "Error accepting chat",
+        subtext: e.toString(),
+        color: "red",
+      );
+    }
+  }
+
+  Future<void> getChatsForSession(String sessionId) async {
+    try {
+      final jwt = getJwt();
+      final response = await http.get(
+        Uri.parse('$backendUrl/therapist/chat/logs/$sessionId'),
+        headers: {
+          'Authorization': 'Bearer $jwt',
+        },
+      );
+      if (response.statusCode == 200) {
+        List<dynamic> jsonList = jsonDecode(response.body);
+        chatLogsForSession.value = jsonList
+            .map((jsonItem) => jsonItem as Map<String, dynamic>)
+            .toList();
+      } else {
+        CommonSnackbar.show(
+          text: "Error fetching chats",
+          subtext: response.body,
+          color: "red",
+        );
+      }
+    } catch (e) {
+      CommonSnackbar.show(
+        text: "Error fetching chats",
+        subtext: e.toString(),
+        color: "red",
+      );
+    }
+  }
+
 }

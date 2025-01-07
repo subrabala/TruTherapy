@@ -35,7 +35,7 @@ class TherapistBlogsController extends BaseBlogsController {
         List<dynamic> jsonList = jsonDecode(response.body);
 
         blogs.value = jsonList
-            .map((jsonItem) => Blogs.fromJson(jsonItem as Map<String, dynamic>))
+            .map((jsonItem) => Blogs.fromJson(jsonItem as Map<String, dynamic?>))
             .toList();
       } else {
         CommonSnackbar.show(
@@ -148,7 +148,7 @@ class Blogs {
   final int blogId;
   final String title;
   final String description;
-  final String thumbnail;
+  final String? thumbnail;
   final String status;
 
   Blogs({
