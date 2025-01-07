@@ -1,4 +1,5 @@
-  import 'dart:convert';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:fsui/constants.dart';
 import 'package:fsui/models.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart' as http;
 class TherapistBlogsController extends BaseBlogsController {
   var blogs = <Blogs>[].obs;
   String resourceUrl = "";
+  RxBool isLoading = false.obs;
 
   Map<String, dynamic> blogData = {};
 
@@ -22,7 +24,7 @@ class TherapistBlogsController extends BaseBlogsController {
 
   Future<void> fetchBlogs() async {
     try {
-      final jwt =  getJwt();
+      final jwt = getJwt();
       final response = await http.get(
         Uri.parse('$backendUrl/therapist/blogs/all'),
         headers: {
@@ -35,6 +37,12 @@ class TherapistBlogsController extends BaseBlogsController {
         blogs.value = jsonList
             .map((jsonItem) => Blogs.fromJson(jsonItem as Map<String, dynamic>))
             .toList();
+      } else {
+        CommonSnackbar.show(
+          text: "Error fetching blogs",
+          subtext: response.body,
+          color: "red",
+        );
       }
     } catch (e) {
       CommonSnackbar.show(
@@ -47,7 +55,7 @@ class TherapistBlogsController extends BaseBlogsController {
 
   Future<void> fetchBlogData(String blogId) async {
     try {
-      final jwt =  getJwt();
+      final jwt = getJwt();
       final response = await http.get(
         Uri.parse('$backendUrl/therapist/blogs/$blogId'),
         headers: {
@@ -57,8 +65,14 @@ class TherapistBlogsController extends BaseBlogsController {
 
       if (response.statusCode == 200) {
         blogData = jsonDecode(response.body);
-        
+
         Get.to(() => BlogsVideoPlayerScreen());
+      } else {
+        CommonSnackbar.show(
+          text: "Error fetching blog",
+          subtext: response.body,
+          color: "red",
+        );
       }
     } catch (e) {
       CommonSnackbar.show(
@@ -66,51 +80,68 @@ class TherapistBlogsController extends BaseBlogsController {
     }
   }
 
-  Future<void> createBlog(Map<String, dynamic> data) async {
+  Future<http.Response> createBlog(Map<String, dynamic> data) async {
     try {
-      final jwt =  getJwt();
-      final response = await http.get(
+      isLoading.value = true;
+      final jwt = getJwt();
+      final response = await http.post(
         Uri.parse('$backendUrl/blogs/create'),
         headers: {
           'Authorization': 'Bearer $jwt',
+          'Content-Type': 'application/json',
         },
+        body: jsonEncode(data),
       );
 
-      if (response.statusCode == 200) {
-        blogData = jsonDecode(response.body);
-        CommonSnackbar.show(
-          text: "Creating blog successfully", subtext: '', color: "green");
-      Get.back();
-      }
+      return response;
     } catch (e) {
       CommonSnackbar.show(
-          text: "Error creating blogs", subtext: e.toString(), color: "red");
+        text: "Failed to create blog",
+        subtext: e.toString(),
+        color: "red",
+      );
+      rethrow;
     }
   }
 
-    Future<void> uploadBlogData(Map<String, dynamic> data) async {
+  Future<void> uploadBlogData(Map<String, dynamic> data, int blogId) async {
     try {
-      final jwt =  getJwt();
-      final response = await http.get(
-        Uri.parse('$backendUrl/blogs/create/${data}'),
-        headers: {
-          'Authorization': 'Bearer $jwt',
-        },
-      );
+      final jwt = getJwt();
+      var uri = Uri.parse('$backendUrl/blogs/create/${blogId.toString()}');
+      var request = http.MultipartRequest('PUT', uri)
+        ..headers.addAll({'Authorization': 'Bearer $jwt'});
 
-      if (response.statusCode == 200) {
-        blogData = jsonDecode(response.body);
+      File videoFile = File(data['video']);
+      List<int> videoBytes = await videoFile.readAsBytes();
+
+      File thumbnailFile = File(data['thumbnail']);
+      List<int> thumbnailBytes = await thumbnailFile.readAsBytes();
+
+      request.files.add(http.MultipartFile.fromBytes('video', videoBytes,
+          filename: 'video.mp4'));
+      request.files.add(http.MultipartFile.fromBytes(
+          'thumbnail', thumbnailBytes,
+          filename: 'thumbnail.jpg'));
+
+      var response = await request.send();
+      var responseData = await response.stream.toBytes();
+
+
+      if (response.statusCode != 201) {
         CommonSnackbar.show(
-          text: "Creating blog successfully", subtext: '', color: "green");
-      Get.back();
+            text: "Error uploading blog", subtext: '', color: "red");
+      } else if (response.statusCode == 201) {
+        Get.back();
+        CommonSnackbar.show(
+            text: "Created blog successfully", subtext: '', color: "green");
       }
     } catch (e) {
       CommonSnackbar.show(
-          text: "Error creating blogs", subtext: e.toString(), color: "red");
+          text: "Error creating blog", subtext: e.toString(), color: "red");
+    } finally {
+      isLoading.value = false;
     }
   }
-
-
 }
 
 class Blogs {

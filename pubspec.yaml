@@ -51,6 +51,7 @@ dependencies:
   intl: ^0.20.1
   flutter_markdown: ^0.7.4+3
   video_player: ^2.9.2
+  file_picker: ^8.1.7
   # flutter_launcher_icons: ^0.14.2
 
 
