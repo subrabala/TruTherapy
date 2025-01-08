@@ -26,13 +26,13 @@ class BlogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: AppColors.light100.withOpacity(0.3),
+      color: PastelColors.seaBlue.withOpacity(0.4),
       elevation: 0,
       borderOnForeground: false,
       shadowColor: AppColors.light100.withOpacity(0.5),
       surfaceTintColor: AppColors.light100.withOpacity(0.5),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
       ),
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: GestureDetector(
@@ -43,23 +43,23 @@ class BlogCard extends StatelessWidget {
               : Get.find<BlogsController>().fetchBlogData(id.toString());
         },
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             // Left side for image
             Expanded(
               flex: 1,
               child: ClipRRect(
-                child: Opacity(
-                    opacity: 0.9,
-                    child: Image.network(
-                      '$s3_cdn/$imageUrl',
+                clipBehavior: Clip.antiAlias,
+                child: Image.network(
+                  '$s3_cdn/$imageUrl',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      "assets/fallback_blog.png",
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          "assets/fallback_blog.png",
-                          fit: BoxFit.cover,
-                        );
-                      },
-                    )),
+                    );
+                  },
+                ),
               ),
             ),
             Expanded(

@@ -75,11 +75,11 @@ class AIBotChatsListScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 child: const Text(
                   'Recents',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 14,
                     color: Colors.black54,
                   ),
                 ),
@@ -105,20 +105,20 @@ class AIBotChatsListScreen extends StatelessWidget {
                                 horizontal: 16, vertical: 8),
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 255, 250, 228),
+                              color: PastelColors.deepSeaBlue.withOpacity(0.5),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  chat['response'].length > 30
-                                      ? '${chat['response'].substring(0, 30)}...'
+                                  chat['response'].length > 37
+                                      ? '${chat['response'].substring(0, 37)}...'
                                       : chat['response'],
                                   style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.black87,
+                                    color: Colors.black,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -126,8 +126,8 @@ class AIBotChatsListScreen extends StatelessWidget {
                                   convertToReadableDateAndTime(
                                       chat['asked_at']),
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.blue.shade700,
+                                    fontSize: 12,
+                                    color: const Color.fromARGB(255, 110, 27, 166),
                                   ),
                                 ),
                               ],

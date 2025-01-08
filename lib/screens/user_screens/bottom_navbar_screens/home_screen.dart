@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         body: Padding(
           padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 30),
+              const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 width: double.infinity,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -123,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                 'Yoga videos to make you smile from inside!',
                 style: TextStyle(fontSize: 14, color: Colors.black54),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Expanded(
                 child: Obx(
                   () => controller.blogs.isEmpty
