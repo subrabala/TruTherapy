@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/controllers/aibot_controller.dart';
-import 'package:fsui/controllers/blogs_controller.dart';
+import 'package:fsui/controllers/user/aibot_controller.dart';
+import 'package:fsui/controllers/user/blogs_controller.dart';
 import 'package:fsui/controllers/user_details_controller.dart';
 import 'package:fsui/screens/aibot_screen.dart';
 import 'package:fsui/widgets/blog_card.dart';

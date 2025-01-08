@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/controllers/aibot_controller.dart';
+import 'package:fsui/controllers/user/aibot_controller.dart';
+import 'package:fsui/controllers/user_details_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -44,7 +45,7 @@ class AIBotScreen extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
-          backgroundColor: AppColors.mid,
+          backgroundColor: PastelColors.skyBlueDark,
           iconTheme: const IconThemeData(
             color: Colors.white,
           ),
@@ -60,6 +61,46 @@ class AIBotScreen extends StatelessWidget {
         ),
         body: Column(
           children: [
+            // DISCLAIMER
+            Container(
+              margin: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 12.0,
+              ),
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                color: AppColors.light100.withOpacity(0.8),
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+
+              child: RichText(
+                text:const TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Padding(
+                        padding: EdgeInsets.only(right : 8.0),
+                        child: Icon(
+                          Icons.info_outline,
+                          color: PastelColors.skyBlueDark,
+                          size: 14.0,
+                        ),
+                      ),
+                      alignment: PlaceholderAlignment.middle,
+                    ),
+                     TextSpan(
+                      text:
+                          "A friendly reminder that your chat with me is kept completely confidential. For compliance purposes, we'll be saving our conversation. Feel free to share openly.",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 16, 78, 114),
+                        fontSize: 12.0,
+                        height: 1.3
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
             Expanded(
               child: Obx(() {
                 final List<Map<String, String>> preprocessedChats = [];

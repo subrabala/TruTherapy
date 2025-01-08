@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/controllers/blogs_controller.dart';
+import 'package:fsui/controllers/user/blogs_controller.dart';
 import 'package:fsui/controllers/therapist/therapist_blogs_controller.dart';
 import 'package:fsui/utils.dart';
 import 'package:fsui/screens/blogs_video_player_screen.dart';
