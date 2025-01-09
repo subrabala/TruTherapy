@@ -65,6 +65,7 @@ class AuthController extends GetxController {
         print('Failed to retrieve ID token.');
       }
     } catch (error) {
+      print(error.toString());
       CommonSnackbar.show(
           text: 'Something went wrong',
           subtext: 'Error: ${error.toString()}',
