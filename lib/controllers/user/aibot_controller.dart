@@ -17,7 +17,9 @@ class AIBotController extends GetxController {
 
   String? currentSessionId = null;
 
+  @override
   void onInit() {
+    super.onInit();
     getChatsList();
   }
 
@@ -104,10 +106,10 @@ class AIBotController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        print(response.body.toString());
+        String decodedResponse = utf8.decode(response.bodyBytes);
         currentSessionId = session_id;
         chatLogsForSession.value =
-            List<Map<String, dynamic>>.from(jsonDecode(response.body));
+            List<Map<String, dynamic>>.from(jsonDecode(decodedResponse));
       }
     } catch (e) {
       CommonSnackbar.show(

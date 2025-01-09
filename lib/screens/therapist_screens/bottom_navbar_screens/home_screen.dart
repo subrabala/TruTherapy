@@ -22,19 +22,22 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Manage Blogs",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
         actions: [
-          ElevatedButton.icon(
-            onPressed: () {
-              _showAddVideoDialog(context);
-            },
-            icon: const Icon(Icons.add),
-            label: const Text("Create"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.mid,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                _showAddVideoDialog(context);
+              },
+              icon: const Icon(Icons.add),
+              label: const Text("Create"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.mid,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
             ),
           ),
         ],

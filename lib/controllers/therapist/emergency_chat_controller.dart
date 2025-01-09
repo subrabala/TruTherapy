@@ -15,7 +15,6 @@ class EmergencyChatController extends GetxController {
   RxList<Map<String, dynamic>> chatLogsForSession =
       <Map<String, dynamic>>[].obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -124,7 +123,9 @@ class EmergencyChatController extends GetxController {
         },
       );
       if (response.statusCode == 200) {
-        List<dynamic> jsonList = jsonDecode(response.body);
+
+        String decodedResponse = utf8.decode(response.bodyBytes);
+        List<dynamic> jsonList = jsonDecode(decodedResponse);
         chatLogsForSession.value = jsonList
             .map((jsonItem) => jsonItem as Map<String, dynamic>)
             .toList();
@@ -143,5 +144,4 @@ class EmergencyChatController extends GetxController {
       );
     }
   }
-
 }

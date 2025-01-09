@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/therapist/emergency_chat_controller.dart';
 import 'package:fsui/screens/aibot_screen.dart';
+import 'package:fsui/screens/therapist_screens/chat_logs_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
@@ -52,17 +53,17 @@ class EmergencyChats extends StatelessWidget {
                         final chat = filteredChats[index];
                         return GestureDetector(
                           onTap: () async {
-                            if (selectedTab.value == 'pending') {
-                              return;
-                            } else {
+                            // if (selectedTab.value == 'pending') {
+                            //   return;
+                            // } else {
                               await controller
                                   .getChatsForSession(chat['session_id']);
-                              Get.to(() => AIBotScreen());
-                            }
+                              Get.to(() => TherapistChatLogsScreen());
+                          //   }
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
+                                horizontal: 16, vertical: 8),
                             padding: const EdgeInsets.only(
                                 left: 16, right: 8, top: 8, bottom: 8),
                             decoration: BoxDecoration(
@@ -74,6 +75,7 @@ class EmergencyChats extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+
                                     // Display Name and Phone Number
                                     Row(
                                       children: [
@@ -313,7 +315,7 @@ class Tabs extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'Scheduled',
+                        'In Progress',
                         style: TextStyle(
                           color: selectedTab.value == 'session_scheduled'
                               ? PastelColors.skyBlueDark
