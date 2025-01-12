@@ -21,60 +21,94 @@ class HomeScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: const Text("Manage Blogs",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                _showAddVideoDialog(context);
-              },
-              icon: const Icon(Icons.add),
-              label: const Text("Create"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.mid,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-              ),
-            ),
-          ),
-        ],
       ),
       body: Padding(
-        padding:
-            const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 30),
-        child: Obx(() {
-          if (blogsController.blogs.isEmpty) {
-            return const Center(
-              child: Text(
-                "No videos added yet.",
-                style: TextStyle(fontSize: 18),
-              ),
-            );
-          } else {
-            return Expanded(
-              child: Obx(
-                () => blogsController.blogs.isEmpty
-                    ? const Center(
-                        child: Text('No blogs available'),
-                      )
-                    : ListView(
-                        children: blogsController.blogs.map<Widget>((blog) {
-                          return BlogCard(
-                            id: blog.blogId,
-                            imageUrl: blog.thumbnail ?? '',
-                            title: blog.title,
-                            subtitle: blog.description,
-                            url: blog.title,
-                          );
-                        }).toList(),
+        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      _showAddVideoDialog(context);
+                    },
+                    icon: const Icon(Icons.upload_file),
+                    label: const Text(
+                      "Video Blogs",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.mid,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-              ),
-            );
-          }
-        }),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 10.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // _showAddVideoDialog(context);
+                    },
+                    icon: const Icon(Icons.article_outlined),
+                    label: const Text(
+                      "Publish Articles",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.mid,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 10.0),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Obx(() {
+              if (blogsController.blogs.isEmpty) {
+                return const Center(
+                  child: Text(
+                    "No videos added yet.",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                );
+              } else {
+                return Expanded(
+                  child: Obx(
+                    () => blogsController.blogs.isEmpty
+                        ? const Center(
+                            child: Text('No blogs available'),
+                          )
+                        : ListView(
+                            children: blogsController.blogs.map<Widget>((blog) {
+                              return BlogCard(
+                                id: blog.blogId,
+                                imageUrl: blog.thumbnail ?? '',
+                                title: blog.title,
+                                subtitle: blog.description,
+                                url: blog.title,
+                              );
+                            }).toList(),
+                          ),
+                  ),
+                );
+              }
+            }),
+          ],
+        ),
       ),
     );
   }

@@ -107,6 +107,7 @@ void onInit(){
         "gender": userDetails.gender,
         "phone_number": "+91${userDetails.contactNumber}",
         "nationality": userDetails.nationality,
+        "sea_book_number": userDetails.seaBookNumber,
         "nok_name": userDetails.emergencyContactName,
         "nok_phone_number": "+91${userDetails.emergencyContactNumber}",
         "passport_number": userDetails.passportNumber,
