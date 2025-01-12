@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 
 class SharedPrefs {
   static final SharedPrefs _instance = SharedPrefs._internal();
@@ -98,15 +97,3 @@ String? getScope() {
   return prefs.getString('scope');
 }
 
-
-Future<String?> getDeviceId() async {
-  final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  if (Platform.isAndroid) {
-    final androidInfo = await deviceInfo.androidInfo;
-    return androidInfo.id;
-  } else if (Platform.isIOS) {
-    final iosInfo = await deviceInfo.iosInfo;
-    return iosInfo.identifierForVendor;
-  }
-  return null;
-}
