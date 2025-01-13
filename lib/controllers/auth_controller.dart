@@ -76,10 +76,16 @@ class AuthController extends GetxController {
   void signOut() async {
     await _googleSignIn.signOut();
     final prefs = await SharedPreferences.getInstance();
-    
 
-    await prefs.remove('jwt');
-    Get.to(() => AuthScreen());
+    // call get GET /api/v1/auth/logout
+    final response = await http.get(
+      Uri.parse('$backendUrl/auth/logout'),
+      headers: {'Authorization': 'Bearer ${prefs.getString('jwt')}'},
+    );
+    if (response.statusCode == 200) {
+      await prefs.remove('jwt');
+      Get.to(() => AuthScreen());
+    }
   }
 
   Future<void> googleSignInAndSendTokenTherapist() async {
