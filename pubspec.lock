@@ -61,10 +61,10 @@ packages:
     dependency: "direct main"
     description:
       name: chewie
-      sha256: d8908907084d28533fbabe4a8b7112b63caa907506e5163fe2d10a5fa7cbf3ee
+      sha256: "335df378c025588aef400c704bd71f0daea479d4cd57c471c88c056c1144e7cd"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.7"
+    version: "1.8.5"
   cli_util:
     dependency: transitive
     description:
@@ -604,10 +604,10 @@ packages:
     dependency: "direct main"
     description:
       name: shared_preferences
-      sha256: a752ce92ea7540fc35a0d19722816e04d0e72828a4200e83a98cf1a1eb524c9a
+      sha256: "746e5369a43170c25816cc472ee016d3a66bc13fcf430c0bc41ad7b4b2922051"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.5"
+    version: "2.3.2"
   shared_preferences_android:
     dependency: transitive
     description:

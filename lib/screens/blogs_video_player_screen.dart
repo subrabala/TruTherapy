@@ -10,13 +10,10 @@ import 'package:video_player/video_player.dart';
 
 class BlogsVideoPlayerScreen extends StatefulWidget {
   @override
-  _BlogsVideoPlayerScreenState createState() =>
-      _BlogsVideoPlayerScreenState();
+  _BlogsVideoPlayerScreenState createState() => _BlogsVideoPlayerScreenState();
 }
 
 class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
-  late VideoController controller;
-
   @override
   void initState() {
     super.initState();
@@ -28,29 +25,6 @@ class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
         : (Get.isRegistered<BlogsController>()
             ? Get.find<BlogsController>()
             : Get.put(BlogsController()));
-
-    controller = Get.isRegistered<VideoController>()
-        ? Get.find<VideoController>()
-        : Get.put(VideoController());
-
-    controller.initializeVideo("$s3_cdn/" + blogController.blogData["video"]);
-
-    // Adding listener once
-    controller.videoPlayerController.addListener(_onVideoControllerChange);
-  }
-
-  @override
-  void dispose() {
-    // Remove the listener to avoid memory leaks
-    controller.videoPlayerController.removeListener(_onVideoControllerChange);
-    super.dispose();
-  }
-
-  void _onVideoControllerChange() {
-    if (controller.videoPlayerController.value.isInitialized &&
-        !controller.isInitialized.value) {
-      controller.isInitialized.value = true;
-    }
   }
 
   @override
@@ -70,10 +44,12 @@ class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
             fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
         centerTitle: true,
       ),
-      body: Obx(() {
-        if (controller.isInitialized.value) {
-          return SingleChildScrollView(
-            child: Column(
+      body: 
+      // Obx(() {
+        // if (controller.isInitialized.value) {
+          // return SingleChildScrollView(
+            // child: 
+            Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (blogController.blogData["created_at"] != null)
@@ -90,22 +66,12 @@ class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
                     ),
                   ),
                 AspectRatio(
-                  aspectRatio: controller.videoPlayerController.value.isInitialized
-                      ? controller.videoPlayerController.value.aspectRatio
-                      : 16 / 9,
-                  child: VideoPlayer(controller.videoPlayerController),
-                ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  backgroundColor: PastelColors.skyBlue.withOpacity(0.7),
-                  elevation: 0,
-                  onPressed: () {
-                    controller.togglePlayPause();
-                  },
-                  child: Icon(
-                    controller.isPlaying.value ? Icons.pause : Icons.play_arrow,
+                  aspectRatio: 16 / 9,
+                  child: ChewieVideoPlayer(
+                    videoUrl:
+                          "$s3_cdn/" + Uri.encodeFull(blogController.blogData["video"]),
                   ),
-                ),
+                ),            
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -138,10 +104,12 @@ class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
               ],
             ),
           );
-        } else {
-          return const Center(child: CircularProgressIndicator());
         }
-      }),
-    );
-  }
+        //  else {
+        //   return const Center(child: CircularProgressIndicator());
+        // }
+      // }
+    //   ),
+    // );
+  // }
 }

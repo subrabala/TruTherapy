@@ -1,65 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:video_player/video_player.dart';
 
-class VideoController extends GetxController {
-  late VideoPlayerController videoPlayerController;
-  late ChewieController chewieController;
-  
-  var isPlaying = false.obs;
-  var isInitialized = false.obs;
-  var videoPosition = 0.0.obs;
+class ChewieVideoPlayer extends StatefulWidget {
+  final String videoUrl;
 
-  void initializeVideo(String videoUrl, {Duration? seekToDuration}) {
-    videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl))
-      ..initialize().then((_) {
-        isInitialized.value = true;
-        update();
-      });
+  const ChewieVideoPlayer({required this.videoUrl, Key? key}) : super(key: key);
 
-    chewieController = ChewieController(
-      videoPlayerController: videoPlayerController,
-      aspectRatio: 16 / 9,
+  @override
+  State<ChewieVideoPlayer> createState() => _ChewieVideoPlayerState();
+}
+
+class _ChewieVideoPlayerState extends State<ChewieVideoPlayer> {
+  late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    print("Video URL: ${widget.videoUrl}");
+    _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
       autoPlay: true,
-      looping: false,
-      showControls: true,
-      allowFullScreen: true,
-      errorBuilder: (context, errorMessage) {
-        return Center(child: Text(errorMessage));
-      },
+      looping: true,
     );
-
-    videoPlayerController.addListener(() {
-      if (videoPlayerController.value.isInitialized) {
-        videoPosition.value = videoPlayerController.value.position.inMilliseconds.toDouble();
-        update();
-      }
-    });
-
-    if (seekToDuration != null) {
-      seekTo(seekToDuration.inMilliseconds.toDouble());
-    }
-  }
-
-  void togglePlayPause() {
-    if (isPlaying.value) {
-      videoPlayerController.pause();
-    } else {
-      videoPlayerController.play();
-    }
-    isPlaying.value = !isPlaying.value;
-  }
-
-  void seekTo(double value) {
-    final position = Duration(milliseconds: value.toInt());
-    videoPlayerController.seekTo(position);
   }
 
   @override
-  void onClose() {
-    videoPlayerController.dispose();
-    chewieController.dispose();
-    super.onClose();
+  void dispose() {
+    _videoPlayerController.dispose();
+    _chewieController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Chewie(controller: _chewieController);
   }
 }
