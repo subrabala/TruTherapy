@@ -1,35 +1,38 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class VideoController extends GetxController {
-  late VideoPlayerController videoController;
+  late VideoPlayerController videoPlayerController;
+  late ChewieController chewieController;
+  
   var isPlaying = false.obs;
   var isInitialized = false.obs;
   var videoPosition = 0.0.obs;
 
-  VideoPlayerOptions videoOptions = VideoPlayerOptions(
-    webOptions: const VideoPlayerWebOptions(
-      controls: VideoPlayerWebOptionsControls.enabled(
-        allowDownload: true,
-        allowFullscreen: true,
-        allowPlaybackRate: true,
-        allowPictureInPicture: true,
-      ),
-    ),
-  );
-
   void initializeVideo(String videoUrl, {Duration? seekToDuration}) {
-    videoController = VideoPlayerController.networkUrl(Uri.parse(videoUrl),
-        videoPlayerOptions: videoOptions)
+    videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl))
       ..initialize().then((_) {
         isInitialized.value = true;
         update();
       });
 
-    videoController.addListener(() {
-      if (videoController.value.isInitialized) {
-        videoPosition.value =
-            videoController.value.position.inMilliseconds.toDouble();
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+      aspectRatio: 16 / 9,
+      autoPlay: true,
+      looping: false,
+      showControls: true,
+      allowFullScreen: true,
+      errorBuilder: (context, errorMessage) {
+        return Center(child: Text(errorMessage));
+      },
+    );
+
+    videoPlayerController.addListener(() {
+      if (videoPlayerController.value.isInitialized) {
+        videoPosition.value = videoPlayerController.value.position.inMilliseconds.toDouble();
         update();
       }
     });
@@ -41,21 +44,22 @@ class VideoController extends GetxController {
 
   void togglePlayPause() {
     if (isPlaying.value) {
-      videoController.pause();
+      videoPlayerController.pause();
     } else {
-      videoController.play();
+      videoPlayerController.play();
     }
     isPlaying.value = !isPlaying.value;
   }
 
   void seekTo(double value) {
     final position = Duration(milliseconds: value.toInt());
-    videoController.seekTo(position);
+    videoPlayerController.seekTo(position);
   }
 
   @override
   void onClose() {
-    videoController.dispose();
+    videoPlayerController.dispose();
+    chewieController.dispose();
     super.onClose();
   }
 }

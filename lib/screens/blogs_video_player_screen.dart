@@ -8,9 +8,18 @@ import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
-class BlogsVideoPlayerScreen extends StatelessWidget {
+class BlogsVideoPlayerScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
+  _BlogsVideoPlayerScreenState createState() =>
+      _BlogsVideoPlayerScreenState();
+}
+
+class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
+  late VideoController controller;
+
+  @override
+  void initState() {
+    super.initState();
     final scope = getScope();
     final blogController = scope == 'therapist'
         ? (Get.isRegistered<TherapistBlogsController>()
@@ -20,17 +29,39 @@ class BlogsVideoPlayerScreen extends StatelessWidget {
             ? Get.find<BlogsController>()
             : Get.put(BlogsController()));
 
-    final VideoController controller = Get.isRegistered<VideoController>()
+    controller = Get.isRegistered<VideoController>()
         ? Get.find<VideoController>()
         : Get.put(VideoController());
 
     controller.initializeVideo("$s3_cdn/" + blogController.blogData["video"]);
 
-    controller.videoController.addListener(() {
-      if (controller.videoController.value.isInitialized) {
-        controller.isInitialized.value = true;
-      }
-    });
+    // Adding listener once
+    controller.videoPlayerController.addListener(_onVideoControllerChange);
+  }
+
+  @override
+  void dispose() {
+    // Remove the listener to avoid memory leaks
+    controller.videoPlayerController.removeListener(_onVideoControllerChange);
+    super.dispose();
+  }
+
+  void _onVideoControllerChange() {
+    if (controller.videoPlayerController.value.isInitialized &&
+        !controller.isInitialized.value) {
+      controller.isInitialized.value = true;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final blogController = getScope() == 'therapist'
+        ? (Get.isRegistered<TherapistBlogsController>()
+            ? Get.find<TherapistBlogsController>()
+            : Get.put(TherapistBlogsController()))
+        : (Get.isRegistered<BlogsController>()
+            ? Get.find<BlogsController>()
+            : Get.put(BlogsController()));
 
     return Scaffold(
       appBar: AppBar(
@@ -59,10 +90,10 @@ class BlogsVideoPlayerScreen extends StatelessWidget {
                     ),
                   ),
                 AspectRatio(
-                  aspectRatio: controller.videoController.value.isInitialized
-                      ? controller.videoController.value.aspectRatio
+                  aspectRatio: controller.videoPlayerController.value.isInitialized
+                      ? controller.videoPlayerController.value.aspectRatio
                       : 16 / 9,
-                  child: VideoPlayer(controller.videoController),
+                  child: VideoPlayer(controller.videoPlayerController),
                 ),
                 const SizedBox(height: 10),
                 FloatingActionButton(

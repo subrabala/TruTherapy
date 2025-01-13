@@ -81,7 +81,7 @@ void onInit(){
       CommonSnackbar.show(
         text: "Invalid Sea Book Number",
         subtext:
-            "Sea Book number must start with 2 or 3 alphabets followed by 4 digits.",
+            "Please enter a valid SeaBook number",
         color: "red",
       );
       return;
