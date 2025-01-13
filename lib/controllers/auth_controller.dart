@@ -76,8 +76,6 @@ class AuthController extends GetxController {
   void signOut() async {
     await _googleSignIn.signOut();
     final prefs = await SharedPreferences.getInstance();
-
-    // call get GET /api/v1/auth/logout
     final response = await http.get(
       Uri.parse('$backendUrl/auth/logout'),
       headers: {'Authorization': 'Bearer ${prefs.getString('jwt')}'},
