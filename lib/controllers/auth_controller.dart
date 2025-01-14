@@ -78,7 +78,7 @@ class AuthController extends GetxController {
     final prefs = await SharedPreferences.getInstance();
     final response = await http.get(
       Uri.parse('$backendUrl/auth/logout'),
-      headers: {'Authorization': 'Bearer ${prefs.getString('jwt')}'},
+      headers: {'Authorization': 'Bearer ${getJwt()}'},
     );
     if (response.statusCode == 200) {
       await prefs.remove('jwt');
