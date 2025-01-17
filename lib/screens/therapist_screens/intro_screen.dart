@@ -4,18 +4,16 @@ import 'package:fsui/constants.dart';
 import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/emergency_chats.dart';
 import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/home_screen.dart';
 import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/profile_screen.dart';
-import 'package:fsui/screens/user_screens/bottom_navbar_screens/aibot_chats_list_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
+  static int selectedIndex = 0;
 
   @override
   State<IntroScreen> createState() => _IntroScreenState();
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  int _selectedIndex = 0;
-
   final List<Widget> _screens = [
     HomeScreen(),
     EmergencyChats(),
@@ -23,17 +21,18 @@ class _IntroScreenState extends State<IntroScreen> {
   ];
 
   void _onItemTapped(int index) {
-    if (_selectedIndex != index) {
+    if (IntroScreen.selectedIndex != index) {
       setState(() {
-        _selectedIndex = index;
+        IntroScreen.selectedIndex = index;
       });
     }
   }
- @override
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: _screens[_selectedIndex],
+        body: _screens[IntroScreen.selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: const Color.fromARGB(255, 208, 238, 254),
           items: <BottomNavigationBarItem>[
@@ -42,7 +41,9 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: 28,
                 'assets/icons/home.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 0 ? AppColors.dark800 : PastelColors.seaBlueDark,
+                  IntroScreen.selectedIndex == 0
+                      ? AppColors.dark800
+                      : PastelColors.seaBlueDark,
                   BlendMode.srcIn,
                 ),
               ),
@@ -53,7 +54,9 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: 26,
                 'assets/icons/chat.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 1 ? AppColors.dark800 : PastelColors.seaBlueDark,
+                  IntroScreen.selectedIndex == 1
+                      ? AppColors.dark800
+                      : PastelColors.seaBlueDark,
                   BlendMode.srcIn,
                 ),
               ),
@@ -64,14 +67,16 @@ class _IntroScreenState extends State<IntroScreen> {
                 height: 24,
                 'assets/icons/profile.svg',
                 colorFilter: ColorFilter.mode(
-                  _selectedIndex == 2 ? AppColors.dark800 : PastelColors.seaBlueDark,
+                  IntroScreen.selectedIndex == 2
+                      ? AppColors.dark800
+                      : PastelColors.seaBlueDark,
                   BlendMode.srcIn,
                 ),
               ),
               label: '',
             ),
           ],
-          currentIndex: _selectedIndex,
+          currentIndex: IntroScreen.selectedIndex,
           selectedItemColor: AppColors.dark800,
           unselectedItemColor: AppColors.mid,
           type: BottomNavigationBarType.fixed,

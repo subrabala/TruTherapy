@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fsui/controllers/therapist/emergency_chat_controller.dart';
 import 'package:fsui/screens/splash_screen.dart';
 import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/emergency_chats.dart';
-import 'package:fsui/screens/user_screens/bottom_navbar_screens/aibot_chats_list_screen.dart';
+import 'package:fsui/screens/therapist_screens/chat_logs_screen.dart';
+import 'package:fsui/screens/therapist_screens/intro_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,12 +29,36 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       getPages: [
         GetPage(name: '/', page: () => const SplashScreen()),
-        GetPage(name: '/chats', page: () => AIBotChatsListScreen()),
-        GetPage(name: '/emergencychats', page: () => EmergencyChats()),
+        GetPage(
+          name: '/chats/:id',
+          page: () => TherapistChatLogsScreen(),
+          middlewares: [ChatMiddleware()],
+        ),
       ],
       debugShowCheckedModeBanner: false,
       home: MyHome(),
     );
+  }
+}
+
+class ChatMiddleware extends GetMiddleware {
+  @override
+  RouteSettings? redirect(String? route) {
+    final scope = getScope();
+    if (scope != 'therapist') {
+      return const RouteSettings(name: '/login');
+    }
+    return null;
+  }
+
+  @override
+  Widget Function()? onPageBuildStart(Widget Function()? page) {
+    if (getScope() == 'therapist') {
+      final sessionId = Get.parameters['id'] ?? '';
+      EmergencyChatController().getChatsForSession(sessionId);
+      return page;
+    }
+    return page;
   }
 }
 
@@ -75,28 +101,19 @@ class _MyHomeState extends State<MyHome> {
   }
 
   void _navigateToScreen(Uri uri) {
-    print("Deeplink $uri");
-
     switch (uri.host) {
       case 'chats':
-        Get.toNamed('/chats');
-        break;
-
-      case 'emergencychats':
-        Get.toNamed('/emergencychats');
+        final id = uri.queryParameters['id'];
+        if (id != null) {
+          print("SUBB $id");
+          Get.toNamed('/chats/$id');
+        } else {
+          print('Error: Missing id in chats link');
+        }
         break;
 
       case 'profile':
         Get.toNamed('/profile');
-        break;
-
-      case 'emergencychat':
-        String? id = uri.queryParameters['id'];
-        if (id != null) {
-          Get.toNamed('/emergencychat', parameters: {'id': id});
-        } else {
-          print('Error: Missing id in emergencychat link');
-        }
         break;
 
       default:

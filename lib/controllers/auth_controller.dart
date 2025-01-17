@@ -81,11 +81,10 @@ class AuthController extends GetxController {
       Uri.parse('$backendUrl/auth/logout'),
       headers: {'Authorization': 'Bearer $jwt'},
     );
-    if (response.statusCode == 200) {
       await prefs.remove('jwt');
       Get.to(() => AuthScreen());
 
-    }
+
     
     } catch (e) {
        CommonSnackbar.show(
