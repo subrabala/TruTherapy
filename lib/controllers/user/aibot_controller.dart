@@ -29,7 +29,7 @@ class AIBotController extends GetxController {
     chatHistory.add({'user': query});
     isTyping.value = true;
     try {
-      final jwt = await getJwt();
+      final jwt =  getJwt();
       final response = await http.post(
         Uri.parse('$backendUrl/chat/response'),
         headers: {
@@ -69,7 +69,7 @@ class AIBotController extends GetxController {
 
   Future<void> getChatsList() async {
     try {
-      final jwt = await getJwt();
+      final jwt =  getJwt();
 
       final response = await http.get(
         Uri.parse('$backendUrl/chat/logs'),
@@ -95,7 +95,7 @@ class AIBotController extends GetxController {
 
   Future<void> getChatsForSession(session_id) async {
     try {
-      final jwt = await getJwt();
+      final jwt =  getJwt();
 
       final response = await http.get(
         Uri.parse('$backendUrl/chat/logs/$session_id'),

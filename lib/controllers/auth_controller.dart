@@ -65,7 +65,6 @@ class AuthController extends GetxController {
         print('Failed to retrieve ID token.');
       }
     } catch (error) {
-      print(error.toString());
       CommonSnackbar.show(
           text: 'Something went wrong',
           subtext: 'Error: ${error.toString()}',
@@ -76,13 +75,23 @@ class AuthController extends GetxController {
   void signOut() async {
     await _googleSignIn.signOut();
     final prefs = await SharedPreferences.getInstance();
-    final response = await http.get(
+    final jwt = getJwt();
+    try {
+      final response = await http.get(
       Uri.parse('$backendUrl/auth/logout'),
-      headers: {'Authorization': 'Bearer ${getJwt()}'},
+      headers: {'Authorization': 'Bearer $jwt'},
     );
     if (response.statusCode == 200) {
       await prefs.remove('jwt');
       Get.to(() => AuthScreen());
+
+    }
+    
+    } catch (e) {
+       CommonSnackbar.show(
+          text: 'Something went wrong',
+          subtext: 'Error: ${e.toString()}',
+          color: "red");
     }
   }
 
