@@ -7,6 +7,7 @@ import 'package:fsui/screens/therapist_screens/intro_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:uni_links/uni_links.dart';
 import 'dart:async';
 
@@ -31,7 +32,15 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => const SplashScreen()),
         GetPage(
           name: '/chats/:id',
-          page: () => TherapistChatLogsScreen(),
+          page: () {
+            final sessionId = Get.parameters['id'] ?? '';
+            final EmergencyChatController controller =
+                Get.isRegistered<EmergencyChatController>()
+                    ? Get.find<EmergencyChatController>()
+                    : Get.put(EmergencyChatController());
+            controller.getChatsForSession(sessionId);
+            return TherapistChatLogsScreen();
+          },
           middlewares: [ChatMiddleware()],
         ),
       ],
@@ -53,12 +62,11 @@ class ChatMiddleware extends GetMiddleware {
 
   @override
   Widget Function()? onPageBuildStart(Widget Function()? page) {
-    if (getScope() == 'therapist') {
-      final sessionId = Get.parameters['id'] ?? '';
-      EmergencyChatController().getChatsForSession(sessionId);
+    if (getScope() == 'therapist' && isLoggedIn()) {
       return page;
+    } else {
+      return null;
     }
-    return page;
   }
 }
 
@@ -106,6 +114,7 @@ class _MyHomeState extends State<MyHome> {
         final id = uri.queryParameters['id'];
         if (id != null) {
           print("SUBB $id");
+
           Get.toNamed('/chats/$id');
         } else {
           print('Error: Missing id in chats link');

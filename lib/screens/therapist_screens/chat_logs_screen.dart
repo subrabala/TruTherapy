@@ -8,6 +8,7 @@ class TherapistChatLogsScreen extends StatelessWidget {
   final EmergencyChatController controller = Get.put(EmergencyChatController());
 
   TherapistChatLogsScreen({Key? key}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {

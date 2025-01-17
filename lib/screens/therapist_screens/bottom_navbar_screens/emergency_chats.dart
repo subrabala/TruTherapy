@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/therapist/emergency_chat_controller.dart';
-import 'package:fsui/screens/aibot_screen.dart';
 import 'package:fsui/screens/therapist_screens/chat_logs_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class EmergencyChats extends StatelessWidget {
   final EmergencyChatController controller = Get.put(EmergencyChatController());
@@ -53,13 +51,13 @@ class EmergencyChats extends StatelessWidget {
                         final chat = filteredChats[index];
                         return GestureDetector(
                           onTap: () async {
-                            // if (selectedTab.value == 'pending') {
-                            //   return;
-                            // } else {
+                            if (selectedTab.value == 'pending') {
+                              return;
+                            } else {
                               await controller
                                   .getChatsForSession(chat['session_id']);
                               Get.to(() => TherapistChatLogsScreen());
-                          //   }
+                            }
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
