@@ -52,9 +52,9 @@ dependencies:
   flutter_markdown: ^0.7.4+3
   video_player: ^2.9.2
   file_picker: ^8.1.7
-  uni_links: ^0.5.1
   sign_in_with_apple: ^6.1.4
   chewie: 1.8.5
+  app_links: ^6.3.3
   # flutter_launcher_icons: ^0.14.2
 
 

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/controllers/therapist/emergency_chat_controller.dart';
 import 'package:fsui/screens/splash_screen.dart';
-import 'package:fsui/screens/therapist_screens/bottom_navbar_screens/emergency_chats.dart';
 import 'package:fsui/screens/therapist_screens/chat_logs_screen.dart';
-import 'package:fsui/screens/therapist_screens/intro_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';  
 import 'dart:async';
 
 void main() async {
@@ -78,7 +75,7 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
-  StreamSubscription? _sub;
+  late StreamSubscription _sub;
 
   @override
   void initState() {
@@ -89,7 +86,7 @@ class _MyHomeState extends State<MyHome> {
 
   void _handleInitialUri() async {
     try {
-      final uri = await getInitialUri();
+      final uri = await AppLinks().getInitialLink(); 
       if (uri != null) {
         _navigateToScreen(uri);
       }
@@ -99,7 +96,7 @@ class _MyHomeState extends State<MyHome> {
   }
 
   void _initDeepLinkListener() {
-    _sub = uriLinkStream.listen((Uri? uri) {
+    _sub = AppLinks().uriLinkStream.listen((Uri? uri) { 
       if (uri != null) {
         _navigateToScreen(uri);
       }
@@ -131,7 +128,7 @@ class _MyHomeState extends State<MyHome> {
 
   @override
   void dispose() {
-    _sub?.cancel();
+    _sub.cancel();
     super.dispose();
   }
 
