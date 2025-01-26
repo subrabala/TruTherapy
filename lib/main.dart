@@ -33,12 +33,12 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/chats/:id',
           page: () {
-            final sessionId = Get.parameters['id'] ?? '';
+            final sessionId = Get.parameters['id'];
             final EmergencyChatController controller =
                 Get.isRegistered<EmergencyChatController>()
                     ? Get.find<EmergencyChatController>()
                     : Get.put(EmergencyChatController());
-            controller.getChatsForSession(sessionId);
+            controller.getChatsForSession(sessionId!);
             return TherapistChatLogsScreen();
           },
           middlewares: [ChatMiddleware()],
@@ -113,8 +113,6 @@ class _MyHomeState extends State<MyHome> {
       case 'chats':
         final id = uri.queryParameters['id'];
         if (id != null) {
-          print("SUBB $id");
-
           Get.toNamed('/chats/$id');
         } else {
           print('Error: Missing id in chats link');

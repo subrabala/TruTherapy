@@ -51,13 +51,9 @@ class EmergencyChats extends StatelessWidget {
                         final chat = filteredChats[index];
                         return GestureDetector(
                           onTap: () async {
-                            if (selectedTab.value == 'pending') {
-                              return;
-                            } else {
-                              await controller
-                                  .getChatsForSession(chat['session_id']);
-                              Get.to(() => TherapistChatLogsScreen());
-                            }
+                            await controller
+                                .getChatsForSession(chat['session_id']);
+                            Get.to(() => TherapistChatLogsScreen());
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(
@@ -73,7 +69,6 @@ class EmergencyChats extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-
                                     // Display Name and Phone Number
                                     Row(
                                       children: [
@@ -185,7 +180,7 @@ class EmergencyChats extends StatelessWidget {
                                       size: 16,
                                     ),
                                     label: const Text(
-                                      'Accept',
+                                      'Schedule',
                                       style: TextStyle(
                                         color: Colors.green,
                                         fontWeight: FontWeight.w600,
