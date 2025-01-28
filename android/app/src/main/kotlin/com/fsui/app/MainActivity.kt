@@ -1,4 +1,4 @@
-package com.example.fsui
+package com.fsuiseacall.app
 
 import io.flutter.embedding.android.FlutterActivity
 
