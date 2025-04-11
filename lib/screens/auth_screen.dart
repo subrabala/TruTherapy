@@ -1,14 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/auth_controller.dart';
+import 'package:fsui/screens/therapist_screens/blog_editor_screen.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AuthScreen extends StatelessWidget {
-AuthScreen({super.key});
+  AuthScreen({super.key});
 
-final controller = Get.put(AuthController());
+  final controller = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,8 @@ final controller = Get.put(AuthController());
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            controller.googleSignInAndSendToken();
+                            Get.to(BlogEditorScreen());
+                            // controller.googleSignInAndSendToken();
                           },
                           icon: Image.asset(
                             'assets/logo_google.png',
@@ -184,6 +185,4 @@ final controller = Get.put(AuthController());
       ),
     );
   }
-
-  
 }

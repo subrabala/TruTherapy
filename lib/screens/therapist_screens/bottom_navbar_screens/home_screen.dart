@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/therapist/therapist_blogs_controller.dart';
+import 'package:fsui/screens/therapist_screens/blog_editor_screen.dart';
 import 'package:fsui/widgets/blog_card.dart';
 import 'package:fsui/widgets/snackbar.dart';
 import 'package:get/get.dart';
@@ -56,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      // _showAddVideoDialog(context);
+                      Get.to(BlogEditorScreen());
                     },
                     icon: const Icon(Icons.article_outlined),
                     label: const Text(

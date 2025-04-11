@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/auth_controller.dart';
 import 'package:fsui/controllers/user_details_controller.dart';
+import 'package:fsui/screens/therapist_screens/blog_editor_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
 
@@ -29,6 +30,7 @@ class ProfileScreen extends StatelessWidget {
             icon: const Icon(Icons.more_vert, color: Colors.black),
             onSelected: (value) {
               if (value == 1) {
+                // Get.to(() =>  BlogEditorScreen());
                 Get.put(AuthController());
                 Get.find<AuthController>().signOut();
               }

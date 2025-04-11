@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/user_details_controller.dart';
 import 'package:fsui/screens/auth_screen.dart';
+import 'package:fsui/screens/therapist_screens/blog_editor_screen.dart';
 import 'package:fsui/screens/user_screens/user_details_screen.dart';
 import 'package:fsui/widgets/snackbar.dart';
 import 'package:get/get.dart';
