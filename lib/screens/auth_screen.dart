@@ -103,8 +103,8 @@ class AuthScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            Get.to(BlogEditorScreen());
-                            // controller.googleSignInAndSendToken();
+                            // Get.to(BlogEditorScreen());
+                            controller.googleSignInAndSendToken();
                           },
                           icon: Image.asset(
                             'assets/logo_google.png',
