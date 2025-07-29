@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
+    clientId: CLIENT_ID,
     scopes: <String>[
       'email',
       'profile',

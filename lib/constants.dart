@@ -25,3 +25,5 @@ extension PastelColors on Colors {
 String s3_cdn = 'https://d1pt64zek14ka0.cloudfront.net';
 
 String backendUrl = 'https://backend.fsui.org/api/v1';
+
+String CLIENT_ID = '279735115576-l94vujqfshffeu4vktfe9jc0qis5sc9o.apps.googleusercontent.com';
