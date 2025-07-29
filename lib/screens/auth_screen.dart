@@ -53,7 +53,7 @@ class AuthScreen extends StatelessWidget {
                         height: 18,
                       ),
                       const Text(
-                        "Anchor your feelings...",
+                        "Anchor your mind...",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
