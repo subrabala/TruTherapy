@@ -58,7 +58,7 @@ dependencies:
   image_picker: ^1.1.2
   fleather: 1.19.0
   flutter_plugin_android_lifecycle: 2.0.24
-  # flutter_launcher_icons: ^0.14.2
+  flutter_launcher_icons: ^0.14.2
 
 dependency_overrides:
     intl: ^0.19.0
@@ -68,8 +68,6 @@ dependency_overrides:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.14.2
-
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
