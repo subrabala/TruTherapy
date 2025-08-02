@@ -4,6 +4,7 @@ import 'package:fsui/controllers/user/aibot_controller.dart';
 import 'package:fsui/controllers/user/blogs_controller.dart';
 import 'package:fsui/controllers/user_details_controller.dart';
 import 'package:fsui/screens/aibot_screen.dart';
+import 'package:fsui/utils.dart';
 import 'package:fsui/widgets/blog_card.dart';
 import 'package:get/get.dart';
 
@@ -17,6 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkJwtAndRedirectIfExpired();
       controller.fetchAllBlogs();
     });
 

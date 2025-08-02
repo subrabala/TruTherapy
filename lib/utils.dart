@@ -1,7 +1,33 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:fsui/screens/auth_screen.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+
+/// Checks if a JWT token is expired
+bool isJwtExpired(String token) {
+  try {
+    final parts = token.split('.');
+    if (parts.length != 3) return true;
+    final payload = json.decode(utf8.decode(base64Url.decode(base64Url.normalize(parts[1]))));
+    final exp = payload['exp'];
+    if (exp == null) return true;
+    final expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+    return DateTime.now().isAfter(expiryDate);
+  } catch (_) {
+    return true;
+  }
+}
+
+/// Checks JWT and redirects to AuthScreen if expired
+void checkJwtAndRedirectIfExpired() {
+  String? jwt = getJwt();
+  if (jwt == null || isJwtExpired(jwt)) {
+    Get.offAll(() => AuthScreen());
+  }
+}
 
 class SharedPrefs {
   static final SharedPrefs _instance = SharedPrefs._internal();
