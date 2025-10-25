@@ -51,7 +51,7 @@ class _BlogEditorScreenState extends State<BlogEditorScreen> {
         }),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Blog submitted successfully")));
         _titleController.clear();
