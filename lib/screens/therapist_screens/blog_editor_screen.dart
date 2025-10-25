@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fleather/fleather.dart';
 import 'package:fsui/constants.dart';
 import 'package:parchment/parchment.dart';
+import 'package:fsui/utils.dart';
 import 'package:http/http.dart' as http;
 
 class BlogEditorScreen extends StatefulWidget {
@@ -33,11 +34,16 @@ class _BlogEditorScreenState extends State<BlogEditorScreen> {
 
     final delta = _controller.document.toDelta();
     final contentJson = jsonEncode(delta.toJson());
+    final jwt = await getJwt(isTemp: true);
+
 
     try {
       final response = await http.post(
         Uri.parse("$backendUrl/blogs/create"),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwt',
+        },
         body: jsonEncode({
           "title": title,
           "description": "Blog description ",

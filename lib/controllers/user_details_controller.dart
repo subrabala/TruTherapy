@@ -77,7 +77,7 @@ void onInit(){
       return;
     }
 
-    if (!RegExp(r'^[a-zA-Z]{2,3}[0-9]{4}$').hasMatch(seaBookNumber)) {
+    if (!RegExp(r'^[a-zA-Z]{0,5}\d*$').hasMatch(seaBookNumber)) {
       CommonSnackbar.show(
         text: "Invalid Sea Book Number",
         subtext:
