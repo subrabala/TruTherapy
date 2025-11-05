@@ -22,6 +22,10 @@ class _BlogEditorScreenState extends State<BlogEditorScreen> {
     super.initState();
     final doc = ParchmentDocument();
     _controller = FleatherController(document: doc);
+    
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkTherapistJwtAndRedirectIfExpired();
+    });
   }
 
   Future<void> _submitBlog() async {
@@ -54,8 +58,43 @@ class _BlogEditorScreenState extends State<BlogEditorScreen> {
       if (response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Blog submitted successfully")));
-        _titleController.clear();
-        _controller.replaceText(0, _controller.document.length, '');
+        
+        // Safely clear both title and editor content
+        try {
+          // Clear title
+          _titleController.clear();
+          
+          // Clear editor with error handling
+          try {
+            // First attempt: use clear method
+            _controller.clear();
+          } catch (e) {
+            // Second attempt: create new document and controller
+            try {
+              final newDoc = ParchmentDocument();
+              _controller = FleatherController(document: newDoc);
+              setState(() {}); // Refresh UI after controller change
+            } catch (e) {
+              print('Error resetting editor: $e');
+              // If both attempts fail, show error to user
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Blog submitted, but editor reset failed. Please reopen the editor."),
+                  duration: Duration(seconds: 3),
+                )
+              );
+            }
+          }
+        } catch (e) {
+          print('Error clearing form: $e');
+          // If clearing fails, inform user to manually clear or reopen
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Blog submitted, but couldn't clear form. Please try again."),
+              duration: Duration(seconds: 3),
+            )
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Failed to submit: ${response.body}")));

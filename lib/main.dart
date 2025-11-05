@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           middlewares: [ChatMiddleware()],
         ),
       ],
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       home: MyHome(),
     );
   }

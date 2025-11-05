@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/user/aibot_controller.dart';
 import 'package:fsui/controllers/user/blogs_controller.dart';
-import 'package:fsui/controllers/user_details_controller.dart';
 import 'package:fsui/screens/aibot_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:fsui/widgets/blog_card.dart';
@@ -128,21 +127,33 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 10),
               Expanded(
                 child: Obx(
-                  () => controller.blogs.isEmpty
-                      ? const Center(
-                          child: Text('No blogs available'),
-                        )
-                      : ListView(
-                          children: controller.blogs.map<Widget>((blog) {
-                            return BlogCard(
-                              id: blog.blogId,
-                              imageUrl: blog.thumbnail,
-                              title: blog.title,
-                              subtitle: blog.description,
-                              url: blog.title,
-                            );
-                          }).toList(),
-                        ),
+                  () => RefreshIndicator(
+                    onRefresh: () async {
+                      await controller.fetchAllBlogs();
+                    },
+                    child: controller.blogs.isEmpty
+                        ? ListView( 
+                            children: const [
+                              Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(top: 100),
+                                  child: Text('No blogs available'),
+                                ),
+                              ),
+                            ],
+                          )
+                        : ListView(
+                            children: controller.blogs.map<Widget>((blog) {
+                              return BlogCard(
+                                id: blog.blogId,
+                                imageUrl: blog.thumbnail,
+                                title: blog.title,
+                                subtitle: blog.description,
+                                url: blog.title,
+                              );
+                            }).toList(),
+                          ),
+                  ),
                 ),
               )
             ],

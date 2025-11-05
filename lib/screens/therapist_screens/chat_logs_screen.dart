@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/utils.dart';
 import 'package:fsui/controllers/therapist/emergency_chat_controller.dart';
 import 'package:get/get.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -12,6 +13,9 @@ class TherapistChatLogsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkTherapistJwtAndRedirectIfExpired();
+    });
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
 import 'package:fsui/controllers/therapist/therapist_blogs_controller.dart';
 import 'package:fsui/screens/therapist_screens/blog_editor_screen.dart';
+import 'package:fsui/utils.dart';
 import 'package:fsui/widgets/blog_card.dart';
 import 'package:fsui/widgets/snackbar.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkTherapistJwtAndRedirectIfExpired();
+    });
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -88,12 +92,23 @@ class HomeScreen extends StatelessWidget {
                 );
               } else {
                 return Expanded(
-                  child: Obx(
-                    () => blogsController.blogs.isEmpty
-                        ? const Center(
-                            child: Text('No blogs available'),
-                          )
-                        : ListView(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      await blogsController.fetchBlogs();
+                    },
+                    child: Obx(
+                      () => blogsController.blogs.isEmpty
+                          ? ListView( // Wrap empty state in ListView for RefreshIndicator to work
+                              children: const [
+                                Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: 100),
+                                    child: Text('No blogs available'),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : ListView(
                             children: blogsController.blogs.map<Widget>((blog) {
                               return BlogCard(
                                 id: blog.blogId,
@@ -105,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                             }).toList(),
                           ),
                   ),
-                );
+                ));
               }
             }),
           ],

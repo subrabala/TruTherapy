@@ -12,6 +12,9 @@ class EmergencyChats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkTherapistJwtAndRedirectIfExpired();
+    });
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(

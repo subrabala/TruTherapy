@@ -13,6 +13,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkTherapistJwtAndRedirectIfExpired();
       controller.fetchProfileDetails();
     });
     return Scaffold(

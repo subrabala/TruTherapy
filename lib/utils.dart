@@ -29,6 +29,14 @@ void checkJwtAndRedirectIfExpired() {
   }
 }
 
+/// Checks therapist JWT and redirects to AuthScreen if expired
+void checkTherapistJwtAndRedirectIfExpired() {
+  String? jwt = getTherapistJwt();
+  if (jwt == null || isJwtExpired(jwt)) {
+    Get.offAll(() => AuthScreen());
+  }
+}
+
 class SharedPrefs {
   static final SharedPrefs _instance = SharedPrefs._internal();
   SharedPreferences? _preferences;

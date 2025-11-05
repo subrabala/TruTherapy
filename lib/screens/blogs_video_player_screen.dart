@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/widgets/delta_text_view.dart';
 import 'package:fsui/controllers/user/blogs_controller.dart';
 import 'package:fsui/controllers/therapist/therapist_blogs_controller.dart';
 import 'package:fsui/controllers/video_player_controller.dart';
@@ -90,12 +90,9 @@ class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600))),
                         const SizedBox(height: 10),
-                        MarkdownBody(
-                          data: blogController.blogData["content"] ??
-                              "No Content",
-                          styleSheet: MarkdownStyleSheet(
-                            p: const TextStyle(fontSize: 14),
-                          ),
+                        DeltaTextView(
+                          deltaJson: blogController.blogData["content"] ?? "[]",
+                          defaultStyle: const TextStyle(fontSize: 14),
                         ),
                       ],
                     ),
