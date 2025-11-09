@@ -18,6 +18,9 @@ class UserDetailsController extends GetxController {
   final selectedGender = Rx<String?>(null);
   final selectedNationality = Rx<String?>(null);
   final selectedDob = Rx<DateTime?>(null);
+  final selectedUserType = Rx<String?>(null);
+  
+  final List<String> userTypes = ['Seafarers', 'Port Worker', 'Maritime Shore Staff'];
 
   Map<String?, dynamic > profileDetails = {};
 
@@ -38,6 +41,7 @@ void onInit(){
       nationality: selectedNationality.value,
       passportNumber: passportNumberController.text,
       placeOfIssue: placeOfIssue.value,
+      userType: selectedUserType.value,
     );
 
     validate(userDetails);
@@ -53,6 +57,7 @@ void onInit(){
         emergencyContact.isEmpty ||
         selectedGender.value == null ||
         selectedNationality.value == null ||
+        selectedUserType.value == null ||
         dob == null) {
       CommonSnackbar.show(
         text: "Missing Fields",
@@ -92,6 +97,7 @@ void onInit(){
         "gender": userDetails.gender,
         "phone_number": "+91${userDetails.contactNumber}",
         "nationality": userDetails.nationality,
+        "user_type": userDetails.userType,
         "sea_book_number": userDetails.seaBookNumber,
         "nok_name": userDetails.emergencyContactName,
         "nok_phone_number": "+91${userDetails.emergencyContactNumber}",

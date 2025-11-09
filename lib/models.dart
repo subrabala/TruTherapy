@@ -12,6 +12,7 @@ class UserDetails {
   String? language;
   String? passportNumber;
   String? placeOfIssue;
+  String? userType;
 
   UserDetails({
     this.contactNumber,
@@ -24,6 +25,7 @@ class UserDetails {
     this.language,
     this.passportNumber,
     this.placeOfIssue,
+    this.userType,
   });
 }
 

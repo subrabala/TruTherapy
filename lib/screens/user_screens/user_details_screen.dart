@@ -95,6 +95,71 @@ class UserDetailsScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10.0),
+                    
+                    // User Type Dropdown
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "User Type",
+                          style:  TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 6.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: PastelColors.seaBlue.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10.0),
+                            border: Border.all(
+                              color: PastelColors.seaBlue,
+                              width: 1.0,
+                            ),
+                          ),
+                          child: Obx(() => DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: controller.selectedUserType.value,
+                              hint: const Padding(
+                                padding:  EdgeInsets.symmetric(horizontal: 12.0),
+                                child: Text(
+                                  'Select User Type',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              isExpanded: true,
+                              icon: const Icon(
+                                Icons.arrow_drop_down,
+                                color: PastelColors.seaBlue,
+                              ),
+                              items: controller.userTypes.map((String type) {
+                                return DropdownMenuItem<String>(
+                                  value: type,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                                    child: Text(
+                                      type,
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                controller.selectedUserType.value = newValue;
+                              },
+                            ),
+                          )),
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 10.0),
 
                     // GENDER
                     const Text(
@@ -119,7 +184,7 @@ class UserDetailsScreen extends StatelessWidget {
                                   controller.selectedGender.value = "male",
                             ),
                           ),
-                          SizedBox(width: 16.0),
+                          const SizedBox(width: 16.0),
                           Expanded(
                             child: GenderCard(
                               icon: Icons.female,
@@ -132,7 +197,7 @@ class UserDetailsScreen extends StatelessWidget {
                                   controller.selectedGender.value = "female",
                             ),
                           ),
-                          SizedBox(width: 16.0),
+                          const SizedBox(width: 16.0),
                           Expanded(
                             child: GenderCard(
                               icon: Icons.transgender,
@@ -307,9 +372,9 @@ class UserDetailsScreen extends StatelessWidget {
             isNumeric ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
           labelText: isOptional ? '$label (Optional)' : label,
-          labelStyle: TextStyle(fontSize: 13),
+          labelStyle: const TextStyle(fontSize: 13),
           hintText: hintText,
-          hintStyle: TextStyle(fontSize: 12),
+          hintStyle: const TextStyle(fontSize: 12),
           prefixIcon: Icon(icon, color: pastelColor, size: 20),
           filled: true,
           fillColor: pastelColor.withOpacity(0.2),
