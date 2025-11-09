@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   const Text(
-                    'Welcome back , ',
+                    'Welcome back ! ',
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Poppins',
@@ -70,11 +70,11 @@ class HomeScreen extends StatelessWidget {
                     const Text(
                       "How would you describe your mood?",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 14),
                     // MOOD BOX
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -199,13 +199,13 @@ class _MoodBox extends StatelessWidget {
             children: [
               Text(
                 emoji,
-                style: const TextStyle(fontSize: 20, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Colors.black54),
               ),
               const SizedBox(height: 5),
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   color: Color.alphaBlend(
                             color,
                             color,

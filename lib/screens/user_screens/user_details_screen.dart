@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:language_picker/language_picker.dart';
-import 'package:language_picker/languages.dart';
 import 'package:get/get.dart';
 import 'package:fsui/widgets/gender_card.dart';
 import 'package:fsui/constants.dart';
@@ -33,6 +30,7 @@ class UserDetailsScreen extends StatelessWidget {
                       hintText: 'Ex. A123456',
                       icon: Icons.book_outlined,
                       pastelColor: PastelColors.seaBlue,
+                      isOptional: true
                     ),
                     const SizedBox(height: 10.0),
                     Row(
@@ -165,6 +163,7 @@ class UserDetailsScreen extends StatelessWidget {
                       hintText: 'Ex. A12345678',
                       icon: Icons.travel_explore,
                       pastelColor: PastelColors.seaBlue,
+                      isOptional: true
                     ),
                     const SizedBox(height: 16.0),
                     buildCountryPicker(
@@ -295,8 +294,8 @@ class UserDetailsScreen extends StatelessWidget {
     required String hintText,
     required IconData icon,
     required Color pastelColor,
-    bool isAlphaNumeric = false,
     bool isNumeric = false,
+    bool isOptional = false,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -306,7 +305,7 @@ class UserDetailsScreen extends StatelessWidget {
         inputFormatters:
             isNumeric ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
-          labelText: label,
+          labelText: isOptional ? '$label (Optional)' : label,
           hintText: hintText,
           prefixIcon: Icon(icon, color: pastelColor),
           filled: true,
@@ -315,11 +314,16 @@ class UserDetailsScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.0),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: pastelColor),
+            borderSide: BorderSide(
+              color: isOptional ? pastelColor.withOpacity(0.5) : pastelColor,
+            ),
             borderRadius: BorderRadius.circular(12.0),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: pastelColor, width: 2.0),
+            borderSide: BorderSide(
+              color: isOptional ? pastelColor.withOpacity(0.7) : pastelColor,
+              width: 2.0,
+            ),
             borderRadius: BorderRadius.circular(12.0),
           ),
         ),

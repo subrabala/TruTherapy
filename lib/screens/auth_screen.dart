@@ -112,7 +112,7 @@ class AuthScreen extends StatelessWidget {
                             height: 25,
                           ),
                           label: const Text(
-                            'Sign in with Google',
+                            'Log in as User',
                             style: TextStyle(
                               color: Color.fromARGB(255, 97, 97, 97),
                               fontSize: 16,

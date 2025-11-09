@@ -49,13 +49,11 @@ void onInit(){
   void validate(UserDetails userDetails) {
     String contactNumber = userDetails.contactNumber ?? '';
     String emergencyContact = userDetails.emergencyContactNumber ?? '';
-    String seaBookNumber = userDetails.seaBookNumber ?? '';
     DateTime? dob =
         userDetails.dob != null ? DateTime.parse(userDetails.dob!) : null;
 
     if (contactNumber.isEmpty ||
         emergencyContact.isEmpty ||
-        seaBookNumber.isEmpty ||
         selectedGender.value == null ||
         selectedNationality.value == null ||
         dob == null) {
@@ -77,16 +75,6 @@ void onInit(){
       return;
     }
 
-    if (!RegExp(r'^[a-zA-Z]{0,5}\d*$').hasMatch(seaBookNumber)) {
-      CommonSnackbar.show(
-        text: "Invalid Sea Book Number",
-        subtext:
-            "Please enter a valid SeaBook number",
-        color: "red",
-      );
-      return;
-    }
-
     if (emergencyContact.length != 10 ||
         !RegExp(r'^[0-9]+$').hasMatch(emergencyContact)) {
       CommonSnackbar.show(
@@ -101,7 +89,7 @@ void onInit(){
 
   void createUser(UserDetails userDetails) async {
     try {
-      final jwt = await getJwt(isTemp: true);
+      final jwt = getJwt(isTemp: true);
       final body = {
         "dob": userDetails.dob,
         "gender": userDetails.gender,
@@ -114,59 +102,61 @@ void onInit(){
         "passport_place_of_issue": userDetails.placeOfIssue,
       };
 
-      final response = await http.post(
-        Uri.parse('$backendUrl/auth/create_user'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $jwt',
-        },
-        body: jsonEncode(body),
-      );
-      if (response.statusCode == 201) {
-        final jwt = jsonDecode(response.body)['access_token'];
-        await setJwt(jwt);
-        Future.delayed(const Duration(seconds: 2), () {
-          Get.back();
-          Get.offAll(() => IntroScreen());
-        });
-        Get.dialog(
-          Center(
-            child: Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Lottie.asset(
-                      'assets/animations/success.json',
-                      width: 100,
-                      height: 100,
-                      repeat: false,
-                    ),
-                    const SizedBox(height: 16.0),
-                    const Text(
-                      "Submitted Successfully!",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          barrierDismissible: false,
-        );
-        Get.to(() => UserDetailsScreen());
-      } else {
-        CommonSnackbar.show(
-            text: 'Failed to create user',
-            subtext: 'Status code: ${response.statusCode}',
-            color: "red");
-      }
+      debugPrint('Creating user with body: $body');
+
+      // final response = await http.post(
+      //   Uri.parse('$backendUrl/auth/create_user'),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': 'Bearer $jwt',
+      //   },
+      //   body: jsonEncode(body),
+      // );
+      // if (response.statusCode == 201) {
+      //   final jwt = jsonDecode(response.body)['access_token'];
+      //   await setJwt(jwt);
+      //   Future.delayed(const Duration(seconds: 2), () {
+      //     Get.back();
+      //     Get.offAll(() => const IntroScreen());
+      //   });
+      //   Get.dialog(
+      //     Center(
+      //       child: Card(
+      //         elevation: 8,
+      //         shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.circular(16),
+      //         ),
+      //         child: Padding(
+      //           padding: const EdgeInsets.all(16.0),
+      //           child: Column(
+      //             mainAxisSize: MainAxisSize.min,
+      //             children: [
+      //               Lottie.asset(
+      //                 'assets/animations/success.json',
+      //                 width: 100,
+      //                 height: 100,
+      //                 repeat: false,
+      //               ),
+      //               const SizedBox(height: 16.0),
+      //               const Text(
+      //                 "Submitted Successfully!",
+      //                 style:
+      //                     TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //     barrierDismissible: false,
+      //   );
+      //   Get.to(() => UserDetailsScreen());
+      // } else {
+      //   CommonSnackbar.show(
+      //       text: 'Failed to create user',
+      //       subtext: 'Status code: ${response.statusCode}',
+      //       color: "red");
+      // }
     } catch (error) {
       print('Error creating user: $error');
     }
