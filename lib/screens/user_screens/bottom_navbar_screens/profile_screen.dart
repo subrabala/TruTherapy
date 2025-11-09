@@ -162,6 +162,27 @@ class ProfileScreen extends StatelessWidget {
 
                             const SizedBox(height: 10),
 
+                            // User Type
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.work_outline,
+                                  color: Colors.black45,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${(controller.profileDetails['user_type'] ?? "")?.split(" ").map((word) => word.isNotEmpty ? "${word[0].toUpperCase()}${word.substring(1)}" : "").join(" ")}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 10),
+
                             // SEA BOOK
                             Row(
                               children: [
