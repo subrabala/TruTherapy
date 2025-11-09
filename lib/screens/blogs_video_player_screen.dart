@@ -6,7 +6,6 @@ import 'package:fsui/controllers/therapist/therapist_blogs_controller.dart';
 import 'package:fsui/controllers/video_player_controller.dart';
 import 'package:fsui/utils.dart';
 import 'package:get/get.dart';
-import 'package:video_player/video_player.dart';
 
 class BlogsVideoPlayerScreen extends StatefulWidget {
   @override
@@ -65,12 +64,14 @@ class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: ChewieVideoPlayer(
-                    videoUrl:
-                          "$s3_cdn/" + Uri.encodeFull(blogController.blogData["video"]),
-                  ),
+                if (blogController.blogData["video"] != null && 
+                    blogController.blogData["video"].toString().isNotEmpty)
+                  AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: ChewieVideoPlayer(
+                      videoUrl:
+                            "$s3_cdn/${Uri.encodeFull(blogController.blogData["video"])}",
+                    ),
                 ),            
                 const SizedBox(height: 20),
                 Padding(

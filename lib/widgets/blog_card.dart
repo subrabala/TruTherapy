@@ -9,18 +9,18 @@ import 'package:get/get_core/src/get_main.dart';
 
 class BlogCard extends StatelessWidget {
   final int id;
-  final String imageUrl;
-  final String title;
-  final String subtitle;
-  final String url;
+  final String? imageUrl;
+  final String? title;
+  final String? subtitle;
+  final String? url;
 
   const BlogCard({
     Key? key,
     required this.id,
-    required this.imageUrl,
-    required this.title,
-    required this.subtitle,
-    required this.url,
+    this.imageUrl,
+    this.title,
+    this.subtitle,
+    this.url,
   }) : super(key: key);
 
   @override
@@ -50,16 +50,78 @@ class BlogCard extends StatelessWidget {
               flex: 1,
               child: ClipRRect(
                 clipBehavior: Clip.antiAlias,
-                child: Image.network(
-                  '$s3_cdn/$imageUrl',
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      "assets/fallback_blog.png",
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
+                borderRadius: BorderRadius.circular(8),
+                child: imageUrl != null 
+                    ? Image.network(
+                        '$s3_cdn/$imageUrl',
+                        fit: BoxFit.cover,
+                        height: 80,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            height: 80,
+                            color: Colors.grey[200],
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes != null
+                                    ? loadingProgress.cumulativeBytesLoaded / 
+                                      loadingProgress.expectedTotalBytes!
+                                    : null,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          print('Error loading image: $error');
+                          return Container(
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.image_not_supported_outlined, 
+                                     color: Colors.grey[400],
+                                     size: 24),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'No Image',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      )
+                    : Container(
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.photo_library_outlined, 
+                                 color: Colors.grey[400],
+                                 size: 24),
+                            const SizedBox(height: 4),
+                            Text(
+                              'No Preview',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
               ),
             ),
             Expanded(
@@ -71,21 +133,35 @@ class BlogCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      title?.isNotEmpty == true ? title! : 'Untitled Blog',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: AppColors.dark800,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 5),
-                    Text(
-                      subtitle,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: AppColors.dark800,
+                    if (subtitle?.isNotEmpty == true)
+                      Text(
+                        subtitle!,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.dark800,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    else
+                      Text(
+                        'No description available',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
