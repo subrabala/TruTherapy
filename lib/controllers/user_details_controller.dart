@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
+import 'package:fsui/screens/therapist_screens/intro_screen.dart';
+import 'package:fsui/screens/user_screens/bottom_navbar_screens/home_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:fsui/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:fsui/models.dart';
 import 'package:http/http.dart' as http;
+import 'package:lottie/lottie.dart';
 
 class UserDetailsController extends GetxController {
   final contactNumberController = TextEditingController();
@@ -107,59 +110,60 @@ void onInit(){
 
       debugPrint('Creating user with body: $body');
 
-      // final response = await http.post(
-      //   Uri.parse('$backendUrl/auth/create_user'),
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': 'Bearer $jwt',
-      //   },
-      //   body: jsonEncode(body),
-      // );
-      // if (response.statusCode == 201) {
-      //   final jwt = jsonDecode(response.body)['access_token'];
-      //   await setJwt(jwt);
-      //   Future.delayed(const Duration(seconds: 2), () {
-      //     Get.back();
-      //     Get.offAll(() => const IntroScreen());
-      //   });
-      //   Get.dialog(
-      //     Center(
-      //       child: Card(
-      //         elevation: 8,
-      //         shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(16),
-      //         ),
-      //         child: Padding(
-      //           padding: const EdgeInsets.all(16.0),
-      //           child: Column(
-      //             mainAxisSize: MainAxisSize.min,
-      //             children: [
-      //               Lottie.asset(
-      //                 'assets/animations/success.json',
-      //                 width: 100,
-      //                 height: 100,
-      //                 repeat: false,
-      //               ),
-      //               const SizedBox(height: 16.0),
-      //               const Text(
-      //                 "Submitted Successfully!",
-      //                 style:
-      //                     TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //     barrierDismissible: false,
-      //   );
-      //   Get.to(() => UserDetailsScreen());
-      // } else {
-      //   CommonSnackbar.show(
-      //       text: 'Failed to create user',
-      //       subtext: 'Status code: ${response.statusCode}',
-      //       color: "red");
-      // }
+      final response = await http.post(
+        Uri.parse('$backendUrl/auth/create_user'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwt',
+        },
+        body: jsonEncode(body),
+      );
+      if (response.statusCode == 201) {
+        final jwt = jsonDecode(response.body)['access_token'];
+        await setJwt(jwt);
+        Future.delayed(const Duration(seconds: 2), () {
+          Get.back();
+          Get.offAll(() => const IntroScreen());
+        });
+        Get.dialog(
+          Center(
+            child: Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset(
+                      'assets/animations/success.json',
+                      width: 100,
+                      height: 100,
+                      repeat: false,
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      "Submitted Successfully!",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          barrierDismissible: false,
+        );
+         Get.back(); 
+        Get.offAll(() => const IntroScreen());
+      } else {
+        CommonSnackbar.show(
+            text: 'Failed to create user',
+            subtext: 'Status code: ${response.statusCode}',
+            color: "red");
+      }
     } catch (error) {
       print('Error creating user: $error');
     }
@@ -167,7 +171,7 @@ void onInit(){
 
   void fetchProfileDetails() async {
     try {
-      final jwt = await getJwt();
+      final jwt =  getJwt();
       final response = await http.get(
         Uri.parse('$backendUrl/users'),
         headers: {
@@ -176,7 +180,8 @@ void onInit(){
         },
       );
       if (response.statusCode == 200) {
-        profileDetails = jsonDecode(response.body) as Map<String, dynamic>;
+        final responseData = jsonDecode(response.body);
+        profileDetails = Map<String?, dynamic>.from(responseData ?? {});
       }
     } catch (e) {
       CommonSnackbar.show(text: "Error fetching user details", subtext: e.toString(), color: "red");
