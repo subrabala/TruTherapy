@@ -2,13 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/screens/user_screens/user_details_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:fsui/widgets/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:fsui/models.dart';
-import 'package:fsui/screens/user_screens/intro_screen.dart';
-import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 
 class UserDetailsController extends GetxController {

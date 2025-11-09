@@ -28,20 +28,22 @@ class GenderCard extends StatelessWidget {
           color: isSelected ? darkColor.withOpacity(0.8) : color.withOpacity(0.3),
           borderRadius: BorderRadius.circular(12),
         ),
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
               icon,
-              size: 32,
+              size: 24,
               color: isSelected ? Colors.white : darkColor,
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 4.0),
             Text(
               label,
               style: TextStyle(
                 color: isSelected ? Colors.white : darkColor,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
               ),
             ),
           ],

@@ -20,7 +20,7 @@ class UserDetailsScreen extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -100,9 +100,9 @@ class UserDetailsScreen extends StatelessWidget {
                     const Text(
                       "Gender",
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                     ),
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 6.0),
                     Obx(
                       () => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,7 +119,7 @@ class UserDetailsScreen extends StatelessWidget {
                                   controller.selectedGender.value = "male",
                             ),
                           ),
-                          SizedBox(width: 25.0),
+                          SizedBox(width: 16.0),
                           Expanded(
                             child: GenderCard(
                               icon: Icons.female,
@@ -132,7 +132,7 @@ class UserDetailsScreen extends StatelessWidget {
                                   controller.selectedGender.value = "female",
                             ),
                           ),
-                          SizedBox(width: 25.0),
+                          SizedBox(width: 16.0),
                           Expanded(
                             child: GenderCard(
                               icon: Icons.transgender,
@@ -213,7 +213,7 @@ class UserDetailsScreen extends StatelessWidget {
                 ),
                 child: const Text(
                   'Submit',
-                  style: TextStyle(color: Colors.white, fontSize: 16.0),
+                  style: TextStyle(color: Colors.white, fontSize: 14.0),
                 ),
               ),
             ),
@@ -231,15 +231,15 @@ class UserDetailsScreen extends StatelessWidget {
     required Color pastelColor,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           ),
-          const SizedBox(height: 8.0),
+          const SizedBox(height: 6.0),
           Obx(
             () => InkWell(
               onTap: () {
@@ -253,23 +253,23 @@ class UserDetailsScreen extends StatelessWidget {
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(
-                    vertical: 16.0, horizontal: 12.0),
+                    vertical: 12.0, horizontal: 10.0),
                 decoration: BoxDecoration(
                   color: pastelColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12.0),
-                  border: Border.all(color: pastelColor, width: 1.5),
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(color: pastelColor, width: 1.0),
                 ),
                 child: Row(
                   children: [
-                    Icon(icon, color: pastelColor),
-                    const SizedBox(width: 12.0),
+                    Icon(icon, color: pastelColor, size: 20),
+                    const SizedBox(width: 8.0),
                     Expanded(
                       child: Text(
                         (value.value ?? '').isEmpty
                             ? 'Select $label'
                             : value.value!,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 13,
                           color: (value.value ?? '').isEmpty
                               ? Colors.grey
                               : Colors.black,
@@ -298,33 +298,38 @@ class UserDetailsScreen extends StatelessWidget {
     bool isOptional = false,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: TextFormField(
         controller: controller,
+        style: const TextStyle(fontSize: 13),
         keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
         inputFormatters:
             isNumeric ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
           labelText: isOptional ? '$label (Optional)' : label,
+          labelStyle: TextStyle(fontSize: 13),
           hintText: hintText,
-          prefixIcon: Icon(icon, color: pastelColor),
+          hintStyle: TextStyle(fontSize: 12),
+          prefixIcon: Icon(icon, color: pastelColor, size: 20),
           filled: true,
           fillColor: pastelColor.withOpacity(0.2),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: isOptional ? pastelColor.withOpacity(0.5) : pastelColor,
+              width: 1.0,
             ),
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: isOptional ? pastelColor.withOpacity(0.7) : pastelColor,
-              width: 2.0,
+              width: 1.5,
             ),
-            borderRadius: BorderRadius.circular(12.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
       ),
