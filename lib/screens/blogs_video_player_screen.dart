@@ -43,71 +43,75 @@ class _BlogsVideoPlayerScreenState extends State<BlogsVideoPlayerScreen> {
             fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
         centerTitle: true,
       ),
-      body: 
-      // Obx(() {
-        // if (controller.isInitialized.value) {
+      body:
+          // Obx(() {
+          // if (controller.isInitialized.value) {
           // return SingleChildScrollView(
-            // child: 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                if (blogController.blogData["created_at"] != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Text(
-                      "Published on: ${convertToReadableDateAndTime(blogController.blogData["created_at"])}",
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.grey,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                if (blogController.blogData["video"] != null && 
-                    blogController.blogData["video"].toString().isNotEmpty)
-                  AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: ChewieVideoPlayer(
-                      videoUrl:
-                            "$s3_cdn/${Uri.encodeFull(blogController.blogData["video"])}",
-                    ),
-                ),            
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppColors.lightYellow.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      children: [
-                        const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text("Description",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600))),
-                        const SizedBox(height: 10),
-                        DeltaTextView(
-                          deltaJson: blogController.blogData["content"] ?? "[]",
-                          defaultStyle: const TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                  ),
+          // child:
+          Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          if (blogController.blogData["created_at"] != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Text(
+                "Published on: ${convertToReadableDateAndTime(blogController.blogData["created_at"])}",
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey,
                 ),
-              ],
+                textAlign: TextAlign.center,
+              ),
             ),
-          );
-        }
-        //  else {
-        //   return const Center(child: CircularProgressIndicator());
-        // }
-      // }
-    //   ),
-    // );
+          if (blogController.blogData["video"] != null &&
+              blogController.blogData["video"].toString().isNotEmpty)
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: ChewieVideoPlayer(
+                videoUrl:
+                    "$s3_cdn/${Uri.encodeFull(blogController.blogData["video"])}",
+              ),
+            ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: AppColors.lightYellow.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  if (blogController.blogData["video"] != null &&
+                      blogController.blogData["video"]
+                          .toString()
+                          .isNotEmpty) ...[
+                    const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Description",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600))),
+                    const SizedBox(height: 10)
+                  ],
+                  DeltaTextView(
+                    deltaJson: blogController.blogData["content"] ?? "[]",
+                    defaultStyle: const TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  //  else {
+  //   return const Center(child: CircularProgressIndicator());
+  // }
+  // }
+  //   ),
+  // );
   // }
 }
