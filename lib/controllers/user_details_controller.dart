@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fsui/constants.dart';
-import 'package:fsui/screens/therapist_screens/intro_screen.dart';
 import 'package:fsui/screens/user_screens/bottom_navbar_screens/home_screen.dart';
 import 'package:fsui/utils.dart';
 import 'package:fsui/widgets/snackbar.dart';
@@ -10,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:fsui/models.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
+
+import '../screens/user_screens/intro_screen.dart';
 
 class UserDetailsController extends GetxController {
   final contactNumberController = TextEditingController();
