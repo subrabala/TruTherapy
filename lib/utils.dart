@@ -71,9 +71,12 @@ Future<void> setJwt(String jwt, {bool isTemp = false}) async {
 
 String? getJwt({bool isTemp = false}) {
   final prefs = SharedPrefs().prefs;
+  if (isTemp) {
+    return prefs.getString('jwtTemp');
+  }
   final scope = getScope();
   if (scope == 'user') {
-    return isTemp ? prefs.getString('jwtTemp') : prefs.getString('jwt');
+    return prefs.getString('jwt');
   } else if (scope == 'therapist') {
     return prefs.getString('jwtTherapist');
   }
